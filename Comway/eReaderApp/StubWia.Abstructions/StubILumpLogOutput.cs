@@ -9,21 +9,21 @@ namespace StubWia.Abstructions
     {
        
         public StubILumpLogOutput() { }
-        public ILumpLogElement AllImage { get; set; }
-        public ILumpLogElement FailImage { get; set; }
-        public ILumpLogElement JobData { get; set; }
-        public ILumpLogElement LogData { get; set; }
-        public ILumpLogElement ConfData { get; set; }
-        public ILumpLogElement PCInfo { get; set; }
-        public ILumpLogElement SelfDiagnosisInfo { get; set; }
+        public ILumpLogElement AllImage { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement FailImage { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement JobData { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement LogData { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement ConfData { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement PCInfo { get; set; } = new StubILumpLogElement();
+        public ILumpLogElement SelfDiagnosisInfo { get; set; } = new StubILumpLogElement();
         public int SizeOfDevidedLog { get; set; }
 
     }
 
-    public class StuILumpLogElement : ILumpLogElement
+    public class StubILumpLogElement : ILumpLogElement
     {
 
-        public StuILumpLogElement() { }
+        public StubILumpLogElement() { }
         public bool IsSave { get; set; }
         public bool IsFromDate { get; set; }
         public DateTime FromDate { get; set; }

@@ -9,10 +9,10 @@ namespace StubWia.Abstructions
        
         public StubIJobConfig() { }       
         public int ConfigID { get; }
-        public IJobAcqSettings AcquireSettings { get; }
-        public IJobReadSettings ReadSettings { get; }
-        public IJobTuneSettings TuneSettings { get; }
-        public ITuneResult TuneLatestResult { get; }
+        public IJobAcqSettings AcquireSettings { get; } = new StubIJobAcqSettings();
+        public IJobReadSettings ReadSettings { get; } = new StubIJobReadSettings();
+        public IJobTuneSettings TuneSettings { get; } = new StubIJobTuneSettings();
+        public ITuneResult TuneLatestResult { get; } = new StubITuneResult();
         public bool Enable { get; set; }
         public bool CheckFontIdValidity() { return true; }
         public void SetTuneSettings(IJobTuneSettings tuneSettings) { }

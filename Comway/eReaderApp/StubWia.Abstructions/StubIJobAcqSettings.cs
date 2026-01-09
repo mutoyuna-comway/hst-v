@@ -9,7 +9,7 @@ namespace StubWia.Abstructions
        
         public StubIJobAcqSettings() { }       
         public ImageOrient AcqOrient { get; set; }
-        public IRegion WOI { get; set; }
+        public IRegion WOI { get; set; } = new StubIRegion();
         public int Gain { get; set; }
         public int Exposure { get; set; }
         public double Rotate { get; set; }
@@ -18,7 +18,7 @@ namespace StubWia.Abstructions
         public MarkColor AcqFilterColor { get; set; }
         public int AcqFilterIteration { get; set; }
         public AcquireMethod AcqMode { get; set; }
-        public ILightConfig SelectedLightConfig { get; set; }
+        public ILightConfig SelectedLightConfig { get; set; } = new StubILightConfig();
         public int SelectedLightConfigIndex { get; set; }
         public ILightConfig GetLightConfig(int index) { return null; }
         public void SetCurrentCue(AcquireMethod method, MarkColor color) { }

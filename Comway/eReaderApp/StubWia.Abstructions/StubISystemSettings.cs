@@ -18,7 +18,7 @@ namespace StubWia.Abstructions
         public string SystemFolder { get; set; }
         public string DeviceFolder { get; set; }
         public int DeviceID { get; set; }
-        public IProcessorSettings ProcSetting { get; set; }
+        public IProcessorSettings ProcSetting { get; set; } = new StubIProcessorSettings();
         public bool UseExternalLight { get; set; }
         public string UseLanguage { get; set; }
         public bool ExpandConfig { get; set; }

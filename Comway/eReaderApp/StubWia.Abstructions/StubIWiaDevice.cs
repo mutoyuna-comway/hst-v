@@ -23,8 +23,8 @@ namespace StubWia.Abstructions
         public int GainMin { get; }
         public int ExposureMin { get; }
         public int ExposureMax { get; }
-        public ICameraInfo CameraInfo { get; }
-        public ISystemAcqSettings CurrentAcqSettings { get; }
+        public ICameraInfo CameraInfo { get; } = new StubICameraInfo();
+        public ISystemAcqSettings CurrentAcqSettings { get; } = new StubISystemAcqSettings();
         public event EventHandler CameraInfoChanged;
         public void Initialize(ApplicationType appType, string camModuleName, string lightModuleName) { }
         public bool ReconnectDevice() { return true; }

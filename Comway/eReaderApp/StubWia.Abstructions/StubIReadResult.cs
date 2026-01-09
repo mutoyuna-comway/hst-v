@@ -17,13 +17,13 @@ namespace StubWia.Abstructions
         public double MinScore { get; }
         public double ElapsedTime { get; }
         public int ConfigID { get; }
-        public IRegion ROI { get; }
-        public ICharacterSize CharSize { get; }
+        public IRegion ROI { get; } = new StubIRegion();
+        public ICharacterSize CharSize { get; } = new StubICharacterSize();
         public bool Pass { get; }
         public bool IsTimeout { get; }
         public string ConfusionString { get; }
         public bool IsCorrectConfChecksum { get; }
-        public IReadOcrResult[] OcrResults { get; }
+        public IReadOcrResult[] OcrResults { get; } = new[] { new StubIReadOcrResult() };
         public double GetAddedScore(ScoreRange sr) { return 0; }
     }
 

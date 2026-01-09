@@ -25,7 +25,7 @@ namespace StubWia.Abstructions
         public int NumTuneFailed { get; }
         public double CurrentMinimumScore { get; }
         public double BestMinimumScore { get; }
-        public IJobReadSettings BestRead { get; }
+        public IJobReadSettings BestRead { get; } = new StubIJobReadSettings();
         public string GetCurrentString(int fieldStrNum) { return ""; }
         public string GetBestString(int fieldStrNum) { return ""; }
 

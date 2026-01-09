@@ -69,7 +69,7 @@ namespace StubWia.Abstructions
         public int Exposure { get; }
         public int Gain { get; }
         public ImageOrient Orient { get; }
-        public ILightConfig[] LightConfs { get; }
+        public ILightConfig[] LightConfs { get; } = new[] {new StubILightConfig()};
     }
 
     public class StubIWaitResponse : IWaitResponse

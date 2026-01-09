@@ -12,16 +12,16 @@ namespace StubWia.Abstructions
     {
 
         public StubIWiaSystem() { }
-        public ISystemAcqSettings AcquisitionSettings { get; }
-        public ISystemSettings SystemSettings { get; }
-        public ISystemGUISettings GUISettings { get; }
-        public ISystemCommSettings CommunicationSettings { get; }
-        public ISystemReadSettings ReadSettings { get; }
-        public ISystemLogSettings LogSettings { get; }
-        public IWiaDevice Device { get; }
-        public IWiaCommManager CommManager { get; }
-        public IJob Job { get; }
-        public IMaintenanceService MaintenanceServices { get; }
+        public ISystemAcqSettings AcquisitionSettings { get; } = new StubISystemAcqSettings();
+        public ISystemSettings SystemSettings { get; } = new StubISystemSettings();
+        public ISystemGUISettings GUISettings { get; } = new StubISystemGUISettings();
+        public ISystemCommSettings CommunicationSettings { get; } = new StubISystemCommSettings();
+        public ISystemReadSettings ReadSettings { get; } = new StubISystemReadSettings();
+        public ISystemLogSettings LogSettings { get; } = new StubISystemLogSettings();
+        public IWiaDevice Device { get; } = new StubIWiaDevice();
+        public IWiaCommManager CommManager { get; } = new StubIWiaCommManager();
+        public IJob Job { get; } = new StubIJob();
+        public IMaintenanceService MaintenanceServices { get; } = new StubIMaintenanceService();
         public string AppVersion { get; }
         public bool IsOnline { get; }
         public bool IsScreenLocked { get; set; }

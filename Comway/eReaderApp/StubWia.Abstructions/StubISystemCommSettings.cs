@@ -14,8 +14,8 @@ namespace StubWia.Abstructions
         public StubISystemCommSettings() { }
         public DelimeterType Delimeter { get; set; }
         public CommunicatorType CommType { get; set; }
-        public ISocketSettings Socket { get; set; }
-        public ISerialSettings Serial { get; set; }
+        public ISocketSettings Socket { get; set; } = new StubISocketSettings();
+        public ISerialSettings Serial { get; set; } = new StubISerialSettings();
         public IDictionary<string, IWaitResponse> Response { get; set; }
     }
 }

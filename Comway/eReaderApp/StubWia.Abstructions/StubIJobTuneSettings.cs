@@ -11,7 +11,7 @@ namespace StubWia.Abstructions
         public StubIJobTuneSettings() { }       
         public string MatchString { get; set; }
         public TuneSelectMode TuneMode { get; set; }
-        public ICharacterSize CharSize { get; set; }
+        public ICharacterSize CharSize { get; set; } = new StubICharacterSize();
         public TuneScanningMode TuneScanMode { get; set; }
         public bool LightEnable { get; set; }
         public int LightRange { get; set; }

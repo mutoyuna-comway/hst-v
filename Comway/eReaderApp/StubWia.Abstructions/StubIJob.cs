@@ -9,7 +9,7 @@ namespace StubWia.Abstructions
        
         public StubIJob() { }       
         public ReadMethod ReadType { get; set; }
-        public IJobConfig SelectedConfig { get; }
+        public IJobConfig SelectedConfig { get; }= new StubIJobConfig();
         public int SelectedConfigIndex { get; set; }
         public IEnumerable<IJobConfig> Configs { get; }
         public IJobConfig GetConfig(int index) { return null; }
