@@ -1,4 +1,4 @@
-﻿@ -0,0 + 1,94 @@
+﻿
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StubWia;
 using StubWia.Abstructions;
@@ -78,7 +78,7 @@ namespace TestWiaSystem
         protected void privateSet<TValue>(Object instance, string propertyName, TValue newValue)
         {
             var privateObject = new PrivateObject(instance);
-            privateObject.SetProperty(propertyName, true);
+            privateObject.SetProperty(propertyName, newValue);
         }
 
         ///サンプル
