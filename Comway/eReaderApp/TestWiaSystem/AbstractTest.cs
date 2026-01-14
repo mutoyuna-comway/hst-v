@@ -1,3 +1,4 @@
+﻿@ -0,0 + 1,94 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StubWia;
 using StubWia.Abstructions;
@@ -64,6 +65,20 @@ namespace TestWiaSystem
                 // 後始末：イベント購読解除
                 viewModel.PropertyChanged -= Handler;
             }
+        }
+
+
+        /// <summary>
+        /// プライベートプロパティへのSetメソッド
+        /// </summary>
+        /// <typeparam name="TValue">プロパティの型</typeparam>
+        /// <param name="viewModel">テスト対象のインスタンス</param>
+        /// <param name="propertyName">プロパティ名</param>
+        /// <param name="newValue">セットするテスト値</param>
+        protected void privateSet<TValue>(Object instance, string propertyName, TValue newValue)
+        {
+            var privateObject = new PrivateObject(instance);
+            privateObject.SetProperty(propertyName, true);
         }
 
         ///サンプル
