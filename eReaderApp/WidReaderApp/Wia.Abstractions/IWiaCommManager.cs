@@ -1,9 +1,18 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Wia.Abstractions
 {
-    public interface IWiaCommManager
+    /// <summary>
+    /// 通信管理
+    /// </summary>
+    public interface IWiaCommManager : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
         DelimeterType Delimeter { get; set; }
         ulong SocketPort { get; set; }
     }

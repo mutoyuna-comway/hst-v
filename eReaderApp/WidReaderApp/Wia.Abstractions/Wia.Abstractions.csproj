@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAcquireResult.cs" />
+    <Compile Include="IConfigStore.cs" />
+    <Compile Include="IImageSource.cs" />
     <Compile Include="IJobAcqSettings.cs" />
     <Compile Include="IBarcodeParameters.cs" />
     <Compile Include="ICamContloler.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Wia.Abstractions
     /// <summary>
     /// QRコード読取り設定
     /// </summary>
-    public interface IQRCodeParameters
+    public interface IQRCodeParameters : INotifyPropertyChanged
     {
         // ------------------------------
         //

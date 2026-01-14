@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 
 namespace Wia.Abstractions
@@ -6,7 +7,7 @@ namespace Wia.Abstractions
     /// <summary>
     /// ウェーハID読取りアプリケーションのジョブ
     /// </summary>
-    public interface IJob
+    public interface IJob : INotifyPropertyChanged
     {
         // ------------------------------
         //
@@ -18,6 +19,11 @@ namespace Wia.Abstractions
         /// 読取り手法
         /// </summary>
         ReadMethod ReadType { get; set; }
+
+        /// <summary>
+        /// スコアモード
+        /// </summary>
+        ScoreMode ScoreType { get; set; }
 
         /// <summary>
         /// 現在選択されているジョブコンフィグ
@@ -32,7 +38,18 @@ namespace Wia.Abstractions
         /// <summary>
         /// 割り当てられているジョブコンフィグの列挙
         /// </summary>
-        IEnumerable<IJobConfig> Configs { get; }
+        IConfigStore Configs { get; }
+
+        // ------------------------------
+        //
+        // イベント
+        //
+        // ------------------------------
+
+        /// <summary>
+        /// コンフィグ読取り結果が更新されたことを通知するイベント
+        /// </summary>
+        event EventHandler<IReadCompletedEventArgs> ConfigReadResultAvailable;
 
         // ------------------------------
         //
@@ -68,6 +85,25 @@ namespace Wia.Abstractions
         /// <returns>true:成功</returns>
         bool CopyConfig(int srcConfID, int dstConfID);
 
+        /// <summary>
+        /// 読取り実行
+        /// </summary>
+        /// <returns>読み取ったコンフィグ番号。失敗の場合は-1を返す。</returns>
+        int RunRead(IImageSource imgSrc, ScoreAs100 scoreAs100);
+
+
+        /// <summary>
+        /// 読取り結果についてLastBestのコンフィグ番号の取得
+        /// </summary>
+        /// <returns>コンフィグ番号。未実行の場合は0を返す。</returns>
+        int GetLastBestConfigId();
+
+        /// <summary>
+        /// 読取り結果について指定したコンフィグ番号のLastBestの結果を取得する
+        /// </summary>
+        /// <param name="configID">コンフィグ番号</param>
+        /// <returns>読取り結果</returns>
+        IReadResult GetReadBestResult(int configID);
 
         //
         // TODO: 下記については今後修正検討が必要となる。
@@ -79,6 +115,9 @@ namespace Wia.Abstractions
 
         int GetConfigMaxNum();
 
+        int RunReadRetry(IImageSource imgSrc, ScoreAs100 scoreAs100, int configID,
+            int lightRange, int lightStep, int sizeRange, int sizeStep,
+            int internalFilter, int timeOut, int overwrite, out IReadResult result);
     }
 
 }

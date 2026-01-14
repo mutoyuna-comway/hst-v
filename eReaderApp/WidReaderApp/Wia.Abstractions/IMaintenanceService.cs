@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Wia.Abstractions
 {
-    public interface IMaintenanceService
+    public interface IMaintenanceService : INotifyPropertyChanged
     {
         // ------------------------------
         //

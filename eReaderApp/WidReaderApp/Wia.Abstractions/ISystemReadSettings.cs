@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,8 +9,17 @@ using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
-    public interface ISystemReadSettings
+    /// <summary>
+    /// 読取りシステム設定
+    /// </summary>
+    public interface ISystemReadSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// チェックサム文字列省略
         /// </summary>

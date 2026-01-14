@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,14 @@ namespace Wia.Abstractions
     /// <summary>
     /// 通信設定
     /// </summary>
-    public interface ISystemCommSettings
+    public interface ISystemCommSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// デリミタ設定
         /// </summary>
