@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Wia.Abstractions
 {
-    public interface ISystemAcqSettings
+    /// <summary>
+    /// 画像取込みシステム設定
+    /// </summary>
+    public interface ISystemAcqSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 画像取得タイムアウト時間 ミリ秒単位
         /// </summary>

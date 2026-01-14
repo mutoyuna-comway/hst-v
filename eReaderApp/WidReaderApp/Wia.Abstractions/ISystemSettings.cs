@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,7 +10,10 @@ using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
-    public interface ISystemSettings
+    /// <summary>
+    /// システム設定
+    /// </summary>
+    public interface ISystemSettings : INotifyPropertyChanged
     {
         // ------------------------------
         //

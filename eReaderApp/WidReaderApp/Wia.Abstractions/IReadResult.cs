@@ -82,6 +82,11 @@ namespace Wia.Abstractions
         /// </summary>
         IReadOcrResult[] OcrResults { get; }  //nullの場合あり、OCRの結果でない場合はnull
 
+        /// <summary>
+        /// 読取り条件
+        /// </summary>
+        IJobReadSettings ReadSettings { get; }
+
         // ------------------------------
         //
         // メソッド

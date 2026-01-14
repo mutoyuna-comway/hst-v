@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Wia.Abstractions
     /// <summary>
     /// チューニング設定
     /// </summary>
-    public interface IJobTuneSettings
+    public interface IJobTuneSettings : INotifyPropertyChanged
     {
         /// <summary>
         /// 適合文字列

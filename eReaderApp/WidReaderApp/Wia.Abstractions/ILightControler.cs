@@ -8,6 +8,12 @@ namespace Wia.Abstractions
     /// </summary>
     public interface ILightContloler : IDisposable
     {
+        // ------------------------------
+        //
+        // メソッド
+        //
+        // ------------------------------
+
         /// <summary>
         /// 初期化
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,8 +9,14 @@ using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
-    public interface IImageSaveSettings
+    public interface IImageSaveSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 全画像保存可否
         /// </summary>
@@ -40,6 +47,6 @@ namespace Wia.Abstractions
         /// <summary>
         /// 失敗画像保存ディレクトリ
         /// </summary>
-        String FailImageSaveDir { get; set; }
+        string FailImageSaveDir { get; set; }
     }
 }

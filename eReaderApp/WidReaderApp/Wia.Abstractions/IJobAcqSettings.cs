@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,14 @@ namespace Wia.Abstractions
     /// <summary>
     /// ジョブコンフィグの画像取込み設定
     /// </summary>
-    public interface IJobAcqSettings
+    public interface IJobAcqSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 画像反転モード
         /// </summary>

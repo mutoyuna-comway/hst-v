@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -7,8 +8,17 @@ using System.Threading.Tasks;
 
 namespace Wia.Abstractions
 {
-    public interface ISocketSettings
+    /// <summary>
+    /// ソケット通信設定
+    /// </summary>
+    public interface ISocketSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// ホストのIPアドレス
         /// </summary>

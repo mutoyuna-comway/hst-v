@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Wia.Abstractions
 {
+    /// <summary>
+    /// チューニング結果
+    /// </summary>
     public interface ITuneResult
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         MarkType Mark { get; }
         double Progress { get; }
         int NumRead { get; }
@@ -23,6 +32,12 @@ namespace Wia.Abstractions
         double BestMinimumScore { get; }
 
         IJobReadSettings BestRead { get; }
+
+        // ------------------------------
+        //
+        // メソッド
+        //
+        // ------------------------------
 
         string GetCurrentString(int fieldStrNum);
         string GetBestString(int fieldStrNum);
