@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace StubWia.Abstructions
 
     public class StubIWiaSystem : IWiaSystem
     {
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public StubIWiaSystem() { }
         public ISystemAcqSettings AcquisitionSettings { get; } = new StubISystemAcqSettings();
         public ISystemSettings SystemSettings { get; } = new StubISystemSettings();
@@ -24,8 +25,28 @@ namespace StubWia.Abstructions
         public IMaintenanceService MaintenanceServices { get; } = new StubIMaintenanceService();
         public string AppVersion { get; }
         public bool IsOnline { get; }
-        public bool IsScreenLocked { get; set; }
-        public bool IsAcquireDisabled { get; set; }
+        //public bool IsScreenLocked { get; set; }
+        private bool _isScreenLocked;
+        public bool IsScreenLocked
+        {
+            get => _isScreenLocked;
+            set
+            {
+                _isScreenLocked = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScreenLocked)));
+            }
+        }
+        //public bool IsAcquireDisabled { get; set; }
+        private bool _isAcquireDisabled;
+        public bool IsAcquireDisabled
+        {
+            get => _isAcquireDisabled;
+            set
+            {
+                _isAcquireDisabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAcquireDisabled)));
+            }
+        }
         public string ActiveJobName { get; }
         public DateTime ActiveJobLoadTime { get; }
         public DateTime BootTime { get; }
@@ -67,6 +88,9 @@ namespace StubWia.Abstructions
         public TuneState TuneCurrentState { get; }
         public int TuneCurrentSeqNumber { get; }
         public int TuneCurrentConfigNumber { get; }
+
+        public IImageSource ImageSource { get; }
+
         public bool ReadCommandSync(bool withRetry, int timeOut, ref int lastReadConfig) { return true; }
         public int TuneStart(bool isCommand, int tuningConf) { return 0; }
         public bool TuneResultJudge() { return true; }
@@ -79,6 +103,11 @@ namespace StubWia.Abstructions
             int internalFilter, int timeOut, int overwrite, out IReadResult result)
         { result = null; return 0; }
         public IReadResult GetReadBestResult(int configID) { return null; }
+
+        public int AddChecksumScore(double score, bool pass, IJobReadSettings readSettings)
+        {
+            return 1;
+        }
     }
     public class StubIScreenVisibilityChangeEventArgs : IScreenVisibilityChangeEventArgs
     {

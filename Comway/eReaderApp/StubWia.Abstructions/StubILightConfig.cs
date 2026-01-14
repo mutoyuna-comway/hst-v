@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Wia.Abstractions;
 
 namespace StubWia.Abstructions
@@ -7,10 +8,31 @@ namespace StubWia.Abstructions
 
     public class StubILightConfig : ILightConfig
     {
-       
-        public StubILightConfig() { }       
-        public int LightLevel { get; set; }
-        public ReflectedColor ReflectedColor { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public StubILightConfig() { }
+        public int LightConfigID { get; }
+        //public int LightLevel { get; set; }
+        private int _lightLevel;
+        public int LightLevel
+        {
+            get => _lightLevel;
+            set
+            {
+                _lightLevel = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightLevel)));
+            }
+        }
+        //public ReflectedColor ReflectedColor { get; set; }
+        private ReflectedColor _reflectedColor;
+        public ReflectedColor ReflectedColor
+        {
+            get => _reflectedColor;
+            set
+            {
+                _reflectedColor = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReflectedColor)));
+            }
+        }
         public int GetLightPower() { return 0; }
         public void SetLightPower(int power) { }
         public int GetLightCount() { return 0; }

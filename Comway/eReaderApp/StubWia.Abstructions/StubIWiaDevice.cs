@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
@@ -10,15 +11,38 @@ namespace StubWia.Abstructions
 
     public class StubIWiaDevice : IWiaDevice
     {
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public StubIWiaDevice() { }
+        public StubIWiaDevice() {
+            IsCameraFound = true;
+            IsValidLicense = true;
+            ModelName = "";
+            FirmwareVersion = "";
+            MacAddress = "";
+            SerialNumber = "";
+            GainMax = 1;
+            GainMin = 1;
+            ExposureMin = 1;
+            ExposureMax = 1;    
+
+        }
         public bool IsCameraFound { get; }
         public bool IsValidLicense { get; }
         public string ModelName { get; }
         public string FirmwareVersion { get; }
         public string MacAddress { get; }
         public string SerialNumber { get; }
-        public int PacketSize { get; set; }
+        //public int PacketSize { get; set; }
+        private int _packetSize;
+        public int PacketSize
+        {
+            get => _packetSize;
+            set
+            {
+                _packetSize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PacketSize)));
+            }
+        }
         public int GainMax { get; }
         public int GainMin { get; }
         public int ExposureMin { get; }

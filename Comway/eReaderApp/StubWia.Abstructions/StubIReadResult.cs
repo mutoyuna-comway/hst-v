@@ -10,7 +10,20 @@ namespace StubWia.Abstructions
     public class StubIReadResult : IReadResult
     {
 
-        public StubIReadResult() { }
+        public StubIReadResult() {
+            Mark = MarkType.OCR;
+            ReadString = "";
+            Score = 1;
+            MinScore = 1;
+            ElapsedTime = 1;
+            ConfigID = 1;
+            Pass = true;
+            IsTimeout = true;
+            ConfusionString = "";
+            IsCorrectConfChecksum = true;
+
+
+        }
         public MarkType Mark { get; }
         public string ReadString { get; }
         public double Score { get; }
@@ -24,6 +37,9 @@ namespace StubWia.Abstructions
         public string ConfusionString { get; }
         public bool IsCorrectConfChecksum { get; }
         public IReadOcrResult[] OcrResults { get; } = new[] { new StubIReadOcrResult() };
+
+        public IJobReadSettings ReadSettings { get; }
+
         public double GetAddedScore(ScoreRange sr) { return 0; }
     }
 
