@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
-    public interface IProcessorSettings
+    public interface IProcessorSettings : INotifyPropertyChanged
     {
         /// <summary>
         /// CPU割付

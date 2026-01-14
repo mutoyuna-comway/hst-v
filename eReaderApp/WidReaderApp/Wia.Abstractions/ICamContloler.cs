@@ -9,10 +9,22 @@ namespace Wia.Abstractions
     /// </summary>
     public interface ICamContloler : IDisposable
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 実際の画像取り込みデバイスかどうか
         /// </summary>
         bool IsRealDevice { get; }
+
+        // ------------------------------
+        //
+        // メソッド
+        //
+        // ------------------------------
 
         /// <summary>
         /// 初期化

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -11,8 +12,14 @@ namespace Wia.Abstractions
     /// <summary>
     /// ログ出力設定クラス
     /// </summary>
-    public interface ILumpLogOutput
+    public interface ILumpLogOutput : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 全画像
         /// </summary>
@@ -56,8 +63,14 @@ namespace Wia.Abstractions
     }
 
 
-    public interface ILumpLogElement
+    public interface ILumpLogElement : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// 保存可否
         /// </summary>

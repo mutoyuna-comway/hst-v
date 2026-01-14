@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,8 +9,17 @@ using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
-    public interface ISystemLogSettings
+    /// <summary>
+    /// ログシステム設定
+    /// </summary>
+    public interface ISystemLogSettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// コマンドログ出力可否
         /// </summary>

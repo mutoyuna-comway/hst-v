@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Messaging;
@@ -127,7 +128,7 @@ namespace Wia.Abstractions
         FilterType Filter { get; set; }
     }
         
-    public interface ICharacterSize
+    public interface ICharacterSize : INotifyPropertyChanged
     {
         double ULX { get; set; }
         double ULY { get; set; }
@@ -135,7 +136,7 @@ namespace Wia.Abstractions
         double High { get; set; }
         double Theta { get; set; }
     }
-    public interface IRegion
+    public interface IRegion : INotifyPropertyChanged
     {
         RegionMode ROIMode { get; set; }
         double UlX { get; set; }

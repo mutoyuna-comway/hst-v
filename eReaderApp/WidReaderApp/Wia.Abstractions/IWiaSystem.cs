@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -8,7 +9,7 @@ namespace Wia.Abstractions
     /// <summary>
     /// ウェーハID読取りアプリケーションのシステム
     /// </summary>
-    public interface IWiaSystem
+    public interface IWiaSystem : INotifyPropertyChanged
     {
         // ------------------------------
         //
@@ -50,6 +51,11 @@ namespace Wia.Abstractions
         /// 読取りデバイス情報
         /// </summary>
         IWiaDevice Device { get; }
+
+        /// <summary>
+        /// 画像取込みソース
+        /// </summary>
+        IImageSource ImageSource { get; }
 
         /// <summary>
         /// 通信管理
@@ -132,7 +138,6 @@ namespace Wia.Abstractions
         event EventHandler LiveViewStopped;
 
         event EventHandler AcquireImageAvailable;
-        event EventHandler ReadResultAvailable;
 
 
         // ------------------------------
@@ -326,13 +331,25 @@ namespace Wia.Abstractions
         /// <remarks>LiveViewStoppedイベントが発行される。</remarks>
         void StopLiveView();
 
+        /// <summary>
+        /// 画像取込み
+        /// </summary>
+        /// <param name="configId">コンフィグ番号</param>
+        /// <returns>true: 成功 false: 失敗</returns>
+        bool AcquireImage(int configId);
+
+        /// <summary>
+        /// スコア調整
+        /// </summary>
+        /// <param name="score">生スコア[0-1]</param>
+        /// <param name="pass">読取可否</param>
+        /// <param name="readSettings">読取パラメータ</param>
+        /// <returns></returns>
+        int AddChecksumScore(double score, bool pass, IJobReadSettings readSettings);
 
         //
         // Jobのチューニング処理に関するメソッド、TODO: 本来はIJobにあるべき
         //
-
-
-        int LastBestTarget();
 
         /// <summary>
         /// 承認待ちのチューニングの結果をリセットする
@@ -348,12 +365,6 @@ namespace Wia.Abstractions
         int TuneCurrentConfigNumber { get; }
 
         //
-        // Jobのチューニング処理に関するメソッド、TODO: 本来はIJobConfigにあるべき
-        //
-
-        bool ReadCommandSync(bool withRetry, int timeOut, ref int lastReadConfig);
-
-        //
         // Config
         //
 
@@ -361,19 +372,6 @@ namespace Wia.Abstractions
         bool TuneResultJudge();
         void TuneCancel(bool isCommand, bool cancelFlag);
 
-        bool JudgeChecksum(String str, ChecksumType chk);
-
-        int AddChecksumScore(double score, bool pass, ScoreRange range, IJobReadSettings prm);
-
-        bool AcquireImage(int config);
-
-        bool ReadOnceCommandSync(int configID, bool withRetry, bool byCommand, int timeOut);
-
-        int ReadRetry(int configID, int lightRange, int LightStep, int sizeRange, int sizeStep,
-            int internalFilter, int timeOut, int overwrite, out IReadResult result);
-
-        //本来はConfigクラスにあるべき
-        IReadResult GetReadBestResult(int configID);
     }
 
     /// <summary>

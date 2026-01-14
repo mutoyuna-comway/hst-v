@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,8 +13,14 @@ namespace Wia.Abstractions
     /// GUI設定
     /// </summary>
 
-    public interface ISystemGUISettings
+    public interface ISystemGUISettings : INotifyPropertyChanged
     {
+        // ------------------------------
+        //
+        // プロパティ
+        //
+        // ------------------------------
+
         /// <summary>
         /// ライブラリモード
         /// </summary>

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Wia.Abstractions
 {
     /// <summary>
-    /// シリアル通信設定
+    /// 画像取込み結果
     /// </summary>
-    public interface ISerialSettings : INotifyPropertyChanged
+    public interface IAcquireResult
     {
         // ------------------------------
         //
@@ -19,34 +20,35 @@ namespace Wia.Abstractions
         // ------------------------------
 
         /// <summary>
-        /// ボーレート
+        /// 撮像設定
         /// </summary>
-
-        SerialBaudrate Baudrate { get; set; }
-
-        /// <summary>
-        /// データビット
-        /// </summary>
-        SerialDataBits DataBits { get; set; }
+        IJobAcqSettings AcqParams { get; }
 
         /// <summary>
-        /// ハンドシェイク
+        /// 撮像時間
         /// </summary>
-        SerialHandShake HandShake { get; set; }
+        double ElapsedAcqTime { get; }
 
         /// <summary>
-        /// パリティ
+        /// 処理時間
         /// </summary>
-        SerialParity Parity { get; set; }
+        double ElapsedProcTime { get; }
 
         /// <summary>
-        /// ポート
+        /// 処理画像(フィルタ適用画像)
         /// </summary>
-        SerialPort Port { get; set; }
+        IImage ProcessImage { get; }
 
         /// <summary>
-        /// ストップビット
+        /// 表示画像(回転まで適用)
         /// </summary>
-        SerialStopBits StopBits { get; set; }
+        IImage DisplayImage { get; }
+
+        /// <summary>
+        /// 取込成否
+        /// </summary>
+        bool AcqSucceed { get; }
+
+
     }
 }
