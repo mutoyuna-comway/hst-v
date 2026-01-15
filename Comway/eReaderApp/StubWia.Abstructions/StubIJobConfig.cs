@@ -10,8 +10,14 @@ namespace StubWia.Abstructions
         public event PropertyChangedEventHandler PropertyChanged;
         public StubIJobConfig() {
             ConfigID = 1;
-        }       
-        public int ConfigID { get; }
+        }
+        private int _configID;
+        public int ConfigID { get { return this._configID; } private set
+            {
+                this._configID = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
+            }
+        }
         public IJobAcqSettings AcquireSettings { get; } = new StubIJobAcqSettings();
         public IJobReadSettings ReadSettings { get; } = new StubIJobReadSettings();
         public IJobTuneSettings TuneSettings { get; } = new StubIJobTuneSettings();
