@@ -49,8 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractTestWiaSystem.cs" />
-    <Compile Include="TestStubWiaSystem.cs" />
+    <Compile Include="AbstractTest.cs" />
+    <Compile Include="TestSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,6 @@ namespace TestWiaSystem
     /// テストクラスの基底クラス
     /// 汎用的なチェック関数などを持つ
     /// </summary>
-    [TestClass]
     public abstract class AbstractTest
     {
         /// <summary>
@@ -80,17 +79,6 @@ namespace TestWiaSystem
             var privateObject = new PrivateObject(instance);
             privateObject.SetProperty(propertyName, newValue);
         }
-
-        ///サンプル
-        /*
-         VerifyProperty(
-            stubIBarcodeParameters, // INotifyPropertyChangedを持つインスタンス
-            nameof(iBarcodeParameters.DisableFieldString),
-            true,
-            val => iBarcodeParameters.DisableFieldString = val, // Setterの動きを渡す
-            () => iBarcodeParameters.DisableFieldString         // Getterの動きを渡す
-         );
-        */
 
     }
 }
