@@ -35,7 +35,15 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutoReconnect)));
             }
         }
-        public ISystemCameraSettings CurrentCameraSetting { get; } = new StubISystemCameraSettings();
+        private ISystemCameraSettings _currentCameraSetting = new StubISystemCameraSettings();
+        public ISystemCameraSettings CurrentCameraSetting {
+            get { return this._currentCameraSetting; }
+            private set
+            {
+                this._currentCameraSetting = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCameraSetting)));
+            }
+        }
 
     }
 }

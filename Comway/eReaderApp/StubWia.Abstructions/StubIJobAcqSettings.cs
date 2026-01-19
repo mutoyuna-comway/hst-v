@@ -143,6 +143,6 @@ namespace StubWia.Abstructions
         }
         public ILightConfig GetLightConfig(int index) { return null; }
         public void SetCurrentCue(AcquireMethod method, MarkColor color) { }
-
+        
     }
 }

@@ -166,7 +166,15 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InternalFilterEnable)));
             }
         }
-        public int AvailableLightConfigNum { get; }
+        private int _availableLightConfigNum;
+        public int AvailableLightConfigNum {
+            get { return this._availableLightConfigNum; }
+            private set
+            {
+                this._availableLightConfigNum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailableLightConfigNum)));
+            }
+        }
         //public bool UseCurrentLightConfig { get; set; }
         private bool _useCurrentLightConfig;
         public bool UseCurrentLightConfig

@@ -1,15 +1,25 @@
 ﻿using System;
-using Wia.Abstractions;
+using System.ComponentModel;
 using System.Net.NetworkInformation;
+using Wia.Abstractions;
 
 namespace StubWia.Abstructions
 {
     public class StubICamContloler : ICamContloler
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public StubICamContloler() { }
         public void Dispose() { }
 
-        public bool IsRealDevice { get; }
+        private bool _isRealDevice;
+        public bool IsRealDevice {
+            get { return this._isRealDevice; }
+            private set
+            {
+                this._isRealDevice = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRealDevice)));
+            }
+        }
 
         public void Initialize () { }
         public String GetModuleName() { return ""; }

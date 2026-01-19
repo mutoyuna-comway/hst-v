@@ -34,7 +34,16 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ScoreType)));
             }
         }
-        public IJobConfig SelectedConfig { get; }= new StubIJobConfig();
+        
+        private IJobConfig _selectedConfig = new StubIJobConfig();
+        public IJobConfig SelectedConfig {
+            get { return this._selectedConfig; }
+            private set
+            {
+                this._selectedConfig = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedConfig)));
+            }
+        }
         //public int SelectedConfigIndex { get; set; }
         private int _selectedConfigIndex;
         public int SelectedConfigIndex
@@ -46,7 +55,15 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedConfigIndex)));
             }
         }
-        public IConfigStore Configs { get; }
+        private IConfigStore _configs = new StubIConfigStore();
+        public IConfigStore Configs {
+            get { return this._configs; }
+            private set
+            {
+                this._configs = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Configs)));
+            }
+        }
         public event EventHandler<IReadCompletedEventArgs> ConfigReadResultAvailable;
         public IJobConfig GetConfig(int index) { return null; }
         public IJobConfig[] GetSortedEnableConfigArray() {  return null; }

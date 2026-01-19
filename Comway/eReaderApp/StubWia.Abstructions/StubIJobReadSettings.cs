@@ -87,11 +87,51 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcceptThreshold)));
             }
         }
-        public IOCRParameters OCR { get; } = new StubIOCRParameters();
-        public IT7Parameters T7 { get; } = new StubIT7Parameters();
-        public IQRCodeParameters QR { get; } = new StubIQRCodeParameters();
-        public IDataMatrixParameters DM { get; } = new StubIDataMatrixParameters();
-        public IBarcodeParameters Barcode { get; }= new StubIBarcodeParameters();
+        private IOCRParameters _oCR = new StubIOCRParameters();
+        public IOCRParameters OCR {
+            get { return this._oCR; }
+            private set
+            {
+                this._oCR = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OCR)));
+            }
+        }
+        private IT7Parameters _t7 = new StubIT7Parameters();
+        public IT7Parameters T7 {
+            get { return this._t7; }
+            private set
+            {
+                this._t7 = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(T7)));
+            }
+        }
+        private IQRCodeParameters _qR = new StubIQRCodeParameters();
+        public IQRCodeParameters QR {
+            get { return this._qR; }
+            private set
+            {
+                this._qR = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(QR)));
+            }
+        }
+        private IDataMatrixParameters _dM = new StubIDataMatrixParameters();
+        public IDataMatrixParameters DM {
+            get { return this._dM; }
+            private set
+            {
+                this._dM = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DM)));
+            }
+        }
+        private IBarcodeParameters _barcode = new StubIBarcodeParameters();
+        public IBarcodeParameters Barcode {
+            get { return this._barcode; }
+            private set
+            {
+                this._barcode = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Barcode)));
+            }
+        }
         //public IReadResult LatestResult { get; set; }= new StubIReadResult();
         private IReadResult _latestResult = new StubIReadResult();
         public IReadResult LatestResult

@@ -6,24 +6,73 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
 using Wia.Abstractions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StubWia.Abstructions
 {
 
     public class StubIStatsResult : IStatsResult
     {
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public StubIStatsResult() { }
-        public string ConfigName { get; }
-        public int RunNu { get; }
-        public int PassNum { get; }
-        public int FailNum { get; }
-        public double AvgScore { get; }
-        public string AvgScoreString { get; }
+        private string _configName;
+        public string ConfigName {
+            get { return this._configName; }
+            private set
+            {
+                this._configName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigName)));
+            }
+        }
+        private int _runNu;
+        public int RunNu {
+            get { return this._runNu; }
+            private set
+            {
+                this._runNu = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RunNu)));
+            }
+        }
+        private int _passNum;
+        public int PassNum {
+            get { return this._passNum; }
+            private set
+            {
+                this._passNum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PassNum)));
+            }
+        }
+        private int _failNum;
+        public int FailNum {
+            get { return this._failNum; }
+            private set
+            {
+                this._failNum = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FailNum)));
+            }
+        }private double _avgScore;
+        public double AvgScore {
+            get { return this._avgScore; }
+            private set
+            {
+                this._avgScore = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvgScore)));
+            }
+        }
+        private string _avgScoreString;
+        public string AvgScoreString {
+            get { return this._avgScoreString; }
+            private set
+            {
+                this._avgScoreString = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvgScoreString)));
+            }
+        }
     }
 
     public class StubICameraInfo : ICameraInfo
     {
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public StubICameraInfo() {
             CameraFound = true;
@@ -37,16 +86,96 @@ namespace StubWia.Abstructions
             ConnectedIPAddress = new IPAddress(0);
             SubnetMask = new IPAddress(0);
         }
-        public bool CameraFound { get; }
-        public bool CameraIsConnected { get; }
-        public string ModelName { get; }
-        public string FirmwareVersion { get; }
-        public PhysicalAddress MacAddress { get; }
-        public string MacAddressString { get; }
-        public string SerialNumber { get; }
-        public ulong PacketSize { get; }
-        public IPAddress ConnectedIPAddress { get; }
-        public IPAddress SubnetMask { get; }
+        private bool _cameraFound;
+        public bool CameraFound {
+            get { return this._cameraFound; }
+            private set
+            {
+                this._cameraFound = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CameraFound)));
+            }
+        }
+        private bool _cameraIsConnected;
+        public bool CameraIsConnected {
+            get { return this._cameraIsConnected; }
+            private set
+            {
+                this._cameraIsConnected = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CameraIsConnected)));
+            }
+        }
+        private string _modelName;
+        public string ModelName {
+            get { return this._modelName; }
+            private set
+            {
+                this._modelName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ModelName)));
+            }
+        }
+        private string _firmwareVersion;
+        public string FirmwareVersion {
+            get { return this._firmwareVersion; }
+            private set
+            {
+                this._firmwareVersion = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FirmwareVersion)));
+            }
+        }
+        private PhysicalAddress _macAddress;
+        public PhysicalAddress MacAddress {
+            get { return this._macAddress; }
+            private set
+            {
+                this._macAddress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MacAddress)));
+            }
+        }
+        private string _macAddressString;
+        public string MacAddressString {
+            get { return this._macAddressString; }
+            private set
+            {
+                this._macAddressString = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MacAddressString)));
+            }
+        }
+        private string _serialNumber;
+        public string SerialNumber {
+            get { return this._serialNumber; }
+            private set
+            {
+                this._serialNumber = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SerialNumber)));
+            }
+        }
+        private ulong _packetSize;
+        public ulong PacketSize {
+            get { return this._packetSize; }
+            private set
+            {
+                this._packetSize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PacketSize)));
+            }
+        }
+        private IPAddress _connectedIPAddress;
+        public IPAddress ConnectedIPAddress {
+            get { return this._connectedIPAddress; }
+            private set
+            {
+                this._connectedIPAddress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConnectedIPAddress)));
+            }
+        }
+        private IPAddress _subnetMask;
+        public IPAddress SubnetMask {
+            get { return this._subnetMask; }
+            private set
+            {
+                this._subnetMask = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SubnetMask)));
+            }
+        }
     }
 
     public class StubICameraInfoFactory : ICameraInfoFactory
@@ -69,19 +198,61 @@ namespace StubWia.Abstructions
 
     public class StubIImage : IImage
     {
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public StubIImage() { }
-        public IntPtr Image { get; }
+        private IntPtr _image;
+        public IntPtr Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Image)));
+            }
+        }
     }
 
     public class StubIAcquireCondition : IAcquireCondition
     {
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public StubIAcquireCondition() { }
-        public int Exposure { get; }
-        public int Gain { get; }
-        public ImageOrient Orient { get; }
-        public ILightConfig[] LightConfs { get; } = new[] {new StubILightConfig()};
+        private int _exposure;
+        public int Exposure {
+            get => _exposure;
+            set
+            {
+                _exposure = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Exposure)));
+            }
+        }
+        private int _gain;
+        public int Gain {
+            get => _gain;
+            set
+            {
+                _gain = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Gain)));
+            }
+        }
+        private ImageOrient _orient;
+        public ImageOrient Orient {
+            get => _orient;
+            set
+            {
+                _orient = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Orient)));
+            }
+        }
+        private ILightConfig[] _lightConfs = new[] { new StubILightConfig() };
+        public ILightConfig[] LightConfs {
+            get => _lightConfs;
+            set
+            {
+                _lightConfs = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightConfs)));
+            }
+        }
     }
 
     public class StubIWaitResponse : IWaitResponse

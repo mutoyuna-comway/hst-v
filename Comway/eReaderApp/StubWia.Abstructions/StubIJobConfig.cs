@@ -22,10 +22,42 @@ namespace StubWia.Abstructions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
             }
         }
-        public IJobAcqSettings AcquireSettings { get; } = new StubIJobAcqSettings();
-        public IJobReadSettings ReadSettings { get; } = new StubIJobReadSettings();
-        public IJobTuneSettings TuneSettings { get; } = new StubIJobTuneSettings();
-        public ITuneResult TuneLatestResult { get; } = new StubITuneResult();
+        private IJobAcqSettings _acquireSettings = new StubIJobAcqSettings();
+        public IJobAcqSettings AcquireSettings {
+            get { return this._acquireSettings; }
+            private set
+            {
+                this._acquireSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcquireSettings)));
+            }
+        }
+        private IJobReadSettings _readSettings = new StubIJobReadSettings();
+        public IJobReadSettings ReadSettings {
+            get { return this._readSettings; }
+            private set
+            {
+                this._readSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
+            }
+        }
+        private IJobTuneSettings _tuneSettings = new StubIJobTuneSettings();
+        public IJobTuneSettings TuneSettings {
+            get { return this._tuneSettings; }
+            private set
+            {
+                this._tuneSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneSettings)));
+            }
+        }
+        private ITuneResult _tuneLatestResult = new StubITuneResult();
+        public ITuneResult TuneLatestResult {
+            get { return this._tuneLatestResult; }
+            private set
+            {
+                this._tuneLatestResult = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneLatestResult)));
+            }
+        }
         //public bool Enable { get; set; }
         private bool _enable;
         public bool Enable

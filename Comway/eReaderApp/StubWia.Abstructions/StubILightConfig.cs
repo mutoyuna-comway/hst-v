@@ -10,7 +10,15 @@ namespace StubWia.Abstructions
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public StubILightConfig() { }
-        public int LightConfigID { get; }
+        private int _lightConfigID;
+        public int LightConfigID {
+            get { return this._lightConfigID; }
+            private set
+            {
+                this._lightConfigID = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightConfigID)));
+            }
+        }
         //public int LightLevel { get; set; }
         private int _lightLevel;
         public int LightLevel
