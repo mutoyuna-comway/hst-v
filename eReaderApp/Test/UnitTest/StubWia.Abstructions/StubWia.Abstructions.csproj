@@ -80,7 +80,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\eReaderApp\WidReaderApp\Wia.Abstractions\Wia.Abstractions.csproj">
+    <ProjectReference Include="..\..\..\WidReaderApp\Wia.Abstractions\Wia.Abstractions.csproj">
       <Project>{43f07d4a-d941-4b44-82ea-95187c83e9ff}</Project>
       <Name>Wia.Abstractions</Name>
     </ProjectReference>
