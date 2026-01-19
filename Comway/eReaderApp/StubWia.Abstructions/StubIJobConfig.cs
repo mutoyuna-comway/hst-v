@@ -10,9 +10,13 @@ namespace StubWia.Abstructions
         public event PropertyChangedEventHandler PropertyChanged;
         public StubIJobConfig() {
             ConfigID = 1;
+
         }
+        
         private int _configID;
-        public int ConfigID { get { return this._configID; } private set
+        public int ConfigID { 
+            get { return this._configID; } 
+            private set
             {
                 this._configID = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
