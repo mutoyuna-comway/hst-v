@@ -39,10 +39,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StubIAcquireResult.cs" />
     <Compile Include="StubIBarcodeParameters.cs" />
     <Compile Include="StubICamContloler.cs" />
+    <Compile Include="StubIConfigStore.cs" />
     <Compile Include="StubIDataMatrixParameters.cs" />
     <Compile Include="StubIImageSaveSettings.cs" />
+    <Compile Include="StubIImageSource.cs" />
     <Compile Include="StubIJob.cs" />
     <Compile Include="StubIJobAcqSettings.cs" />
     <Compile Include="StubIJobConfig.cs" />
