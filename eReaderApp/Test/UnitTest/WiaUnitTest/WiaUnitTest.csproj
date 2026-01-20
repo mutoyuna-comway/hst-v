@@ -49,11 +49,24 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="AbstractTest.cs" />
+    <Compile Include="TestIJob.cs" />
+    <Compile Include="TestIJobConfig.cs" />
+    <Compile Include="TestIWiaSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\WidReaderApp\Wia.Abstractions\Wia.Abstractions.csproj">
+      <Project>{43f07d4a-d941-4b44-82ea-95187c83e9ff}</Project>
+      <Name>Wia.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StubWia.Abstructions\StubWia.Abstructions.csproj">
+      <Project>{f0738257-a791-42d7-953e-194222f8628d}</Project>
+      <Name>StubWia.Abstructions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

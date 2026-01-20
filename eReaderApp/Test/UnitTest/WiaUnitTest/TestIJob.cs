@@ -4,6 +4,9 @@ using StubWia.Abstructions;
 using System;
 using Wia.Abstractions;
 
+/// <summary>
+/// Jobのユニットテストクラス
+/// </summary>
 namespace TestWiaSystem
 {
 
@@ -11,44 +14,48 @@ namespace TestWiaSystem
     public class TestIJob : AbstractTest
     {
         [TestMethod]
-        public void テストパターン1()
+        public void プロパティのテスト()
         {
             IJob iJob = WiaSystem.Job;
-
+            /* ReadType */
             VerifyProperty(
                 iJob,
                 nameof(iJob.ReadType),
                 ReadMethod.All,
-                val => iJob.ReadType = val, // Setterの動きを渡す
-                () => iJob.ReadType         // Getterの動きを渡す
+                val => iJob.ReadType = val, 
+                () => iJob.ReadType         
             );
+            /* ScoreType */
             VerifyProperty(
                 iJob,
                 nameof(iJob.ScoreType),
                 ScoreMode.MinScore,
-                val => iJob.ScoreType = val, // Setterの動きを渡す
-                () => iJob.ScoreType         // Getterの動きを渡す
-            );   
+                val => iJob.ScoreType = val, 
+                () => iJob.ScoreType         
+            );
+            /* SelectedConfig */
             VerifyProperty(
                 iJob,
                 nameof(iJob.SelectedConfig),
                WiaSystemCopy.Job.SelectedConfig,
-                val => this.privateSet(iJob, nameof(iJob.SelectedConfig), val), // Setterの動きを渡す
-                () => iJob.SelectedConfig         // Getterの動きを渡す
+                val => this.privateSet(iJob, nameof(iJob.SelectedConfig), val), 
+                () => iJob.SelectedConfig         
             );
+            /* SelectedConfigIndex */
             VerifyProperty(
                 iJob,
                 nameof(iJob.SelectedConfigIndex),
                 10,
-                val => iJob.SelectedConfigIndex = val, // Setterの動きを渡す
-                () => iJob.SelectedConfigIndex         // Getterの動きを渡す
+                val => iJob.SelectedConfigIndex = val, 
+                () => iJob.SelectedConfigIndex         
             );
+            /* Configs */
             VerifyProperty(
                 iJob,
                 nameof(iJob.Configs),
                WiaSystemCopy.Job.Configs,
-                val => this.privateSet(iJob, nameof(iJob.Configs), val), // Setterの動きを渡す
-                () => iJob.Configs         // Getterの動きを渡す
+                val => this.privateSet(iJob, nameof(iJob.Configs), val), 
+                () => iJob.Configs         
             );
         }
     }

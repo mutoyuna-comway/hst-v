@@ -19,6 +19,8 @@ namespace TestWiaSystem
         /// これによりstubとの交換が容易になる
         /// </summary>
         protected IWiaSystem WiaSystem { get; set; } = new StubIWiaSystem();
+        //インスタンスのgetter setterテスト用
+        protected IWiaSystem WiaSystemCopy { get; set; } = new StubIWiaSystem();
 
         /// <summary>
         /// プロパティのGetter/SetterおよびINotifyPropertyChangedを検証する汎用メソッド
