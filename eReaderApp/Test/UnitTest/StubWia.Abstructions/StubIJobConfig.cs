@@ -92,4 +92,39 @@ namespace StubWia.Abstructions
         public IReadResult GetLatestReadResult() {  return null; }
 
     }
+    public class StubIReadCompletedEventArgs : IReadCompletedEventArgs
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public StubIReadCompletedEventArgs() { }
+        private IReadResult _result = new StubIReadResult();
+        public IReadResult Result
+        {
+            get { return this._result; }
+            private set
+            {
+                this._result = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+            }
+        }
+        private IAcquireResult _acqResult = new StubIAcquireResult();
+        public IAcquireResult AcqResult
+        {
+            get { return this._acqResult; }
+            private set
+            {
+                this._acqResult = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcqResult)));
+            }
+        }
+        private string _logIdString;
+        public string LogIdString
+        {
+            get { return this._logIdString; }
+            private set
+            {
+                this._logIdString = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LogIdString)));
+            }
+        }       
+    }
 }

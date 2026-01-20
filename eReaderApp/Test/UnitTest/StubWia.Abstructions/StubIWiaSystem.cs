@@ -149,7 +149,7 @@ namespace StubWia.Abstructions
             set
             {
                 _activeJobName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAcquireDisabled)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobName)));
             }
         }
         private DateTime _activeJobLoadTime;
@@ -274,17 +274,18 @@ namespace StubWia.Abstructions
         public StubIScreenVisibilityChangeEventArgs() { }
         private bool _isVisible;
         public bool IsVisible {
-            get => _isVisible;
-            set
+            get { return this._isVisible; }
+            private set
             {
-                _isVisible = value;
+
+                this._isVisible = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVisible)));
             }
         }
         private int _locationX;
         public int LocationX {
-            get => _locationX;
-            set
+            get { return this._locationX; }
+            private set
             {
                 _locationX = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocationX)));
@@ -292,8 +293,8 @@ namespace StubWia.Abstructions
         }
         private int _locationY;
         public int LocationY {
-            get => _locationY;
-            set
+            get { return this._locationY; }
+            private set
             {
                 _locationY = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocationY)));
