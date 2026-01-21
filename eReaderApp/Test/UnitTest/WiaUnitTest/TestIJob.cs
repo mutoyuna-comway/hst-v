@@ -2,6 +2,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StubWia.Abstructions;
 using System;
+using System.Collections.Generic;
 using Wia.Abstractions;
 
 /// <summary>
@@ -10,53 +11,37 @@ using Wia.Abstractions;
 namespace TestWiaSystem
 {
 
+    /// <summary>
+    /// Jobのユニットテストクラス
+    /// </summary>
     [TestClass]
     public class TestIJob : AbstractTest
     {
+        // テストデータを生成するプロパティ
+        public static IEnumerable<object[]> TestIJobData
+        {
+            get
+            {
+                // ここでテスト設定値用のインスタンスを生成
+                var copyJob = getCopyIWiaSystem().Job;
+                /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
+                yield return new object[] { "ReadType", ReadMethod.All, false };
+                yield return new object[] { "ScoreType", ScoreMode.MinScore, false };
+                yield return new object[] { "SelectedConfig", copyJob.SelectedConfig, true };
+                yield return new object[] { "SelectedConfigIndex", 10, false };
+                yield return new object[] { "Configs", copyJob.Configs, true };
+            }
+        }
+
+        /// <summary>
+        /// プロパティのテスト
+        /// </summary>
         [TestMethod]
-        public void プロパティのテスト()
+        [DynamicData(nameof(TestIJobData))]
+        public void IJobPropertyTest(string name, object value, bool isPrivate)
         {
             IJob iJob = WiaSystem.Job;
-            /* ReadType */
-            VerifyProperty(
-                iJob,
-                nameof(iJob.ReadType),
-                ReadMethod.All,
-                val => iJob.ReadType = val, 
-                () => iJob.ReadType         
-            );
-            /* ScoreType */
-            VerifyProperty(
-                iJob,
-                nameof(iJob.ScoreType),
-                ScoreMode.MinScore,
-                val => iJob.ScoreType = val, 
-                () => iJob.ScoreType         
-            );
-            /* SelectedConfig */
-            VerifyProperty(
-                iJob,
-                nameof(iJob.SelectedConfig),
-               WiaSystemCopy.Job.SelectedConfig,
-                val => this.privateSet(iJob, nameof(iJob.SelectedConfig), val), 
-                () => iJob.SelectedConfig         
-            );
-            /* SelectedConfigIndex */
-            VerifyProperty(
-                iJob,
-                nameof(iJob.SelectedConfigIndex),
-                10,
-                val => iJob.SelectedConfigIndex = val, 
-                () => iJob.SelectedConfigIndex         
-            );
-            /* Configs */
-            VerifyProperty(
-                iJob,
-                nameof(iJob.Configs),
-               WiaSystemCopy.Job.Configs,
-                val => this.privateSet(iJob, nameof(iJob.Configs), val), 
-                () => iJob.Configs         
-            );
+            this.PropertyTest(iJob, name, value, isPrivate);
         }
     }
 }

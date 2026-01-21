@@ -2,6 +2,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StubWia.Abstructions;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using Wia.Abstractions;
 /// <summary>
 /// JobConfigのユニットテストクラス
@@ -12,67 +15,37 @@ namespace TestWiaSystem
     [TestClass]
     public class TestIJobConfig : AbstractTest
     {
-
-        [TestMethod]
-        public void プロパティのテスト()
+        // テストデータを生成するプロパティ
+        public static IEnumerable<object[]> TestIJobConfigData
         {
-            /* ConfigID */
-            IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;          
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.ConfigID),
-                10,
-                val => this.privateSet(iJobConfig, nameof(iJobConfig.ConfigID), val), 
-                () => iJobConfig.ConfigID 
-            );
-            /* AcquireSettings */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.AcquireSettings),
-                WiaSystemCopy.Job.SelectedConfig.AcquireSettings,
-                val => this.privateSet(iJobConfig, nameof(iJobConfig.AcquireSettings), val), 
-                () => iJobConfig.AcquireSettings  
-            );
-            /* ReadSettings */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.ReadSettings),
-                WiaSystemCopy.Job.SelectedConfig.ReadSettings,
-                val => this.privateSet(iJobConfig, nameof(iJobConfig.ReadSettings), val),
-                () => iJobConfig.ReadSettings  
-            );
-            /* TuneSettings */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.TuneSettings),
-                WiaSystemCopy.Job.SelectedConfig.TuneSettings,
-                val => this.privateSet(iJobConfig, nameof(iJobConfig.TuneSettings), val),
-                () => iJobConfig.TuneSettings  
-            );
-            /* TuneLatestResult */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.TuneLatestResult),
-                WiaSystemCopy.Job.SelectedConfig.TuneLatestResult,
-                val => this.privateSet(iJobConfig, nameof(iJobConfig.TuneLatestResult), val),
-                () => iJobConfig.TuneLatestResult
-            );
-            /* Enable */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.Enable),
-                true,
-                val => iJobConfig.Enable = val,
-                () => iJobConfig.Enable 
-            );
-            /* IsReadCompletedEventEnabled */
-            VerifyProperty(
-                iJobConfig,
-                nameof(iJobConfig.IsReadCompletedEventEnabled),
-                true,
-                val => iJobConfig.IsReadCompletedEventEnabled = val,
-                () => iJobConfig.IsReadCompletedEventEnabled
-            );
+            get
+            {
+                // ここでテスト設定値用のインスタンスを生成
+                var copyConfig = getCopyIWiaSystem().Job.SelectedConfig;
+                /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
+                yield return new object[] { "ConfigID", 10, true };
+                yield return new object[] { "AcquireSettings", copyConfig.AcquireSettings, false };
+                yield return new object[] { "ReadSettings", copyConfig.ReadSettings, false };
+                yield return new object[] { "TuneSettings", copyConfig.TuneSettings, false };
+                yield return new object[] { "TuneLatestResult", copyConfig.TuneLatestResult, false };
+                yield return new object[] { "Enable", true, false };
+                yield return new object[] { "IsReadCompletedEventEnabled", true, false };
+            }
         }
+
+        /// <summary>
+        /// プロパティのテスト
+        /// </summary>
+        /// <param name="name">プロパティ名 </param>
+        /// <param name="value">テスト用の設定値</param>
+        /// <param name="isPrivate">プライベートプロパティか否か</param>
+        [TestMethod]
+        [DynamicData(nameof(TestIJobConfigData))]
+        public void IJobConfigPropertyTest(string name, object value, Boolean isPrivate) {
+            IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;
+            this.PropertyTest(iJobConfig, name, value, isPrivate);
+        }
+
+
     }
 }
