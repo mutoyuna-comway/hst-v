@@ -20,9 +20,44 @@ namespace TestWiaSystem
         /// これによりstubとの交換が容易になる
         /// </summary>
         protected IWiaSystem WiaSystem { get; set; } = new StubIWiaSystem();
+        protected IReadCompletedEventArgs ReadCompletedEventArgs { get; set; } = new StubIReadCompletedEventArgs();
+        protected IRecogCondition RecogCondition { get; set; } = new StubIRecogCondition();
+        protected ICamContloler CamContloler { get; set; } = new StubICamContloler();
+        protected IStatsResult StatsResult { get; set; } = new StubIStatsResult();
+        protected IWaitResponse WaitResponse { get; set; } = new StubIWaitResponse();
+        protected IFilterConfig FilterConfig { get; set; } = new StubIFilterConfig();
+        protected IAcquireCondition AcquireCondition { get; set; } = new StubIAcquireCondition();
         //インスタンスのgetter setterテスト用
         protected static IWiaSystem getCopyIWiaSystem() { 
             return new StubIWiaSystem();
+        }
+        protected static IReadCompletedEventArgs getCopyIReadCompletedEventArgs()
+        {
+            return new StubIReadCompletedEventArgs();
+        }
+        protected static IRecogCondition getCopyIRecogCondition()
+        {
+            return new StubIRecogCondition();
+        }
+        protected static ICamContloler getCopyICamContloler()
+        {
+            return new StubICamContloler();
+        }
+        protected static IStatsResult getCopyIStatsResult()
+        {
+            return new StubIStatsResult();
+        }
+        protected static IWaitResponse getCopyIWaitResponse()
+        {
+            return new StubIWaitResponse();
+        }
+        protected static IFilterConfig getCopyIFilterConfig()
+        {
+            return new StubIFilterConfig();
+        }
+        protected static IAcquireCondition getCopyIAcquireCondition()
+        {
+            return new StubIAcquireCondition();
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace StubWia.Abstructions
             private set
             {
                 this._numRead = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NumRead)));
             }
         }
         private bool _currentPassed;

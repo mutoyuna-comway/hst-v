@@ -32,7 +32,6 @@ namespace TestWiaSystem
                 yield return new object[] { "IsReadCompletedEventEnabled", true, false };
             }
         }
-
         /// <summary>
         /// プロパティのテスト
         /// </summary>
@@ -45,7 +44,35 @@ namespace TestWiaSystem
             IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;
             this.PropertyTest(iJobConfig, name, value, isPrivate);
         }
-
-
+    }
+    [TestClass]
+    public class TestIReadCompletedEventArgs : AbstractTest
+    {
+        // テストデータを生成するプロパティ
+        public static IEnumerable<object[]> TestIReadCompletedEventArgsData
+        {
+            get
+            {
+                // ここでテスト設定値用のインスタンスを生成
+                var copyReadCompletedEventArgs = getCopyIReadCompletedEventArgs();
+                /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
+                yield return new object[] { "Result", copyReadCompletedEventArgs.Result, true };
+                yield return new object[] { "AcqResult", copyReadCompletedEventArgs.AcqResult, true };
+                yield return new object[] { "LogIdString", "", true };
+            }
+        }
+        /// <summary>
+        /// プロパティのテスト
+        /// </summary>
+        /// <param name="name">プロパティ名 </param>
+        /// <param name="value">テスト用の設定値</param>
+        /// <param name="isPrivate">プライベートプロパティか否か</param>
+        [TestMethod]
+        [DynamicData(nameof(TestIReadCompletedEventArgsData))]
+        public void IReadCompletedEventArgsPropertyTest(string name, object value, Boolean isPrivate)
+        {
+            IReadCompletedEventArgs iReadCompletedEventArgs = ReadCompletedEventArgs;
+            this.PropertyTest(iReadCompletedEventArgs, name, value, isPrivate);
+        }
     }
 }
