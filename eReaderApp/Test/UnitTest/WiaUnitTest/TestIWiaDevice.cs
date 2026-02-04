@@ -50,7 +50,7 @@ namespace TestWiaSystem
         public void IWiaDevicePropertyTest(string name, object value, bool isPrivate)
         {
             IWiaDevice iWiaDevice = WiaSystem.Device;
-            this.PropertyTest(iWiaDevice, name, value, isPrivate);
+            this.PropertyTestWithoutINotifyPropertyChanged(iWiaDevice, name, value, isPrivate);
         }
     }
 }

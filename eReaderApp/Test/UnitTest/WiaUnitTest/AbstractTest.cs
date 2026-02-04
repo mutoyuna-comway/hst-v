@@ -106,6 +106,26 @@ namespace TestWiaSystem
             }
         }
 
+        /// <summary>
+        /// プロパティのGetter/Setterを検証する汎用メソッド
+        /// </summary>
+        /// <typeparam name="TValue">プロパティの型</typeparam>
+        /// <param name="propertyName">プロパティ名</param>
+        /// <param name="newValue">セットするテスト値</param>
+        /// <param name="setter">値をセットするアクション (x => obj.Prop = x)</param>
+        /// <param name="getter">値を取得する関数 (() => obj.Prop)</param>
+        protected void VerifyPropertyWithoutINotifyPropertyChanged<TValue>(
+            string propertyName,
+            TValue newValue,
+            Action<TValue> setter,
+            Func<TValue> getter)
+        {
+            // Setterを実行
+            setter(newValue);
+            // 値が正しく更新されたか確認 (Getterのテスト)
+            Assert.AreEqual(newValue, getter(), $"プロパティ '{propertyName}' の値が正しく更新されていません。");
+        }
+
 
         /// <summary>
         /// プライベートプロパティへのSetメソッド
@@ -226,5 +246,60 @@ namespace TestWiaSystem
             } 
         }
 
+        /// <summary>
+        /// INotifyPropertyChangedを考慮しないプロパティのテスト実行
+        /// </summary>
+        /// <typeparam name="TValue">プロパティの型</typeparam>
+        /// <param name="viewModel">テスト対象のインスタンス</param>
+        /// <param name="propertyName">プロパティ名</param>
+        /// <param name="newValue">セットするテスト値</param>
+        protected void PropertyTestExeWithoutINotifyPropertyChanged<T, TValue>(T viewModel, string propertyName, TValue newValue)
+        {
+            VerifyPropertyWithoutINotifyPropertyChanged(
+                propertyName,
+                newValue,
+                value => this.publicSet(viewModel, propertyName, value),
+                () => this.publicGet<TValue>(viewModel, propertyName)
+            );
+        }
+
+        /// <summary>
+        /// INotifyPropertyChangedを考慮しないプロパティのテスト実行 privateプロパティ用
+        /// </summary>
+        /// <typeparam name="TValue">プロパティの型</typeparam>
+        /// <param name="viewModel">テスト対象のインスタンス</param>
+        /// <param name="propertyName">プロパティ名</param>
+        /// <param name="newValue">セットするテスト値</param>
+        protected void PropertyTestExePrivateWithoutINotifyPropertyChanged<T, TValue>(T viewModel, string propertyName, TValue newValue)
+        {
+            VerifyPropertyWithoutINotifyPropertyChanged(
+                propertyName,
+                newValue,
+                value => this.privateSet(viewModel, propertyName, value),
+                () => this.publicGet<TValue>(viewModel, propertyName)
+            );
+        }
+
+        /// <summary>
+        /// INotifyPropertyChangedを考慮しないプロパティのテスト
+        /// </summary>
+        /// <typeparam name="TValue">プロパティの型</typeparam>
+        /// <param name="viewModel">テスト対象のインスタンス</param>
+        /// <param name="propertyName">プロパティ名</param>
+        /// <param name="newValue">セットするテスト値</param>
+        /// <param name="isPrivate">プロパティがprivateかどうか</param>
+        protected void PropertyTestWithoutINotifyPropertyChanged<T, TValue>(T viewModel, string propertyName, TValue newValue, Boolean isPrivate)
+        {
+            System.Console.WriteLine("{0}のメンバ[{1}]のgetter setterテスト private={2}", nameof(viewModel), propertyName, isPrivate);
+
+            if (isPrivate)
+            {
+                this.PropertyTestExePrivateWithoutINotifyPropertyChanged(viewModel, propertyName, newValue);
+            }
+            else
+            {
+                this.PropertyTestExeWithoutINotifyPropertyChanged(viewModel, propertyName, newValue);
+            }
+        }
     }
 }

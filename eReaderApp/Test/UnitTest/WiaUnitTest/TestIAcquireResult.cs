@@ -42,7 +42,7 @@ namespace TestWiaSystem
         public void IAcquireResultPropertyTest(string name, object value, bool isPrivate)
         {
             IAcquireResult iAcquireResult = ReadCompletedEventArgs.AcqResult;
-            this.PropertyTest(iAcquireResult, name, value, isPrivate);
+            this.PropertyTestWithoutINotifyPropertyChanged(iAcquireResult, name, value, isPrivate);
         }
     }
 }
