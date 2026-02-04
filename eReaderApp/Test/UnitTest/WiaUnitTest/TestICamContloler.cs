@@ -37,7 +37,7 @@ namespace TestWiaSystem
         public void ICamContlolerPropertyTest(string name, object value, bool isPrivate)
         {
             ICamContloler iCamContloler = CamContloler;
-            this.PropertyTestWithoutINotifyPropertyChanged(iCamContloler, name, value, isPrivate);
+            this.PropertyTest(iCamContloler, name, value, isPrivate);
         }
     }
 }

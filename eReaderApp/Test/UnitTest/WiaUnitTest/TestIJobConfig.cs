@@ -72,7 +72,7 @@ namespace TestWiaSystem
         public void IReadCompletedEventArgsPropertyTest(string name, object value, Boolean isPrivate)
         {
             IReadCompletedEventArgs iReadCompletedEventArgs = ReadCompletedEventArgs;
-            this.PropertyTestWithoutINotifyPropertyChanged(iReadCompletedEventArgs, name, value, isPrivate);
+            this.PropertyTest(iReadCompletedEventArgs, name, value, isPrivate);
         }
     }
 }

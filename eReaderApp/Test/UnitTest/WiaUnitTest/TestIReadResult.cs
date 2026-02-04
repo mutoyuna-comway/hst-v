@@ -51,7 +51,7 @@ namespace TestWiaSystem
         public void IReadResultPropertyTest(string name, object value, bool isPrivate)
         {
             IReadResult iReadResult = WiaSystem.Job.SelectedConfig.ReadSettings.LatestResult;
-            this.PropertyTestWithoutINotifyPropertyChanged(iReadResult, name, value, isPrivate);
+            this.PropertyTest(iReadResult, name, value, isPrivate);
         }
     }
 
@@ -90,7 +90,7 @@ namespace TestWiaSystem
         public void IReadOcrResultPropertyTest(string name, object value, bool isPrivate)
         {
             IReadOcrResult iReadOcrResult = WiaSystem.Job.SelectedConfig.ReadSettings.LatestResult.OcrResults[0];
-            this.PropertyTestWithoutINotifyPropertyChanged(iReadOcrResult, name, value, isPrivate);
+            this.PropertyTest(iReadOcrResult, name, value, isPrivate);
         }
     }
 }

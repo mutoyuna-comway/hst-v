@@ -50,7 +50,7 @@ namespace TestWiaSystem
         public void ITuneResultPropertyTest(string name, object value, bool isPrivate)
         {
             ITuneResult iTuneResult = WiaSystem.Job.SelectedConfig.TuneLatestResult;
-            this.PropertyTestWithoutINotifyPropertyChanged(iTuneResult, name, value, isPrivate);
+            this.PropertyTest(iTuneResult, name, value, isPrivate);
         }
     }
 }

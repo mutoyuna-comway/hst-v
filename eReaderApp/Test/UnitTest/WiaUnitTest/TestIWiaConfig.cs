@@ -43,7 +43,7 @@ namespace TestWiaSystem
         public void IStatsResultPropertyTest(string name, object value, bool isPrivate)
         {
             IStatsResult iStatsResult = StatsResult;
-            this.PropertyTestWithoutINotifyPropertyChanged(iStatsResult, name, value, isPrivate);
+            this.PropertyTest(iStatsResult, name, value, isPrivate);
         }
     }
 
@@ -82,7 +82,7 @@ namespace TestWiaSystem
         public void ICameraInfoPropertyTest(string name, object value, bool isPrivate)
         {
             ICameraInfo iCameraInfo = WiaSystem.Device.CameraInfo;
-            this.PropertyTestWithoutINotifyPropertyChanged(iCameraInfo, name, value, isPrivate);
+            this.PropertyTest(iCameraInfo, name, value, isPrivate);
         }
     }
     /// <summary>
@@ -118,7 +118,7 @@ namespace TestWiaSystem
         public void IImagePropertyTest(string name, object value, bool isPrivate)
         {
             IImage iImage = ReadCompletedEventArgs.AcqResult.ProcessImage;
-            this.PropertyTestWithoutINotifyPropertyChanged(iImage, name, value, isPrivate);
+            this.PropertyTest(iImage, name, value, isPrivate);
         }
     }
     /// <summary>
@@ -150,7 +150,7 @@ namespace TestWiaSystem
         public void IAcquireConditionPropertyTest(string name, object value, bool isPrivate)
         {
             IAcquireCondition iAcquireCondition = AcquireCondition;
-            this.PropertyTestWithoutINotifyPropertyChanged(iAcquireCondition, name, value, isPrivate);
+            this.PropertyTest(iAcquireCondition, name, value, isPrivate);
         }
     }
     /// <summary>
@@ -179,7 +179,7 @@ namespace TestWiaSystem
         public void IWaitResponsePropertyTest(string name, object value, bool isPrivate)
         {
             IWaitResponse iWaitResponse = WaitResponse;
-            this.PropertyTestWithoutINotifyPropertyChanged(iWaitResponse, name, value, isPrivate);
+            this.PropertyTest(iWaitResponse, name, value, isPrivate);
         }
     }
     /// <summary>
@@ -207,7 +207,7 @@ namespace TestWiaSystem
         public void IFilterConfigPropertyTest(string name, object value, bool isPrivate)
         {
             IFilterConfig iFilterConfig = FilterConfig;
-            this.PropertyTestWithoutINotifyPropertyChanged(iFilterConfig, name, value, isPrivate);
+            this.PropertyTest(iFilterConfig, name, value, isPrivate);
         }
     }
 
