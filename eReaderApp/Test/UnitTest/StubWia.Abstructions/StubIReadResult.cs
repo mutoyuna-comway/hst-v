@@ -87,7 +87,7 @@ namespace StubWia.Abstructions
             private set
             {
                 this._rOI = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ROI)));
             }
         }
         private ICharacterSize _charSize = new StubICharacterSize();
@@ -123,7 +123,7 @@ namespace StubWia.Abstructions
             private set
             {
                 this._confusionString = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CharSize)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfusionString)));
             }
         }
         private bool _isCorrectConfChecksum;
@@ -150,7 +150,7 @@ namespace StubWia.Abstructions
             private set
             {
                 this._readSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCorrectConfChecksum)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
             }
         }
 

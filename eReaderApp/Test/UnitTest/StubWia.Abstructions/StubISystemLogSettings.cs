@@ -142,7 +142,7 @@ namespace StubWia.Abstructions
             set
             {
                 _tuneDetailLogMaxNum = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneDetailLogSortEnabled)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneDetailLogMaxNum)));
             }
         }
     }

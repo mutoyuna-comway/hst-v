@@ -72,7 +72,7 @@ namespace StubWia.Abstructions
             get => _disableColorSpecified;
             set
             {
-                _disableChecksum = value;
+                _disableColorSpecified = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisableColorSpecified)));
             }
         }
@@ -88,7 +88,7 @@ namespace StubWia.Abstructions
             get => _disableSymbolSpecified;
             set
             {
-                _disableColorSpecified = value;
+                _disableSymbolSpecified = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisableSymbolSpecified)));
             }
         }
