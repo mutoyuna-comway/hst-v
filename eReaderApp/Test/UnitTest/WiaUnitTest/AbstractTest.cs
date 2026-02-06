@@ -191,13 +191,16 @@ namespace TestWiaSystem
         /// <summary>
         /// プロパティのテスト実行
         /// </summary>
+        /// <typeparam name="TModel">プロパティの型</typeparam>
         /// <typeparam name="TValue">プロパティの型</typeparam>
         /// <param name="viewModel">テスト対象のインスタンス</param>
         /// <param name="propertyName">プロパティ名</param>
         /// <param name="newValue">セットするテスト値</param>
-        protected void propertyTestExe<T,TValue>(T viewModel, string propertyName, TValue newValue)
+        protected void propertyTestExe<TModel, TValue>(TModel viewModel, string propertyName, TValue newValue)
         {
-            if(viewModel is INotifyPropertyChanged INotifyPropertyChangedViewModel)
+            // TModelがINotifyPropertyChangedを実装しているかどうかを判定し、
+            // 検証処理を分岐する。
+            if (viewModel is INotifyPropertyChanged INotifyPropertyChangedViewModel)
             {
                 VerifyProperty(
                     INotifyPropertyChangedViewModel,
@@ -223,12 +226,15 @@ namespace TestWiaSystem
         /// <summary>
         /// プロパティのテスト実行 privateプロパティ用
         /// </summary>
+        /// <typeparam name="TModel">プロパティの型</typeparam>
         /// <typeparam name="TValue">プロパティの型</typeparam>
         /// <param name="viewModel">テスト対象のインスタンス</param>
         /// <param name="propertyName">プロパティ名</param>
         /// <param name="newValue">セットするテスト値</param>
-        protected void propertyTestExeWithPrivate<T,TValue>(T viewModel, string propertyName, TValue newValue)
+        protected void propertyTestExeWithPrivate<TModel, TValue>(TModel viewModel, string propertyName, TValue newValue)
         {
+            // TModelがINotifyPropertyChangedを実装しているかどうかを判定し、
+            // 検証処理を分岐する。
             if (viewModel is INotifyPropertyChanged INotifyPropertyChangedViewModel)
             {
                 VerifyProperty(
@@ -254,12 +260,13 @@ namespace TestWiaSystem
         /// <summary>
         /// プロパティのテスト
         /// </summary>
+        /// <typeparam name="TModel">プロパティの型</typeparam>
         /// <typeparam name="TValue">プロパティの型</typeparam>
         /// <param name="viewModel">テスト対象のインスタンス</param>
         /// <param name="propertyName">プロパティ名</param>
         /// <param name="newValue">セットするテスト値</param>
         /// <param name="isPrivate">プロパティがprivateかどうか</param>
-        protected void PropertyTest<T,TValue>(T viewModel, string propertyName, TValue newValue, Boolean isPrivate) {
+        protected void PropertyTest<TModel, TValue>(TModel viewModel, string propertyName, TValue newValue, Boolean isPrivate) {
 
             System.Console.WriteLine("{0}のメンバ[{1}]のgetter setterテスト private={2}", nameof(viewModel), propertyName, isPrivate);
 
