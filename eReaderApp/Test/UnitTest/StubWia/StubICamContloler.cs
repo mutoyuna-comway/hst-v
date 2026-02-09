@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Net.NetworkInformation;
 using Wia.Abstractions;
 
-namespace StubWia.Abstructions
+namespace StubWia
 {
     public class StubICamContloler : ICamContloler
     {
