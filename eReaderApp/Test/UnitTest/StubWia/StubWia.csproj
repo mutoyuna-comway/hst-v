@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F0738257-A791-42D7-953E-194222F8628D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>StubWia</RootNamespace>
+    <AssemblyName>StubWia</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="StubIAcquireResult.cs" />
+    <Compile Include="StubIBarcodeParameters.cs" />
+    <Compile Include="StubICamContloler.cs" />
+    <Compile Include="StubIConfigStore.cs" />
+    <Compile Include="StubIDataMatrixParameters.cs" />
+    <Compile Include="StubIImageSaveSettings.cs" />
+    <Compile Include="StubIImageSource.cs" />
+    <Compile Include="StubIJob.cs" />
+    <Compile Include="StubIJobAcqSettings.cs" />
+    <Compile Include="StubIJobConfig.cs" />
+    <Compile Include="StubIJobReadSettings.cs" />
+    <Compile Include="StubIJobTuneSettings.cs" />
+    <Compile Include="StubILightConfig.cs" />
+    <Compile Include="StubILightControler.cs" />
+    <Compile Include="StubILumpLogOutput.cs" />
+    <Compile Include="StubIMaintenanceService.cs" />
+    <Compile Include="StubIOCRParameters.cs" />
+    <Compile Include="StubIProcessorSettings.cs" />
+    <Compile Include="StubIQRCodeParameters.cs" />
+    <Compile Include="StubIReadResult.cs" />
+    <Compile Include="StubIRecogCondition.cs" />
+    <Compile Include="StubISerialSettings.cs" />
+    <Compile Include="StubISocketSettings.cs" />
+    <Compile Include="StubISystemAcqSettings.cs" />
+    <Compile Include="StubISystemCameraSettings.cs" />
+    <Compile Include="StubISystemCommSettings.cs" />
+    <Compile Include="StubISystemGUISettings.cs" />
+    <Compile Include="StubISystemLogSettings.cs" />
+    <Compile Include="StubISystemReadSettings.cs" />
+    <Compile Include="StubISystemSettings.cs" />
+    <Compile Include="StubIT7Parameters.cs" />
+    <Compile Include="StubITuneResult.cs" />
+    <Compile Include="StubIWiaCommManager.cs" />
+    <Compile Include="StubIWiaConfig.cs" />
+    <Compile Include="StubIWiaDevice.cs" />
+    <Compile Include="StubIWiaSystem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\WidReaderApp\Wia.Abstractions\Wia.Abstractions.csproj">
+      <Project>{43f07d4a-d941-4b44-82ea-95187c83e9ff}</Project>
+      <Name>Wia.Abstractions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

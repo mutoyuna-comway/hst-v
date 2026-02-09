@@ -1,6 +1,6 @@
 ﻿
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StubWia.Abstructions;
+using StubWia;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

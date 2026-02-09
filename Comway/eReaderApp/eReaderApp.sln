@@ -5,6 +5,10 @@ VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wia.Abstractions", "..\..\eReaderApp\WidReaderApp\Wia.Abstractions\Wia.Abstractions.csproj", "{43F07D4A-D941-4B44-82EA-95187C83E9FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiaUnitTest", "..\..\eReaderApp\Test\UnitTest\WiaUnitTest\WiaUnitTest.csproj", "{3F071F25-B73A-40C4-90AC-3813AC3D9178}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubWia", "..\..\eReaderApp\Test\UnitTest\StubWia\StubWia.csproj", "{F0738257-A791-42D7-953E-194222F8628D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +25,22 @@ Global
 		{43F07D4A-D941-4B44-82EA-95187C83E9FF}.Release|x64.Build.0 = Release|x64
 		{43F07D4A-D941-4B44-82EA-95187C83E9FF}.Release|x86.ActiveCfg = Release|x86
 		{43F07D4A-D941-4B44-82EA-95187C83E9FF}.Release|x86.Build.0 = Release|x86
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Debug|x64.Build.0 = Debug|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Release|x64.ActiveCfg = Release|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Release|x64.Build.0 = Release|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F071F25-B73A-40C4-90AC-3813AC3D9178}.Release|x86.Build.0 = Release|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Debug|x64.Build.0 = Debug|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Debug|x86.Build.0 = Debug|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Release|x64.ActiveCfg = Release|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Release|x64.Build.0 = Release|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Release|x86.ActiveCfg = Release|Any CPU
+		{F0738257-A791-42D7-953E-194222F8628D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

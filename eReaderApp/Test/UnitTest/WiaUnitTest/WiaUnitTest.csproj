@@ -158,9 +158,9 @@
       <Project>{43f07d4a-d941-4b44-82ea-95187c83e9ff}</Project>
       <Name>Wia.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StubWia.Abstructions\StubWia.Abstructions.csproj">
+    <ProjectReference Include="..\StubWia\StubWia.csproj">
       <Project>{f0738257-a791-42d7-953e-194222f8628d}</Project>
-      <Name>StubWia.Abstructions</Name>
+      <Name>StubWia</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
