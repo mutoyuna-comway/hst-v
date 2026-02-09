@@ -53,6 +53,10 @@ namespace Wia.Abstractions
         //
         // ------------------------------
 
+        /// <summary>
+        /// 中身のメンバーの内容をコピーする
+        /// </summary>
+        /// <param name="src"></param>
         void CopyFrom(IBarcodeParameters src);
     }
 

@@ -99,6 +99,12 @@ namespace Wia.Abstractions
         /// <param name="sr">スコアレンジ</param>
         /// <returns></returns>
         double GetAddedScore(ScoreRange sr);
+
+        /// <summary>
+        /// クローンの生成
+        /// </summary>
+        /// <returns></returns>
+        IReadResult Clone();
     }
 
     /// <summary>

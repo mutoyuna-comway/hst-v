@@ -40,6 +40,16 @@ namespace Wia.Abstractions
         /// </summary>
         IConfigStore Configs { get; }
 
+        /// <summary>
+        /// コンフィグ最大数構成タイプ
+        /// </summary>
+        MaxNumConfigType MaxNumConfig { get; set; }
+
+        /// <summary>
+        /// システムオブジェクトの取得
+        /// </summary>
+        IWiaSystem SystemService { get; }
+
         // ------------------------------
         //
         // イベント
@@ -50,6 +60,16 @@ namespace Wia.Abstractions
         /// コンフィグ読取り結果が更新されたことを通知するイベント
         /// </summary>
         event EventHandler<IReadCompletedEventArgs> ConfigReadResultAvailable;
+
+        /// <summary>
+        /// 選択されているジョブコンフィグが変更されることを通知するイベント
+        /// </summary>
+        event EventHandler SelectedConfigChanging;
+
+        /// <summary>
+        /// 選択されているジョブコンフィグが変更されたことを通知するイベント
+        /// </summary>
+        event EventHandler SelectedConfigChanged;
 
         // ------------------------------
         //
@@ -89,8 +109,12 @@ namespace Wia.Abstractions
         /// 読取り実行
         /// </summary>
         /// <returns>読み取ったコンフィグ番号。失敗の場合は-1を返す。</returns>
-        int RunRead(IImageSource imgSrc, ScoreAs100 scoreAs100);
+        int RunRead();
 
+        /// <summary>
+        /// チューン結果のリセット
+        /// </summary>
+        void ClearTuneResult();
 
         /// <summary>
         /// 読取り結果についてLastBestのコンフィグ番号の取得
@@ -115,8 +139,7 @@ namespace Wia.Abstractions
 
         int GetConfigMaxNum();
 
-        int RunReadRetry(IImageSource imgSrc, ScoreAs100 scoreAs100, int configID,
-            int lightRange, int lightStep, int sizeRange, int sizeStep,
+        int RunReadRetry(int configID, int lightRange, int lightStep, int sizeRange, int sizeStep,
             int internalFilter, int timeOut, int overwrite, out IReadResult result);
     }
 

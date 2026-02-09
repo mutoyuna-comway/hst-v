@@ -78,9 +78,19 @@ namespace Wia.Abstractions
         /// </summary>
         IBarcodeParameters Barcode { get; }
 
-        // TODO: LatestResultはReadSettingsのメンバーではないのでは?
 
-        IReadResult LatestResult { get; set; }
+        /// <summary>
+        /// クローン作成
+        /// </summary>
+        /// <returns></returns>
+        IJobReadSettings Clone();
+
+        /// <summary>
+        /// 中身のメンバーの内容をコピーする
+        /// </summary>
+        /// <param name="src"></param>
+        void CopyFrom(IJobReadSettings src);
+
     }
 
 }

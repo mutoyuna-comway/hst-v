@@ -19,6 +19,11 @@ namespace Wia.Abstractions
         // ------------------------------
 
         /// <summary>
+        /// 親ジョブ
+        /// </summary>
+        IJob ParentJob { get; }
+
+        /// <summary>
         /// コンフィグ番号
         /// </summary>
         int ConfigID { get; }
@@ -41,7 +46,12 @@ namespace Wia.Abstractions
         /// <summary>
         /// 最後に実行されたチューニングの結果
         /// </summary>
-        ITuneResult TuneLatestResult { get; } //nullは許容しない。結果がない場合はgcnew EReader::TuneResult();を返す　Director->LatestTuneと置換え予定
+        ITuneResult TuneLatestResult { get; }
+
+        /// <summary>
+        /// チューニング実行の進捗
+        /// </summary>
+        double TuneProgress { get; }
 
         /// <summary>
         /// 有効、無効
@@ -52,6 +62,11 @@ namespace Wia.Abstractions
         /// ReadCompletedEventを発行するかどうかを制御する
         /// </summary>
         bool IsReadCompletedEventEnabled { get; set; }
+
+        /// <summary>
+        /// 最後に読み取った結果
+        /// </summary>
+        IReadResult LatestReadResult { get; }
 
         // ------------------------------
         //
@@ -65,6 +80,30 @@ namespace Wia.Abstractions
         /// </summary>
         event EventHandler<IReadCompletedEventArgs> ReadCompleted;
 
+        /// <summary>
+        /// チューニングが開始される前のイベント
+        /// </summary>
+        event EventHandler TuneStarting;
+
+        /// <summary>
+        /// チューンが終了したことを通知するイベント
+        /// </summary>
+        event EventHandler TuneCompleted;
+
+        /// <summary>
+        /// チューン画像更新イベント
+        /// </summary>
+        event EventHandler<IAcquireImageCompletedEventArgs> TuneImageUpdated;
+
+        /// <summary>
+        /// チューン更新イベント
+        /// </summary>
+        event EventHandler TuneResultUpdated;
+
+        /// <summary>
+        /// チューン結果が承認されたことを通知するイベント
+        /// </summary>
+        event EventHandler TuneResultAccepted;
 
         // ------------------------------
         //
@@ -75,21 +114,52 @@ namespace Wia.Abstractions
         /// <summary>
         /// 読取り実行
         /// </summary>
-        /// <param name="imgSrc">画像取込みソース</param>
-        /// <param name="scoreType">スコアモード</param>
-        /// <param name="waferScoreAs100">非英数字の得点方法</param>
         /// <returns>読取り結果。nullは返されない。</returns>
-        IReadResult RunRead(IImageSource imgSrc, ScoreMode scoreType, ScoreAs100 waferScoreAs100);
+        IReadResult RunRead();
 
         /// <summary>
         /// 条件を指定して読取り実行する
         /// </summary>
         /// <param name="acq">実行画像を含んだ取込み結果</param>
         /// <param name="readSettings">読取り条件</param>
-        /// <param name="scoreType">スコアモード</param>
-        /// <param name="waferScoreAs100">非英数字の得点方法</param>
         /// <returns>読取り結果。nullは返されない。</returns>
-        IReadResult RunReadWithParams(IAcquireResult acq, IJobReadSettings readSettings, ScoreMode scoreType, ScoreAs100 waferScoreAs100);
+        IReadResult RunReadWithParams(IAcquireResult acq, IJobReadSettings readSettings);
+
+        /// <summary>
+        /// チューン開始
+        /// </summary>
+        /// <param name="isMultiLightTuneForced">マルチ照明チューニングを強制するかどうか</param>
+        /// <return>チューニング実行ID</return>
+        int RunTuning(bool isMultiLightTuneForced);
+
+        /// <summary>
+        /// チューニングを停止して、承認待ち状態にする
+        /// </summary>
+        void CancelTuning();
+
+        /// <summary>
+        /// チューニングを中止して、実行待ち状態にする
+        /// </summary>
+        /// <returns>チューニング連番  -1:チューニングは実行されていない</returns>
+        int AbortTuning();
+
+        /// <summary>
+        /// チューニング結果を承認してジョブコンフィグ設定に反映する
+        /// </summary>
+        /// <returns>false: 合格したチューニング結果が無い</returns>
+        bool AcceptTuningResult();
+
+        /// <summary>
+        /// チューン結果可否を確認し、合格の場合は結果を承認する
+        /// </summary>
+        /// <remarks>チューニング実行中であれば中止して判定する。</remarks>
+        /// <returns>false: 合格したチューニング結果が無い</returns>
+        bool JudgeTuningResult();
+
+        /// <summary>
+        /// チューン結果のリセット
+        /// </summary>
+        void ClearTuneResult();
 
         /// <summary>
         /// ジョブで使われているカスタムフォントがシステムに存在するか確認する
@@ -117,13 +187,21 @@ namespace Wia.Abstractions
         /// <returns></returns>
         bool JudgeChecksum(String str);
 
-        // TODO: 暫定のメソッド、そのうち削除する
+        /// <summary>
+        /// チェックサムでのスコア調整
+        /// </summary>
+        /// <param name="score">読取りスコア</param>
+        /// <param name="readedString">読取り文字列</param>
+        /// <param name="pass">読み取れたかどうか</param>
+        /// <param name="readSettings">読取り設定</param>
+        /// <returns>調整されたスコア</returns>
+        int GetAdjustedChecksumScore(double score, string readedString, bool pass, IJobReadSettings readSettings);
 
-        void SetLatestReadResult(IReadResult result);
-        void ClearLatestReadResult();
-
-        IReadResult GetLatestReadResult();
-
+        /// <summary>
+        /// クローンの生成
+        /// </summary>
+        /// <returns></returns>
+        IJobConfig Clone();
     }
 
     public interface IReadCompletedEventArgs

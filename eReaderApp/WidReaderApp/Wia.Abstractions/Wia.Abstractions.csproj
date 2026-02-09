@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="IAcquireResult.cs" />
     <Compile Include="IConfigStore.cs" />
+    <Compile Include="IIdReadingService.cs" />
     <Compile Include="IImageSource.cs" />
     <Compile Include="IJobAcqSettings.cs" />
     <Compile Include="IBarcodeParameters.cs" />
@@ -96,6 +97,8 @@
     <Compile Include="IT7Parameters.cs" />
     <Compile Include="ITuneResult.cs" />
     <Compile Include="IJobTuneSettings.cs" />
+    <Compile Include="ITuningService.cs" />
+    <Compile Include="ITuningStrategy.cs" />
     <Compile Include="IWiaCommManager.cs" />
     <Compile Include="IWiaConfig.cs" />
     <Compile Include="IWiaDevice.cs" />

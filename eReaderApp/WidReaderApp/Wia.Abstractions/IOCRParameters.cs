@@ -104,7 +104,6 @@ namespace Wia.Abstractions
         /// </summary>
         int SpaceError { get; set; }
 
-
         // 
         // 下記については再考が必要
         // 
@@ -118,6 +117,10 @@ namespace Wia.Abstractions
 
         void CopyFrom(IOCRParameters src);
 
+        /// <summary>
+        /// カスタムフォントIDをクリアする
+        /// </summary>
+        void ClearCustomFontID();
 
     }
 }

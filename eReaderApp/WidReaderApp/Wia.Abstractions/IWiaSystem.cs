@@ -111,6 +111,31 @@ namespace Wia.Abstractions
         /// </summary>
         DateTime BootTime { get; }
 
+        /// <summary>
+        /// ID読取り管理
+        /// </summary>
+        IIdReadingService IdReadingService { get; }
+
+        /// <summary>
+        /// チューニング管理
+        /// </summary>
+        ITuningService TuningService { get; }
+
+        /// <summary>
+        /// ライブ中
+        /// </summary>
+        bool IsLiveViewActive { get; }
+
+        /// <summary>
+        /// 最新の画像取り込み結果の取得
+        /// </summary>
+        IAcquireResult LatestAcquireResult { get; }
+
+        /// <summary>
+        /// 最新の取り込み画像の取得
+        /// </summary>
+        IImage LatestAcquiredImage { get; }
+
         // ------------------------------
         //
         // イベント
@@ -339,22 +364,31 @@ namespace Wia.Abstractions
         bool AcquireImage(int configId);
 
         /// <summary>
-        /// スコア調整
+        /// チューン開始
         /// </summary>
-        /// <param name="score">生スコア[0-1]</param>
-        /// <param name="pass">読取可否</param>
-        /// <param name="readSettings">読取パラメータ</param>
-        /// <returns></returns>
-        int AddChecksumScore(double score, bool pass, IJobReadSettings readSettings);
+        /// <param name="configId">コンフィグ番号</param>
+        /// <param name="isMultiLightTuneForced">マルチ照明チューニングを強制するかどうか</param>
+        /// <returns>チューニング実行ID</returns>
+        int TuneStart(int configId, bool isMultiLightTuneForced);
+
+        /// <summary>
+        /// チューンキャンセル
+        /// </summary>
+        void TuneAbort();
+
+        /// <summary>
+        /// チューン結果可否を確認
+        /// </summary>
+        /// <remarks>読取できたものがあれば承認/そうでなければRejectする</remarks>
+        /// <exception cref="TimeoutException">チューン停止待ち処理がタイムアウトした</exception>
+        /// <returns>Accept(true)/Reject(false)</returns>
+        bool TuneResultJudge();
+
 
         //
         // Jobのチューニング処理に関するメソッド、TODO: 本来はIJobにあるべき
         //
 
-        /// <summary>
-        /// 承認待ちのチューニングの結果をリセットする
-        /// </summary>
-        void ClearTuneResult();
 
         bool IsTuning { get; }
 
@@ -367,10 +401,6 @@ namespace Wia.Abstractions
         //
         // Config
         //
-
-        int TuneStart(bool isCommand, int tuningConf);
-        bool TuneResultJudge();
-        void TuneCancel(bool isCommand, bool cancelFlag);
 
     }
 

@@ -135,6 +135,9 @@ namespace Wia.Abstractions
         double Wide { get; set; }
         double High { get; set; }
         double Theta { get; set; }
+
+        ICharacterSize Clone();
+
     }
     public interface IRegion : INotifyPropertyChanged
     {
@@ -148,6 +151,8 @@ namespace Wia.Abstractions
 
         double MarginX { get; set; }
         double MarginY { get; set; }
+
+        IRegion Clone();
     }
 
     //

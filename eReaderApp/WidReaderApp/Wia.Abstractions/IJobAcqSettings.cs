@@ -80,9 +80,26 @@ namespace Wia.Abstractions
 
         // ------------------------------
         //
+        // イベント
+        //
+        // ------------------------------
+
+        /// <summary>
+        /// 選択されている照明コンフィグの照明強度が変更されたことを通知するイベント
+        /// </summary>
+        event EventHandler SelectedLightPowerChaneged;
+
+        // ------------------------------
+        //
         // メソッド
         //
         // ------------------------------
+
+        /// <summary>
+        /// クローン作成
+        /// </summary>
+        /// <returns></returns>
+        IJobAcqSettings Clone();
 
         /// <summary>
         /// 照明コンフィグの取得
@@ -92,10 +109,37 @@ namespace Wia.Abstractions
         ILightConfig GetLightConfig(int index);
 
         /// <summary>
+        /// 現在設定されている照明コンフィグの取得
+        /// </summary>
+        /// <returns>照明コンフィグ</returns>
+        ILightConfig GetCurrentLightConfig();
+
+        /// <summary>
         /// CurrentCueの設定
         /// </summary>
         /// <param name="method">読取手法</param>
         /// <param name="color">色</param>
         void SetCurrentCue(AcquireMethod method, MarkColor color);
+
+        /// <summary>
+        /// CurrentCueの設定
+        /// </summary>
+        /// <param name="currentLightConf">設定Config</param>
+        /// <param name="method">読取手法</param>
+        /// <param name="color">色</param>
+        void SetCurrentCue(int currentLightConf, AcquireMethod method, MarkColor color);
+
+        /// <summary>
+        /// 選択されている照明コンフィグの照明強度を設定する
+        /// </summary>
+        /// <param name="power"></param>
+        void SetSelectedLightPower(int power);
+
+        /// <summary>
+        /// 中身のメンバーの内容をコピーする
+        /// </summary>
+        /// <param name="src"></param>
+        void CopyFrom(IJobAcqSettings src);
+
     }
 }
