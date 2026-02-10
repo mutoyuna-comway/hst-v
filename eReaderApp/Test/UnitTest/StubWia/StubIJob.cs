@@ -38,7 +38,7 @@ namespace StubWia
             }
         }
         
-        private IJobConfig _selectedConfig;
+        private IJobConfig _selectedConfig = new StubIJobConfig();
         public IJobConfig SelectedConfig {
             get { return this._selectedConfig; }
             private set

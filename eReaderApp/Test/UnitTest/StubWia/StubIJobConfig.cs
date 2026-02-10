@@ -22,7 +22,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
             }
         }
-        private IJobAcqSettings _acquireSettings;
+        private IJobAcqSettings _acquireSettings = new StubIJobAcqSettings();
         public IJobAcqSettings AcquireSettings {
             get { return this._acquireSettings; }
             private set
@@ -31,7 +31,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcquireSettings)));
             }
         }
-        private IJobReadSettings _readSettings;
+        private IJobReadSettings _readSettings = new StubIJobReadSettings();
         public IJobReadSettings ReadSettings {
             get { return this._readSettings; }
             private set
@@ -40,7 +40,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
             }
         }
-        private IJobTuneSettings _tuneSettings;
+        private IJobTuneSettings _tuneSettings = new StubIJobTuneSettings();
         public IJobTuneSettings TuneSettings {
             get { return this._tuneSettings; }
             private set
@@ -49,7 +49,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneSettings)));
             }
         }
-        private ITuneResult _tuneLatestResult;
+        private ITuneResult _tuneLatestResult = new StubITuneResult();
         public ITuneResult TuneLatestResult {
             get { return this._tuneLatestResult; }
             private set
@@ -102,7 +102,7 @@ namespace StubWia
             }
         }
 
-        public IReadResult _latestReadResult;
+        public IReadResult _latestReadResult = new StubIReadResult();
         public IReadResult LatestReadResult
         {
             get => this._latestReadResult;
