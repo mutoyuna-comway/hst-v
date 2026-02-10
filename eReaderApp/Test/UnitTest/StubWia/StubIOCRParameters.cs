@@ -230,5 +230,10 @@ namespace StubWia
             this.SpaceError = src.SpaceError;
             this.InternalFilter = src.InternalFilter;
         }
+
+        public void ClearCustomFontID()
+        {
+
+        }
     }
 }

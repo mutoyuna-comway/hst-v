@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyBarcodeParameters = getCopyIWiaSystem().Job.SelectedConfig.ReadSettings.Barcode;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Operation", BarcodeOperationMode.Normal, false };
                 yield return new object[] { "DisableFieldString", true, false };

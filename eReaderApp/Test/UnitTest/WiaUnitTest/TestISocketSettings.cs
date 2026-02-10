@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copySocketSettingsData = getCopyIWiaSystem().CommunicationSettings.Socket;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "HostIPAddress", new System.Net.IPAddress(0), false };
                 yield return new object[] { "HostIPAddressString", "", false };

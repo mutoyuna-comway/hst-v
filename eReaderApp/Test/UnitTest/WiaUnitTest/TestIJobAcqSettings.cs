@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyJobAcqSettings = getCopyIWiaSystem().Job.SelectedConfig.AcquireSettings;
+                var copyJobAcqSettings = WiaSystem.Job.SelectedConfig.Clone().AcquireSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "AcqOrient", ImageOrient.Normal, false };
                 yield return new object[] { "WOI", copyJobAcqSettings.WOI, false };

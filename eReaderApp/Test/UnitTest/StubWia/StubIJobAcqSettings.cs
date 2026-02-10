@@ -9,6 +9,8 @@ namespace StubWia
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public StubIJobAcqSettings() { }
+
+        
         //public ImageOrient AcqOrient { get; set; }
         private ImageOrient _acqOrient;
         public ImageOrient AcqOrient
@@ -141,8 +143,68 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedLightConfigIndex)));
             }
         }
+        // ------------------------------
+        //
+        // イベント
+        //
+        // ------------------------------
+
+        /// <summary>
+        /// 選択されている照明コンフィグの照明強度が変更されたことを通知するイベント
+        /// </summary>
+        public event EventHandler SelectedLightPowerChaneged
+        {
+            add
+            {
+                
+            }
+
+            remove
+            {
+                
+            }
+        }
+
         public ILightConfig GetLightConfig(int index) { return null; }
         public void SetCurrentCue(AcquireMethod method, MarkColor color) { }
+        /// <summary>
+        /// クローン作成
+        /// </summary>
+        /// <returns></returns>
+        public IJobAcqSettings Clone() {
+            return new StubIJobAcqSettings();        }
+
+        /// <summary>
+        /// 現在設定されている照明コンフィグの取得
+        /// </summary>
+        /// <returns>照明コンフィグ</returns>
+        public ILightConfig GetCurrentLightConfig() {
+            return this.SelectedLightConfig;
+        }
+        /// <summary>
+        /// CurrentCueの設定
+        /// </summary>
+        /// <param name="currentLightConf">設定Config</param>
+        /// <param name="method">読取手法</param>
+        /// <param name="color">色</param>
+        public void SetCurrentCue(int currentLightConf, AcquireMethod method, MarkColor color) { 
         
+        }
+
+        /// <summary>
+        /// 選択されている照明コンフィグの照明強度を設定する
+        /// </summary>
+        /// <param name="power"></param>
+        public void SetSelectedLightPower(int power) { 
+        
+        }
+
+        /// <summary>
+        /// 中身のメンバーの内容をコピーする
+        /// </summary>
+        /// <param name="src"></param>
+        public void CopyFrom(IJobAcqSettings src) { 
+        
+        }
     }
 }

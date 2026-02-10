@@ -18,47 +18,25 @@ namespace TestWiaSystem
         /// 各インスタンスを保持
         /// これによりstubとの交換が容易になる
         /// </summary>
-        protected IWiaSystem WiaSystem { get; set; } = new StubIWiaSystem();
-        protected IReadCompletedEventArgs ReadCompletedEventArgs { get; set; } = new StubIReadCompletedEventArgs();
-        protected IRecogCondition RecogCondition { get; set; } = new StubIRecogCondition();
-        protected ICamContloler CamContloler { get; set; } = new StubICamContloler();
-        protected IStatsResult StatsResult { get; set; } = new StubIStatsResult();
-        protected IWaitResponse WaitResponse { get; set; } = new StubIWaitResponse();
-        protected IFilterConfig FilterConfig { get; set; } = new StubIFilterConfig();
-        protected IAcquireCondition AcquireCondition { get; set; } = new StubIAcquireCondition();
+        protected static IWiaSystem WiaSystem { get; set; } = new StubIWiaSystem();// InstanceManager.WiaSystem;
+        protected static IReadCompletedEventArgs ReadCompletedEventArgs { get; set; } = new StubIReadCompletedEventArgs();//InstanceManager.ReadCompletedEventArgs;
+        protected static IRecogCondition RecogCondition { get; set; } = new StubIRecogCondition();//InstanceManager.RecogCondition;
+        protected static ICamContloler CamContloler { get; set; } = new StubICamContloler(); //InstanceManager.CamContloler;
+        protected static IStatsResult StatsResult { get; set; } = new StubIStatsResult();//InstanceManager.StatsResult;
+        protected static IWaitResponse WaitResponse { get; set; } = new StubIWaitResponse();// InstanceManager.WaitResponse;
+        protected static IFilterConfig FilterConfig { get; set; } = new StubIFilterConfig();// InstanceManager.FilterConfig;
+        protected static IAcquireCondition AcquireCondition { get; set; } = new StubIAcquireCondition();// InstanceManager.AcquireCondition;
+
+
         //インスタンスのgetter setterテスト用
-        protected static IWiaSystem getCopyIWiaSystem() { 
-            return new StubIWiaSystem();
+        protected static IWiaSystem getCopyIWiaSystem()
+        {
+            return WiaSystem;
         }
         protected static IReadCompletedEventArgs getCopyIReadCompletedEventArgs()
         {
             return new StubIReadCompletedEventArgs();
         }
-        protected static IRecogCondition getCopyIRecogCondition()
-        {
-            return new StubIRecogCondition();
-        }
-        protected static ICamContloler getCopyICamContloler()
-        {
-            return new StubICamContloler();
-        }
-        protected static IStatsResult getCopyIStatsResult()
-        {
-            return new StubIStatsResult();
-        }
-        protected static IWaitResponse getCopyIWaitResponse()
-        {
-            return new StubIWaitResponse();
-        }
-        protected static IFilterConfig getCopyIFilterConfig()
-        {
-            return new StubIFilterConfig();
-        }
-        protected static IAcquireCondition getCopyIAcquireCondition()
-        {
-            return new StubIAcquireCondition();
-        }
-
         /// <summary>
         /// プロパティのGetter/SetterおよびINotifyPropertyChangedを検証する汎用メソッド
         /// </summary>

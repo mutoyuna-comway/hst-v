@@ -22,7 +22,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConfigID)));
             }
         }
-        private IJobAcqSettings _acquireSettings = new StubIJobAcqSettings();
+        private IJobAcqSettings _acquireSettings;
         public IJobAcqSettings AcquireSettings {
             get { return this._acquireSettings; }
             private set
@@ -31,7 +31,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcquireSettings)));
             }
         }
-        private IJobReadSettings _readSettings = new StubIJobReadSettings();
+        private IJobReadSettings _readSettings;
         public IJobReadSettings ReadSettings {
             get { return this._readSettings; }
             private set
@@ -40,7 +40,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
             }
         }
-        private IJobTuneSettings _tuneSettings = new StubIJobTuneSettings();
+        private IJobTuneSettings _tuneSettings;
         public IJobTuneSettings TuneSettings {
             get { return this._tuneSettings; }
             private set
@@ -49,7 +49,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneSettings)));
             }
         }
-        private ITuneResult _tuneLatestResult = new StubITuneResult();
+        private ITuneResult _tuneLatestResult;
         public ITuneResult TuneLatestResult {
             get { return this._tuneLatestResult; }
             private set
@@ -80,17 +80,103 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsReadCompletedEventEnabled)));
             }
         }
+
+        private IJob _ParentJob;
+        public IJob ParentJob
+        {
+            get => this._ParentJob;
+            private set
+            {
+                this._ParentJob = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ParentJob)));
+            }
+        }
+        private double _tuneProgress;
+        public double TuneProgress
+        {
+            get => this._tuneProgress;
+            private set
+            {
+                this._tuneProgress = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneProgress)));
+            }
+        }
+
+        public IReadResult _latestReadResult;
+        public IReadResult LatestReadResult
+        {
+            get => this._latestReadResult;
+            private set
+            {
+                this._latestReadResult = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestReadResult)));
+            }
+        }
+
         public event EventHandler<IReadCompletedEventArgs> ReadCompleted;
+        public event EventHandler TuneStarting;
+        public event EventHandler TuneCompleted;
+        public event EventHandler<IAcquireImageCompletedEventArgs> TuneImageUpdated;
+        public event EventHandler TuneResultUpdated;
+        public event EventHandler TuneResultAccepted;
+
         public IReadResult RunRead(IImageSource imgSrc, ScoreMode scoreType, ScoreAs100 waferScoreAs100) { return null; }
         public IReadResult RunReadWithParams(IAcquireResult acq, IJobReadSettings readSettings, ScoreMode scoreType, ScoreAs100 waferScoreAs100) { return null; }
         public bool CheckFontIdValidity() { return true; }
         public void SetTuneSettings(IJobTuneSettings tuneSettings) { }
         public void ApplySettings(IJobReadSettings readSettings, IJobAcqSettings acqSettings) { }
         public bool JudgeChecksum(String str) { return true; }
-        public void SetLatestReadResult(IReadResult result) { }
-        public void ClearLatestReadResult() { }
         public IReadResult GetLatestReadResult() {  return null; }
 
+        public IReadResult RunRead()
+        {
+            return new StubIReadResult();
+        }
+
+        public IReadResult RunReadWithParams(IAcquireResult acq, IJobReadSettings readSettings)
+        {
+            return new StubIReadResult();
+        }
+
+        public int RunTuning(bool isMultiLightTuneForced)
+        {
+            return 0 ;
+        }
+
+        public void CancelTuning()
+        {
+            
+        }
+
+        public int AbortTuning()
+        {
+            return 0;
+        }
+
+        public bool AcceptTuningResult()
+        {
+            return true;
+        }
+
+        public bool JudgeTuningResult()
+        {
+            return true;
+        }
+
+        public void ClearTuneResult()
+        {
+            
+        }
+
+        public int GetAdjustedChecksumScore(double score, string readedString, bool pass, IJobReadSettings readSettings)
+        {
+            return 0;
+        }
+
+        public IJobConfig Clone()
+        {
+            return new StubIJobConfig();
+        }
     }
     public class StubIReadCompletedEventArgs : IReadCompletedEventArgs
     {

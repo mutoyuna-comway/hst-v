@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyJob = getCopyIWiaSystem().Job.SelectedConfig.TuneSettings; ;
+                var copyJob = WiaSystem.Job.SelectedConfig.Clone().TuneSettings; ;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "MatchString", "", false };
                 yield return new object[] { "TuneMode", TuneSelectMode.AverageBest, false };

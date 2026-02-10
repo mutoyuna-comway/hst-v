@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copySerialSettingsData = getCopyIWiaSystem().CommunicationSettings.Serial;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Baudrate", SerialBaudrate.Rate2400, false };
                 yield return new object[] { "DataBits", SerialDataBits.Bit7, false };

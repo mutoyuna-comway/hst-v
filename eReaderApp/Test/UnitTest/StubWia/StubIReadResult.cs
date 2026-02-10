@@ -155,6 +155,11 @@ namespace StubWia
         }
 
         public double GetAddedScore(ScoreRange sr) { return 0; }
+
+        public IReadResult Clone()
+        {
+            return new StubIReadResult();
+        }
     }
 
     public class StubIReadOcrResult : IReadOcrResult

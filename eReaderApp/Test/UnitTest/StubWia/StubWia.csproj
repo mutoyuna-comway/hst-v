@@ -45,6 +45,7 @@
     <Compile Include="StubIConfigStore.cs" />
     <Compile Include="StubIDataMatrixParameters.cs" />
     <Compile Include="StubIImageSaveSettings.cs" />
+    <Compile Include="StubIIdReadingService.cs" />
     <Compile Include="StubIImageSource.cs" />
     <Compile Include="StubIJob.cs" />
     <Compile Include="StubIJobAcqSettings.cs" />
@@ -70,6 +71,8 @@
     <Compile Include="StubISystemReadSettings.cs" />
     <Compile Include="StubISystemSettings.cs" />
     <Compile Include="StubIT7Parameters.cs" />
+    <Compile Include="StubITuningStrategy.cs" />
+    <Compile Include="StubITuningService.cs" />
     <Compile Include="StubITuneResult.cs" />
     <Compile Include="StubIWiaCommManager.cs" />
     <Compile Include="StubIWiaConfig.cs" />

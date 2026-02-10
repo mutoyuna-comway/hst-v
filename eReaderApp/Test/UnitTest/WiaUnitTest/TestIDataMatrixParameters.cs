@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyDataMatrixParameters = getCopyIWiaSystem().Job.SelectedConfig.ReadSettings.DM;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "CharLimit", CharacterLimitationType.None, false };
                 yield return new object[] { "ErrorBitSize", 10, false };

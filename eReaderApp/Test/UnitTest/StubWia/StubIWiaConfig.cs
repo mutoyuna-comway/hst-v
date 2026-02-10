@@ -360,6 +360,11 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Theta)));
             }
         }
+
+        public ICharacterSize Clone()
+        {
+            return new StubICharacterSize();
+        }
     }
 
     public class StubIRegion : IRegion
@@ -465,6 +470,11 @@ namespace StubWia
                 _marginY = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MarginY)));
             }
+        }
+
+        public IRegion Clone()
+        {
+            return new StubIRegion();
         }
     }
 

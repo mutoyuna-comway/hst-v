@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyCamContloler = getCopyICamContloler();
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "IsRealDevice", true, true };
             }

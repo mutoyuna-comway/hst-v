@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyMaintenanceService = getCopyIWiaSystem().MaintenanceServices;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "SelfDiagnosisProcess", "", false };
                 yield return new object[] { "CreatePCInfoProcess", "", false };

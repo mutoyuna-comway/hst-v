@@ -250,6 +250,61 @@ namespace StubWia
             }
         }
 
+        private IIdReadingService _idReadingService = new StubIIdReadingService();
+        public IIdReadingService IdReadingService
+        {
+            get => _idReadingService;
+            private set
+            {
+                _idReadingService = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IdReadingService)));
+            }
+        }
+
+        private ITuningService _tuningService = new StubITuningService();
+        public ITuningService TuningService
+        {
+            get => _tuningService;
+            private set
+            {
+                _tuningService = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuningService)));
+            }
+        }
+
+        private bool _isLiveViewActive = false;
+        public bool IsLiveViewActive
+        {
+            get => _isLiveViewActive;
+            private set
+            {
+                _isLiveViewActive = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLiveViewActive)));
+            }
+        }
+
+        private IAcquireResult _latestAcquireResult = new StubIAcquireResult();
+        public IAcquireResult LatestAcquireResult
+        {
+            get => _latestAcquireResult;
+            private set
+            {
+                _latestAcquireResult = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestAcquireResult)));
+            }
+        }
+
+        private IImage _latestAcquiredImage = new StubIImage();
+        public IImage LatestAcquiredImage
+        {
+            get => _latestAcquiredImage;
+            private set
+            {
+                _latestAcquiredImage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestAcquiredImage)));
+            }
+        }
+
         public bool ReadCommandSync(bool withRetry, int timeOut, ref int lastReadConfig) { return true; }
         public int TuneStart(bool isCommand, int tuningConf) { return 0; }
         public bool TuneResultJudge() { return true; }
@@ -266,6 +321,16 @@ namespace StubWia
         public int AddChecksumScore(double score, bool pass, IJobReadSettings readSettings)
         {
             return 1;
+        }
+
+        public int TuneStart(int configId, bool isMultiLightTuneForced)
+        {
+            return 0;
+        }
+
+        public void TuneAbort()
+        {
+            
         }
     }
     public class StubIScreenVisibilityChangeEventArgs : IScreenVisibilityChangeEventArgs

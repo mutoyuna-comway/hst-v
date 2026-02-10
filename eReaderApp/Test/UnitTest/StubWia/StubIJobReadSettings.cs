@@ -132,17 +132,15 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Barcode)));
             }
         }
-        //public IReadResult LatestResult { get; set; }= new StubIReadResult();
-        private IReadResult _latestResult = new StubIReadResult();
-        public IReadResult LatestResult
+
+        public IJobReadSettings Clone()
         {
-            get => _latestResult;
-            set
-            {
-                _latestResult = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestResult)));
-            }
+            return new StubIJobReadSettings();
         }
 
+        public void CopyFrom(IJobReadSettings src)
+        {
+            
+        }
     }
 }

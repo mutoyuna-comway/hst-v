@@ -24,8 +24,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyStatsResult = getCopyIStatsResult();
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ConfigName", "", true };
                 yield return new object[] { "RunNu", 10, true };
@@ -58,8 +56,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyCameraInfo = getCopyIWiaSystem().Device.CameraInfo;
                 var expected = PhysicalAddress.Parse("00-11-22-33-44-55");
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "CameraFound", true, true };
@@ -104,8 +100,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyImage = getCopyIReadCompletedEventArgs().AcqResult.ProcessImage;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Image", IntPtr.Zero, true };
             }
@@ -132,13 +126,11 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyAcquireCondition = getCopyIAcquireCondition();
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Exposure", 1, true };
                 yield return new object[] { "Gain", 1, true };
                 yield return new object[] { "Orient", ImageOrient.HorizontalFlip, true };
-                yield return new object[] { "LightConfs", copyAcquireCondition.LightConfs, true };
+                yield return new object[] { "LightConfs", AcquireCondition.LightConfs.Clone(), true };
 
             }
         }
@@ -164,8 +156,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyWaitResponse = getCopyIWaitResponse();
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ResponseCommand", "", false };
                 yield return new object[] { "ResponseTime", 10UL, false };
@@ -193,8 +183,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyFilterConfig = getCopyIFilterConfig();
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Filter", FilterType.BlackHat, false };
             }
@@ -222,8 +210,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyCharacterSize = getCopyIWiaSystem().Job.SelectedConfig.ReadSettings.CharSize;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ULX", 10.0, false };
                 yield return new object[] { "ULY", 10.0, false };
@@ -254,8 +240,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyRegion = getCopyIWiaSystem().Job.SelectedConfig.AcquireSettings.WOI;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ROIMode", RegionMode.Normal, false };
                 yield return new object[] { "UlX", 10.0, false };

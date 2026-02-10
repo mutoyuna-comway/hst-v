@@ -61,7 +61,6 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyILumpLogElement = getCopyIWiaSystem().LogSettings.LogOutput.AllImage;
                 var expected = new DateTime(2026, 2, 2, 10, 30, 0);
                 var list = new List<string> { };
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */

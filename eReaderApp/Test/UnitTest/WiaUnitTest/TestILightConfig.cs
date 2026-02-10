@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyLightConfig = getCopyIWiaSystem().Job.SelectedConfig.AcquireSettings.SelectedLightConfig;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "LightConfigID", 10, true };
                 yield return new object[] { "LightLevel", 10, false };

@@ -140,7 +140,77 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestRead)));
             }
         }
+
+        private IJobAcqSettings _acqSettings ;
+        public IJobAcqSettings AcqSettings
+        {
+            get { return this._acqSettings; }
+            private set
+            {
+                this._acqSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcqSettings)));
+            }
+        }
+
+        private IJobReadSettings _readSettings;
+        public IJobReadSettings ReadSettings
+        {
+            get { return this._readSettings; }
+            private set
+            {
+                this._readSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
+            }
+        }
+        private IJobAcqSettings _bestAcqSettings ;
+        public IJobAcqSettings BestAcqSettings
+        {
+            get { return this._bestAcqSettings; }
+            private set
+            {
+                this._bestAcqSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestAcqSettings)));
+            }
+        }
+        private IJobReadSettings _bestReadSettings;
+        public IJobReadSettings BestReadSettings
+        {
+            get { return this._bestReadSettings; }
+            private set
+            {
+                this._bestReadSettings = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestReadSettings)));
+            }
+        }
+
+        private IImage _bestPassedImage;
+        public IImage BestPassedImage
+        {
+            get { return this._bestPassedImage; }
+            private set
+            {
+                this._bestPassedImage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestPassedImage)));
+            }
+        }
+
+        private int _BestRecordNumber = 0;
+        public int BestRecordNumber
+        {
+            get { return this._BestRecordNumber; }
+            private set
+            {
+                this._BestRecordNumber = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestRecordNumber)));
+            }
+        }
+
         public string GetCurrentString(int fieldStrNum) { return ""; }
         public string GetBestString(int fieldStrNum) { return ""; }
+
+        public ITuneResult Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

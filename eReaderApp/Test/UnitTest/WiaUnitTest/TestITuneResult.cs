@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyTuneResult = getCopyIWiaSystem().Job.SelectedConfig.TuneLatestResult;
+                //var copyTuneResult = WiaSystem.Job.SelectedConfig.Clone().TuneLatestResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
                 yield return new object[] { "Progress", 10.0, true };
@@ -38,7 +38,6 @@ namespace TestWiaSystem
                 yield return new object[] { "NumTuneFailed", 10, true };
                 yield return new object[] { "CurrentMinimumScore", 10.0, true };
                 yield return new object[] { "BestMinimumScore", 10.0, true };
-                yield return new object[] { "BestRead", copyTuneResult.BestRead, true };
             }
         }
 

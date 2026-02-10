@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyT7Parameters = getCopyIWiaSystem().Job.SelectedConfig.ReadSettings.T7;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Timeout", 10.0, false };
                 yield return new object[] { "ErrorBit", 10, false };

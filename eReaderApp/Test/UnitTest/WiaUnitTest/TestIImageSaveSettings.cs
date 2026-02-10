@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyImageSaveSettings = getCopyIWiaSystem().LogSettings.ImgSaveSetting;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "EnableAllSaveImage", true, false };
                 yield return new object[] { "NumOfAllSaveImage", 10, false };

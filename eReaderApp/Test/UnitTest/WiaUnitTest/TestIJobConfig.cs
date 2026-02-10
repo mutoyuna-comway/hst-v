@@ -21,7 +21,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyConfig = getCopyIWiaSystem().Job.SelectedConfig;
+                var copyConfig = WiaSystem.Job.SelectedConfig.Clone();
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
                 yield return new object[] { "ConfigID", 10, true };
                 yield return new object[] { "AcquireSettings", copyConfig.AcquireSettings, false };
@@ -56,7 +56,7 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 var copyReadCompletedEventArgs = getCopyIReadCompletedEventArgs();
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
-                yield return new object[] { "Result", copyReadCompletedEventArgs.Result, true };
+                yield return new object[] { "Result", ReadCompletedEventArgs.Result.Clone(), true };
                 yield return new object[] { "AcqResult", copyReadCompletedEventArgs.AcqResult, true };
                 yield return new object[] { "LogIdString", "", true };
             }

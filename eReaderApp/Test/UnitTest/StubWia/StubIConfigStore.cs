@@ -9,6 +9,28 @@ namespace StubWia
   
     public class StubIConfigStore : IConfigStore
     {
+        private IJob _parentJob = new StubIJob();
+        public IJob ParentJob
+        {
+            get { return this._parentJob; }
+            private set
+            {
+                this._parentJob = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ParentJob)));
+            }
+        }
+
+        private int _count = 0;
+        public int Count
+        {
+            get { return this._count; }
+            private set
+            {
+                this._count = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         
         public StubIConfigStore() { }

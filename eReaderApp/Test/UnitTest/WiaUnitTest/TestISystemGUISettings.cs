@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copySystemGUISettings = getCopyIWiaSystem().GUISettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "LibraryMode", true, false };
                 yield return new object[] { "ShowInTaskbar", true, false };

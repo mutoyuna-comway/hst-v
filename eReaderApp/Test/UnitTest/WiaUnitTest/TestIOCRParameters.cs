@@ -22,8 +22,6 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyOCRParameters = getCopyIWiaSystem().Job.SelectedConfig.ReadSettings.OCR;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "CustomFontIDString", "", false };
                 yield return new object[] { "Operation", OCROperationMode.Normal, false };
