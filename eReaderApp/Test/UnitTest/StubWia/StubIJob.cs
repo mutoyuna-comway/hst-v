@@ -58,7 +58,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedConfigIndex)));
             }
         }
-        private IConfigStore _configs;
+        private IConfigStore _configs = new StubIConfigStore();
         public IConfigStore Configs {
             get { return this._configs; }
             private set
@@ -72,7 +72,7 @@ namespace StubWia
         /// コンフィグ最大数構成タイプ
         /// </summary>
         private MaxNumConfigType _MaxNumConfig;
-        MaxNumConfigType MaxNumConfig
+        public MaxNumConfigType MaxNumConfig
         {
             get => _MaxNumConfig;
             set
@@ -93,9 +93,6 @@ namespace StubWia
             }
         }
 
-        MaxNumConfigType IJob.MaxNumConfig { get => MaxNumConfig; set => MaxNumConfig = value; }
-
-        
         /// <summary>
         /// 選択されているジョブコンフィグが変更されることを通知するイベント
         /// </summary>

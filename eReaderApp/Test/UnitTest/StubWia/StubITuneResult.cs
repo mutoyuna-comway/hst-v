@@ -23,15 +23,6 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Mark)));
             }
         }
-        private double _progress;
-        public double Progress {
-            get { return this._progress; }
-            private set
-            {
-                this._progress = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
-            }
-        }
         private int _numRead;
         public int NumRead {
             get { return this._numRead; }
@@ -141,7 +132,7 @@ namespace StubWia
             }
         }
 
-        private IJobAcqSettings _acqSettings ;
+        private IJobAcqSettings _acqSettings = new StubIJobAcqSettings();
         public IJobAcqSettings AcqSettings
         {
             get { return this._acqSettings; }
@@ -152,7 +143,7 @@ namespace StubWia
             }
         }
 
-        private IJobReadSettings _readSettings;
+        private IJobReadSettings _readSettings = new StubIJobReadSettings();
         public IJobReadSettings ReadSettings
         {
             get { return this._readSettings; }
@@ -162,7 +153,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
             }
         }
-        private IJobAcqSettings _bestAcqSettings ;
+        private IJobAcqSettings _bestAcqSettings = new StubIJobAcqSettings();
         public IJobAcqSettings BestAcqSettings
         {
             get { return this._bestAcqSettings; }
@@ -172,7 +163,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestAcqSettings)));
             }
         }
-        private IJobReadSettings _bestReadSettings;
+        private IJobReadSettings _bestReadSettings = new StubIJobReadSettings();
         public IJobReadSettings BestReadSettings
         {
             get { return this._bestReadSettings; }
@@ -183,7 +174,7 @@ namespace StubWia
             }
         }
 
-        private IImage _bestPassedImage;
+        private IImage _bestPassedImage = new StubIImage();
         public IImage BestPassedImage
         {
             get { return this._bestPassedImage; }
@@ -210,7 +201,7 @@ namespace StubWia
 
         public ITuneResult Clone()
         {
-            throw new NotImplementedException();
+            return new StubITuneResult();
         }
     }
 }

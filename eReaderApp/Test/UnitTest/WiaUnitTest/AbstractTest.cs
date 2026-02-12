@@ -18,15 +18,20 @@ namespace TestWiaSystem
         /// 各インスタンスを保持
         /// これによりstubとの交換が容易になる
         /// </summary>
-        protected static IWiaSystem WiaSystem { get; set; } = new StubIWiaSystem();// InstanceManager.WiaSystem;
-        protected static IReadCompletedEventArgs ReadCompletedEventArgs { get; set; } = new StubIReadCompletedEventArgs();//InstanceManager.ReadCompletedEventArgs;
-        protected static IRecogCondition RecogCondition { get; set; } = new StubIRecogCondition();//InstanceManager.RecogCondition;
-        protected static ICamContloler CamContloler { get; set; } = new StubICamContloler(); //InstanceManager.CamContloler;
-        protected static IStatsResult StatsResult { get; set; } = new StubIStatsResult();//InstanceManager.StatsResult;
-        protected static IWaitResponse WaitResponse { get; set; } = new StubIWaitResponse();// InstanceManager.WaitResponse;
-        protected static IFilterConfig FilterConfig { get; set; } = new StubIFilterConfig();// InstanceManager.FilterConfig;
-        protected static IAcquireCondition AcquireCondition { get; set; } = new StubIAcquireCondition();// InstanceManager.AcquireCondition;
-
+        protected static IWiaSystem WiaSystem => InstanceManager.WiaSystem;
+        protected static IReadCompletedEventArgs ReadCompletedEventArgs => InstanceManager.ReadCompletedEventArgs;
+        protected static IRecogCondition RecogCondition => InstanceManager.RecogCondition;
+        protected static ICamContloler CamContloler => InstanceManager.CamContloler;
+        protected static IStatsResult StatsResult => InstanceManager.StatsResult;
+        protected static IWaitResponse WaitResponse => InstanceManager.WaitResponse;
+        protected static IFilterConfig FilterConfig => InstanceManager.FilterConfig;
+        protected static IAcquireCondition AcquireCondition => InstanceManager.AcquireCondition;
+        protected static ITuningStrategy TuningStrategy => InstanceManager.TuningStrategy;
+        protected static IReadOperationStartedEventArgs ReadOperationStartedEventArgs => InstanceManager.ReadOperationStartedEventArgs;
+        protected static IReadOperationCompletedEventArgs ReadOperationCompletedEventArgs => InstanceManager.ReadOperationCompletedEventArgs;
+        protected static IAcquireImageStartedEventArgs AcquireImageStartedEventArgs => InstanceManager.AcquireImageStartedEventArgs;
+        protected static IAcquireImageCompletedEventArgs AcquireImageCompletedEventArgs => InstanceManager.AcquireImageCompletedEventArgs;
+        protected static ILogMessageEventArgs LogMessageEventArgs => InstanceManager.LogMessageEventArgs;
 
         //インスタンスのgetter setterテスト用
         protected static IWiaSystem getCopyIWiaSystem()

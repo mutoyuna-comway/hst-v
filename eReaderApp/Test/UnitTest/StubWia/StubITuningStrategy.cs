@@ -32,7 +32,7 @@ namespace StubWia
             }
         }
 
-        private ITuneResult _latestTuningResult ;
+        private ITuneResult _latestTuningResult = new StubITuneResult();
         public ITuneResult LatestTuningResult 
         { 
             get => this._latestTuningResult;
@@ -114,6 +114,122 @@ namespace StubWia
         public void SetImageSource(IImageSource imageSource)
         {
             
+        }
+    }
+
+    public class StubIReadOperationStartedEventArgs : IReadOperationStartedEventArgs
+    {
+        private int _pecordNumber = 0;
+        public int RecordNumber
+        {
+            get => this._pecordNumber;
+            private set
+            {
+                this._pecordNumber = value;
+            }
+        }
+
+        private IJobReadSettings _readSettings = new StubIJobReadSettings();
+        public IJobReadSettings ReadSettings
+        {
+            get => this._readSettings;
+            private set
+            {
+                this._readSettings = value;
+            }
+        }
+
+        private IImage _processImage = new StubIImage();
+        public IImage ProcessImage
+        {
+            get => this._processImage;
+            private set
+            {
+                this._processImage = value;
+            }
+        }
+    }
+
+    public class StubIReadOperationCompletedEventArgs : StubIReadOperationStartedEventArgs,IReadOperationCompletedEventArgs 
+    {
+        private IReadResult _readResult = new StubIReadResult();
+        public IReadResult ReadResult
+        {
+            get => this._readResult;
+            private set
+            {
+                this._readResult = value;
+            }
+        }
+
+    }
+
+    public class StubIAcquireImageStartedEventArgs : IAcquireImageStartedEventArgs
+    {
+        private int _recordNumber = 0;
+        public int RecordNumber
+        {
+            get => this._recordNumber;
+            private set
+            {
+                this._recordNumber = value;
+            }
+        }
+
+        public IJobAcqSettings _acqSettings = new StubIJobAcqSettings();
+        public IJobAcqSettings AcqSettings
+        {
+            get => this._acqSettings;
+            private set
+            {
+                this._acqSettings = value;
+            }
+        }
+    }
+
+    public class StubIAcquireImageCompletedEventArgs : StubIAcquireImageStartedEventArgs,IAcquireImageCompletedEventArgs
+    {
+        private IAcquireResult _acqResult = new StubIAcquireResult();
+        public IAcquireResult AcqResult
+        {
+            get => this._acqResult;
+            private set
+            {
+                this._acqResult = value;
+            }
+        }
+    }
+
+    public class StubILogMessageEventArgs : ILogMessageEventArgs
+    {
+        private int _RecordNumber = 0;
+        public int RecordNumber
+        {
+            get => this._RecordNumber;
+            private set
+            {
+                this._RecordNumber = value;
+            }
+        }
+
+        private string _message = "";
+        public string Message
+        {
+            get => this._message;
+            private set
+            {
+                this._message = value;
+            }
+        }
+
+        private string _messageSub = "";
+        public string MessageSub
+        {
+            get => this._messageSub;
+            private set
+            {
+                this._messageSub = value;
+            }
         }
     }
 }

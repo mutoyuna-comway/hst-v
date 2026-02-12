@@ -116,8 +116,12 @@
   <ItemGroup>
     <Compile Include="InstanceManager.cs" />
     <Compile Include="AbstractTest.cs" />
+    <Compile Include="TestBootstrapper.cs" />
     <Compile Include="TestIBarcodeParameters.cs" />
     <Compile Include="TestIAcquireResult.cs" />
+    <Compile Include="TestIITuningStrategy.cs" />
+    <Compile Include="TestITuningService.cs" />
+    <Compile Include="TestIIdReadingService.cs" />
     <Compile Include="TestIDataMatrixParameters.cs" />
     <Compile Include="TestIImageSaveSettings.cs" />
     <Compile Include="TestIConfigStore.cs" />

@@ -23,13 +23,16 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 var copyConfig = WiaSystem.Job.SelectedConfig.Clone();
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
+                yield return new object[] { "ParentJob", WiaSystem.Job, true };
                 yield return new object[] { "ConfigID", 10, true };
                 yield return new object[] { "AcquireSettings", copyConfig.AcquireSettings, false };
                 yield return new object[] { "ReadSettings", copyConfig.ReadSettings, false };
                 yield return new object[] { "TuneSettings", copyConfig.TuneSettings, false };
                 yield return new object[] { "TuneLatestResult", copyConfig.TuneLatestResult, false };
+                yield return new object[] { "TuneProgress", 2.345, true };
                 yield return new object[] { "Enable", true, false };
                 yield return new object[] { "IsReadCompletedEventEnabled", true, false };
+                yield return new object[] { "LatestReadResult", copyConfig.LatestReadResult.Clone(), true };
             }
         }
         /// <summary>

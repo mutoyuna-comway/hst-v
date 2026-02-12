@@ -30,6 +30,8 @@ namespace TestWiaSystem
                 yield return new object[] { "SelectedConfig", copyJob.SelectedConfig, true };
                 yield return new object[] { "SelectedConfigIndex", 10, false };
                 yield return new object[] { "Configs", copyJob.Configs, true };
+                yield return new object[] { "MaxNumConfig", MaxNumConfigType.Num16, false };
+                yield return new object[] { "SystemService", getCopyIWiaSystem(), false };
             }
         }
 

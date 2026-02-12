@@ -3,6 +3,7 @@
 using StubWia;
 using System;
 using System.Collections.Generic;
+using System.Runtime;
 using Wia.Abstractions;
 
 /// <summary>
@@ -23,21 +24,23 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                //var copyTuneResult = WiaSystem.Job.SelectedConfig.Clone().TuneLatestResult;
+                var copyTuneResult = WiaSystem.Job.SelectedConfig.Clone().TuneLatestResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
-                yield return new object[] { "Progress", 10.0, true };
                 yield return new object[] { "NumRead", 10, true };
                 yield return new object[] { "CurrentPassed", true, true };
                 yield return new object[] { "CurrentString", "", true };
                 yield return new object[] { "CurrentScore", 10.0, true };
-                yield return new object[] { "BestPassed", true, true };
-                yield return new object[] { "BestString", "", true };
-                yield return new object[] { "BestScore", 10.0, true };
                 yield return new object[] { "NumTunePassed", 10, true };
                 yield return new object[] { "NumTuneFailed", 10, true };
                 yield return new object[] { "CurrentMinimumScore", 10.0, true };
                 yield return new object[] { "BestMinimumScore", 10.0, true };
+                yield return new object[] { "AcqSettings", copyTuneResult.AcqSettings.Clone(), true };
+                yield return new object[] { "ReadSettings", copyTuneResult.ReadSettings.Clone(), true };
+                yield return new object[] { "BestAcqSettings", copyTuneResult.BestAcqSettings.Clone(), true };
+                yield return new object[] { "BestReadSettings", copyTuneResult.BestReadSettings.Clone(), true };
+                yield return new object[] { "BestPassedImage", copyTuneResult.Clone().BestPassedImage, true };
+                yield return new object[] { "BestRecordNumber", 2, true };
             }
         }
 
