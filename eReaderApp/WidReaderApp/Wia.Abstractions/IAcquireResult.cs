@@ -22,7 +22,7 @@ namespace Wia.Abstractions
         /// <summary>
         /// 撮像設定
         /// </summary>
-        IJobAcqSettings AcqParams { get; }
+        IAcquireCondition AcqParams { get; }
 
         /// <summary>
         /// 撮像時間

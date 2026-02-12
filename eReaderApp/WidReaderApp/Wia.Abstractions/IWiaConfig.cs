@@ -99,16 +99,6 @@ namespace Wia.Abstractions
         IntPtr Image { get; }
     }
 
-    public interface IAcquireCondition
-    {
-        int Exposure { get; }
-        int Gain { get; }
-
-        ImageOrient Orient { get; }
-
-        ILightConfig[] LightConfs { get; }
-    }
-
     public interface IWaitResponse
     {
         /// <summary>

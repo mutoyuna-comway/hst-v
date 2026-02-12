@@ -43,10 +43,21 @@ namespace Wia.Abstractions
         /// </summary>
         double Rotate { get; set; }
 
+
+        /// <summary>
+        /// 画像拡大サイズモード設定
+        /// </summary>
+        ImageSizeMode SizeMode { get; set; }
+
+        /// <summary>
+        /// 画像拡大拡大率
+        /// </summary>
+        ImageExpandRate ExpandRate { get; set; }
+
         /// <summary>
         /// 画像前処理フィルタ種類
         /// </summary>
-        FilterType AcqFilter { get; set; }
+        FilterType AcqFilterType { get; set; }
 
         /// <summary>
         /// 画像前処理フィルタカーネルサイズ
@@ -71,7 +82,7 @@ namespace Wia.Abstractions
         /// <summary>
         /// 現在選択されている照明構成
         /// </summary>
-        ILightConfig SelectedLightConfig { get; set; }
+        ILightConfig SelectedLightConfig { get; }
 
         /// <summary>
         /// 現在選択されている照明構成番号
@@ -109,25 +120,11 @@ namespace Wia.Abstractions
         ILightConfig GetLightConfig(int index);
 
         /// <summary>
-        /// 現在設定されている照明コンフィグの取得
+        /// 照明コンフィグの設定
         /// </summary>
-        /// <returns>照明コンフィグ</returns>
-        ILightConfig GetCurrentLightConfig();
-
-        /// <summary>
-        /// CurrentCueの設定
-        /// </summary>
-        /// <param name="method">読取手法</param>
-        /// <param name="color">色</param>
-        void SetCurrentCue(AcquireMethod method, MarkColor color);
-
-        /// <summary>
-        /// CurrentCueの設定
-        /// </summary>
-        /// <param name="currentLightConf">設定Config</param>
-        /// <param name="method">読取手法</param>
-        /// <param name="color">色</param>
-        void SetCurrentCue(int currentLightConf, AcquireMethod method, MarkColor color);
+        /// <param name="index">照明コンフィグ番号</param>
+        /// <param name="lightConfig">照明コンフィグ</param>
+        void SetLightConfig(int index, ILightConfig lightConfig);
 
         /// <summary>
         /// 選択されている照明コンフィグの照明強度を設定する
@@ -140,6 +137,25 @@ namespace Wia.Abstractions
         /// </summary>
         /// <param name="src"></param>
         void CopyFrom(IJobAcqSettings src);
+
+        /// <summary>
+        /// 特殊モードの照明コンフィグの取得
+        /// </summary>
+        /// <param name="acqMode">特殊モード</param>
+        /// <returns>照明コンフィグ</returns>
+        ILightConfig GetSpecialLightConfig(AcquireMethod acqMode);
+
+        /// <summary>
+        /// 特殊モードの照明コンフィグの設定
+        /// </summary>
+        /// <param name="acqMode">特殊モード</param>
+        void SetSpecialLightConfig(AcquireMethod acqMode, ILightConfig lightConfig);
+
+        /// <summary>
+        /// 取込み条件の設定
+        /// </summary>
+        /// <param name="cond">取込み条件</param>
+        void SetAcquireCondition(IAcquireCondition cond);
 
     }
 }

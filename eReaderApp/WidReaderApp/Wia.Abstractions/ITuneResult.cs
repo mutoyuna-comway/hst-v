@@ -60,7 +60,7 @@ namespace Wia.Abstractions
         /// <summary>
         /// 取込パラメータ
         /// </summary>
-        IJobAcqSettings AcqSettings { get; }
+        IAcquireCondition AcqCondition { get; }
 
         /// <summary>
         /// 読取パラメータ
@@ -90,7 +90,7 @@ namespace Wia.Abstractions
         /// <summary>
         /// ベスト取込パラメータ
         /// </summary>
-        IJobAcqSettings BestAcqSettings { get; }
+        IAcquireCondition BestAcqCondition { get; }
 
         /// <summary>
         /// ベスト読取パラメータ

@@ -35,5 +35,20 @@ namespace Wia.Abstractions
 
         event EventHandler CollectionChanging;
         event EventHandler CollectionChanged;
+
+        // ------------------------------
+        //
+        // メソッド
+        //
+        // ------------------------------
+
+        /// <summary>
+        /// コンフィグ番号からジョブコンフィグを取得する
+        /// </summary>
+        /// <param name="configId">コンフィグ番号</param>
+        /// <returns>ジョブコンフィグ</returns>
+        /// <remarks>コンフィグが作成されていなければ、新規に作成し追加する</remarks>
+        IJobConfig GetOrDefault(int configId);
+
     }
 }
