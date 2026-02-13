@@ -176,20 +176,78 @@ namespace StubWia
         public event EventHandler LiveViewStopped;
         public event EventHandler AcquireImageAvailable;
         public event EventHandler ReadResultAvailable;
-        public void ApplicationExit(int waitTime) { }
-        public string GetJobFolder() { return ""; }
-        public string GetDeviceFolder() { return ""; }
+        /// <summary>
+        /// アプリケーションを終了する
+        /// </summary>
+        /// <param name="waitTime">終了処理を開始するまでの待ち時間。msec</param>
+        public void ApplicationExit(int waitTime)
+        {
+            // 実際には終了しないが、要求があったことをログ出力などでシミュレート可能
+            Debug.WriteLine($"ApplicationExit called with waitTime: {waitTime}");
+        }
+        /// <summary>
+        /// Jobフォルダの取得
+        /// </summary>
+        /// <returns>Jobフォルダのフルパスフォルダ名</returns>
+        public string GetJobFolder() { return @"C:\Wia\Jobs"; }
+        /// <summary>
+        /// デバイスフォルダ取得　例) C:\ProgramData\HstVision\e-Reader\dev00
+        /// </summary>
+        /// <returns>デバイスフォルダのフルパスフォルダ名</returns>
+        public string GetDeviceFolder() { return @"C:\ProgramData\HstVision\e-Reader\dev00"; }
         public void WriteCommandLogException(Exception exp, string msg = "") { }
-        public void SetScreenVisibility(bool visible, int x, int y) { }
-        public bool LoadJobFile(String fileName) { return true; }
+        /// <summary>
+        /// 画面の表示、非表示と位置を変更する
+        /// </summary>
+        /// <param name="visible">表示、非表示</param>
+        /// <param name="x">画面左上の位置x</param>
+        /// <param name="y">画面左上の位置y</param>
+        /// <remarks>ScreenVisibilityChangeRequestedイベントが発行される。</remarks>
+        public void SetScreenVisibility(bool visible, int x, int y)
+        {
+            // イベントを発行する
+            var args = new StubIScreenVisibilityChangeEventArgs(visible, x, y);
+            ScreenVisibilityChangeRequested?.Invoke(this, args);
+        }
+        /// <summary>
+        /// ジョブファイルを読み込む
+        /// </summary>
+        /// <param name="fileName">ジョブファイルのフルパスファイル名</param>
+        /// <returns>true:成功</returns>
+        /// <remarks>Jobプロパティが変更される</remarks>
+        public bool LoadJobFile(string fileName)
+        {
+            this.ActiveJobName = System.IO.Path.GetFileName(fileName);
+            this.ActiveJobLoadTime = DateTime.Now;
+            return true;
+        }
         public bool SaveJobFile(String fileName) { return true; }
-        public bool LoadBitmapFile(String fileName) { return true; }
-        public void GoOnline() { }
-        public void GoOffline() { }
-        public int GetStatsResultsCount() { return 0; }
-        public int GetStatsResultsPassNum(int index) { return 0; }
-        public int GetStatsResultsFailNum(int index) { return 0; }
-        public double GetStatsResultsAvgScore(int index) { return 0; }
+        public bool LoadBitmapFile(string fileName)
+        {
+            // 画像取込みが無効となり、IsAcquireDisabledが変更される
+            IsAcquireDisabled = true;
+            return true;
+        }
+        /// <summary>
+        /// 接続モードオンラインに移行する
+        /// </summary>
+        /// <remarks>IsOnlineプロパティが変更される。</remarks>
+        public void GoOnline()
+        {
+            this.IsOnline = true; // Setterを通じてPropertyChangedも飛ぶ
+        }
+        /// <summary>
+        /// 接続モードオフラインに移行する
+        /// </summary>
+        /// <remarks>IsOnlineプロパティが変更される。</remarks>
+        public void GoOffline()
+        {
+            this.IsOnline = false;
+        }
+        public int GetStatsResultsCount() { return 3; }
+        public int GetStatsResultsPassNum(int index) { return 1; }
+        public int GetStatsResultsFailNum(int index) { return 2; }
+        public double GetStatsResultsAvgScore(int index) { return 77; }
         public bool GetConfigNumPassed(int configID, string jobFileName, out int num) { num = 0; return true; }
         public bool GetConfigNumFailed(int configID, string jobFileName, out int num) { num = 0; return true; }
         public bool GetConfigAvgScore(int configID, string jobFileName, out int score) { score = 0; return true; }
@@ -200,8 +258,24 @@ namespace StubWia
         public void AllStatsClear() { }
         public IRecogCondition CreateRecogCond() { return null; }
         public ICameraInfo GetCamInfo() { return null; }
-        public void StartLiveView() { }
-        public void StopLiveView() { }
+        /// <summary>
+        /// ライブ表示を開始する
+        /// </summary>
+        /// <remarks>LiveViewStartedイベントが発行される。</remarks>
+        public void StartLiveView()
+        {
+            this.IsLiveViewActive = true;
+            LiveViewStarted?.Invoke(this, EventArgs.Empty);
+        }
+        /// <summary>
+        /// ライブ表示を終了する
+        /// </summary>
+        /// <remarks>LiveViewStoppedイベントが発行される。</remarks>
+        public void StopLiveView()
+        {
+            this.IsLiveViewActive = false;
+            LiveViewStopped?.Invoke(this, EventArgs.Empty);
+        }
         public int LastBestTarget() { return 0; }
         public void ClearTuneResult() { }
         private bool _isTuning;
@@ -325,18 +399,27 @@ namespace StubWia
 
         public int TuneStart(int configId, bool isMultiLightTuneForced)
         {
-            return 0;
+            IsTuning = true;
+            TuneCurrentConfigNumber = configId;
+            return 123; // ダミーの実行ID
         }
 
         public void TuneAbort()
         {
-            
+            IsTuning = false;
         }
+
     }
     public class StubIScreenVisibilityChangeEventArgs : IScreenVisibilityChangeEventArgs
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public StubIScreenVisibilityChangeEventArgs() { }
+        public StubIScreenVisibilityChangeEventArgs(bool visible, int x, int y)
+        {
+            this.IsVisible = visible;
+            this.LocationX = x;
+            this.LocationY = y;
+        }
         private bool _isVisible;
         public bool IsVisible {
             get { return this._isVisible; }

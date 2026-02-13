@@ -31,14 +31,14 @@ namespace TestWiaSystem
                 yield return new object[] { "MinScore", 10.0, true };
                 yield return new object[] { "ElapsedTime", 10.0, true };
                 yield return new object[] { "ConfigID", 10, true };
-                yield return new object[] { "ROI", DeepCopy(iReadResult.ROI), true };
-                yield return new object[] { "CharSize", DeepCopy(iReadResult.CharSize), true };
+                yield return new object[] { "ROI", ShallowCopy(iReadResult.ROI), true };
+                yield return new object[] { "CharSize", ShallowCopy(iReadResult.CharSize), true };
                 yield return new object[] { "Pass", true, true };
                 yield return new object[] { "IsTimeout", true, true };
                 yield return new object[] { "ConfusionString", "", true };
                 yield return new object[] { "IsCorrectConfChecksum", true, true };
-                yield return new object[] { "OcrResults", DeepCopy(iReadResult.OcrResults), true };
-                yield return new object[] { "ReadSettings", DeepCopy(iReadResult.ReadSettings), true };
+                yield return new object[] { "OcrResults", iReadResult.OcrResults.Clone(), true };
+                yield return new object[] { "ReadSettings", ShallowCopy(iReadResult.ReadSettings), true };
 
             }
         }

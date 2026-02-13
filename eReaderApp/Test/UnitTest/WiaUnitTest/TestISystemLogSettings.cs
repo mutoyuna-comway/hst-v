@@ -26,9 +26,9 @@ namespace TestWiaSystem
                 ISystemLogSettings iSystemLogSettings = WiaSystem.LogSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "CommandLogOutput",true, false };
-                yield return new object[] { "LogOutput", DeepCopy(iSystemLogSettings.LogOutput), false };
+                yield return new object[] { "LogOutput", ShallowCopy(iSystemLogSettings.LogOutput), false };
                 yield return new object[] { "LogUpdateCount", 10, false };
-                yield return new object[] { "ImgSaveSetting", DeepCopy(iSystemLogSettings.ImgSaveSetting), false };
+                yield return new object[] { "ImgSaveSetting", ShallowCopy(iSystemLogSettings.ImgSaveSetting), false };
                 yield return new object[] { "AppCameraLogEnabled", true, false };
                 yield return new object[] { "ParamsBackupMode", ParamsBackupModeConstants.AutoCleanup, false };
                 yield return new object[] { "ReadParamLog", ReadParamLogConstants.Always, false };

@@ -158,7 +158,7 @@ namespace TestWiaSystem
         {
             get
             {
-                if (_readOperationCompletedEventArgs == null)
+                if (_acquireImageCompletedEventArgs == null)
                     _acquireImageCompletedEventArgs = getInstance<IAcquireImageCompletedEventArgs>("AcquireImageCompletedEventArgsImpl");
                 return _acquireImageCompletedEventArgs;
             }

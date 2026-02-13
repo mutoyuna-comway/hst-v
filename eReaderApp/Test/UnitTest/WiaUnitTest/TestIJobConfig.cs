@@ -25,14 +25,14 @@ namespace TestWiaSystem
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
                 yield return new object[] { "ParentJob", WiaSystem.Job, true };
                 yield return new object[] { "ConfigID", 10, true };
-                yield return new object[] { "AcquireSettings", DeepCopy(iJobConfig.AcquireSettings), false };
-                yield return new object[] { "ReadSettings", DeepCopy(iJobConfig.ReadSettings), false };
-                yield return new object[] { "TuneSettings", DeepCopy(iJobConfig.TuneSettings), false };
-                yield return new object[] { "TuneLatestResult", DeepCopy(iJobConfig.TuneLatestResult), false };
+                yield return new object[] { "AcquireSettings", ShallowCopy(iJobConfig.AcquireSettings), false };
+                yield return new object[] { "ReadSettings", ShallowCopy(iJobConfig.ReadSettings), false };
+                yield return new object[] { "TuneSettings", ShallowCopy(iJobConfig.TuneSettings), false };
+                yield return new object[] { "TuneLatestResult", ShallowCopy(iJobConfig.TuneLatestResult), false };
                 yield return new object[] { "TuneProgress", 2.345, true };
                 yield return new object[] { "Enable", true, false };
                 yield return new object[] { "IsReadCompletedEventEnabled", true, false };
-                yield return new object[] { "LatestReadResult", DeepCopy(iJobConfig.LatestReadResult), true };
+                yield return new object[] { "LatestReadResult", ShallowCopy(iJobConfig.LatestReadResult), true };
             }
         }
         /// <summary>
@@ -59,8 +59,8 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 IReadCompletedEventArgs iReadCompletedEventArgs = ReadCompletedEventArgs;
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
-                yield return new object[] { "Result", DeepCopy(ReadCompletedEventArgs.Result), true };
-                yield return new object[] { "AcqResult", DeepCopy(iReadCompletedEventArgs.AcqResult), true };
+                yield return new object[] { "Result", ShallowCopy(ReadCompletedEventArgs.Result), true };
+                yield return new object[] { "AcqResult", ShallowCopy(iReadCompletedEventArgs.AcqResult), true };
                 yield return new object[] { "LogIdString", "", true };
             }
         }

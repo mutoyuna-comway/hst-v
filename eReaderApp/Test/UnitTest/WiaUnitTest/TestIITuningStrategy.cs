@@ -28,7 +28,7 @@ namespace TestWiaSystem
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "IsMultiLightTuneForced", true, false };
                 yield return new object[] { "Progress", 10.0, true };
-                yield return new object[] { "LatestTuningResult", DeepCopy(iTuningStrategy.LatestTuningResult), true };
+                yield return new object[] { "LatestTuningResult", ShallowCopy(iTuningStrategy.LatestTuningResult), true };
                 yield return new object[] { "TuneHistory", "tuneHistory", true };
                 yield return new object[] { "ArchiveFolderName", "archiveFolderName", false };
                 yield return new object[] { "IsArchiveAutoCleanup", true, false };
@@ -55,8 +55,8 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 IReadOperationStartedEventArgs iReadOperationCompletedEventArgs = ReadOperationStartedEventArgs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "ReadSettings", DeepCopy(iReadOperationCompletedEventArgs.ReadSettings), true };
-                yield return new object[] { "ProcessImage", DeepCopy(iReadOperationCompletedEventArgs.ProcessImage), true };
+                yield return new object[] { "ReadSettings", ShallowCopy(iReadOperationCompletedEventArgs.ReadSettings), true };
+                yield return new object[] { "ProcessImage", ShallowCopy(iReadOperationCompletedEventArgs.ProcessImage), true };
             }
         }
 
@@ -80,7 +80,7 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 IReadOperationCompletedEventArgs iReadOperationCompletedEventArgs = ReadOperationCompletedEventArgs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "ReadResult", DeepCopy(iReadOperationCompletedEventArgs.ReadResult), true };
+                yield return new object[] { "ReadResult", ShallowCopy(iReadOperationCompletedEventArgs.ReadResult), true };
             }
         }
 
@@ -105,7 +105,7 @@ namespace TestWiaSystem
                 IAcquireImageStartedEventArgs iAcquireImageStartedEventArgs = AcquireImageStartedEventArgs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "RecordNumber", 1, true };
-                yield return new object[] { "AcqSettings", DeepCopy(iAcquireImageStartedEventArgs.AcqSettings), true };
+                yield return new object[] { "AcqSettings", ShallowCopy(iAcquireImageStartedEventArgs.AcqSettings), true };
             }
         }
 
@@ -128,7 +128,7 @@ namespace TestWiaSystem
                 // ここでテスト設定値用のインスタンスを生成
                 IAcquireImageCompletedEventArgs acquireImageCompletedEventArgs = AcquireImageCompletedEventArgs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "AcqResult", DeepCopy(acquireImageCompletedEventArgs.AcqResult), true };
+                yield return new object[] { "AcqResult", ShallowCopy(acquireImageCompletedEventArgs.AcqResult), true };
             }
         }
 

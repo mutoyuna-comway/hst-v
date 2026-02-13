@@ -31,7 +31,7 @@ namespace TestWiaSystem
                 yield return new object[] { "SystemFolder", "", false };
                 yield return new object[] { "DeviceFolder", "", false };
                 yield return new object[] { "DeviceID", 10, false };
-                yield return new object[] { "ProcSetting", DeepCopy(iSystemSettings.ProcSetting), false };
+                yield return new object[] { "ProcSetting", ShallowCopy(iSystemSettings.ProcSetting), false };
                 yield return new object[] { "UseExternalLight", true, false };
                 yield return new object[] { "UseLanguage", "", false };
                 yield return new object[] { "ExpandConfig", true, false };

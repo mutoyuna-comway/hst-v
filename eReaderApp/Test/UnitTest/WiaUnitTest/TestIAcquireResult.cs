@@ -24,11 +24,11 @@ namespace TestWiaSystem
             {
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 IAcquireResult iAcquireResult = ReadCompletedEventArgs.AcqResult;
-                yield return new object[] { "AcqParams", DeepCopy(iAcquireResult.AcqParams), true };
+                yield return new object[] { "AcqParams", ShallowCopy(iAcquireResult.AcqParams), true };
                 yield return new object[] { "ElapsedAcqTime", 10.0, true };
                 yield return new object[] { "ElapsedProcTime", 10.0, true };
-                yield return new object[] { "ProcessImage", DeepCopy(iAcquireResult.ProcessImage), true };
-                yield return new object[] { "DisplayImage", DeepCopy(iAcquireResult.DisplayImage), true };
+                yield return new object[] { "ProcessImage", ShallowCopy(iAcquireResult.ProcessImage), true };
+                yield return new object[] { "DisplayImage", ShallowCopy(iAcquireResult.DisplayImage), true };
                 yield return new object[] { "AcqSucceed", true, true };
             }
         }

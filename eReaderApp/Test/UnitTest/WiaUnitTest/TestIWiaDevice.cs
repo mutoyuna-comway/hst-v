@@ -36,8 +36,8 @@ namespace TestWiaSystem
                 yield return new object[] { "GainMin", 10, true };
                 yield return new object[] { "ExposureMin", 10, true };
                 yield return new object[] { "ExposureMax", 10, true };
-                yield return new object[] { "CameraInfo", DeepCopy(iWiaDevice.CameraInfo), true };
-                yield return new object[] { "CurrentAcqSettings", DeepCopy(iWiaDevice.CurrentAcqSettings), true };
+                yield return new object[] { "CameraInfo", ShallowCopy(iWiaDevice.CameraInfo), true };
+                yield return new object[] { "CurrentAcqSettings", ShallowCopy(iWiaDevice.CurrentAcqSettings), true };
 
             }
         }

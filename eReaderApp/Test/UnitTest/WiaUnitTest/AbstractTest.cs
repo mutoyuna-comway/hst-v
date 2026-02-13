@@ -1,9 +1,6 @@
 ﻿
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using StubWia;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using Wia.Abstractions;
@@ -18,7 +15,6 @@ namespace TestWiaSystem
     {
         /// <summary>
         /// 各インスタンスを保持
-        /// これによりstubとの交換が容易になる
         /// </summary>
         protected static IWiaSystem WiaSystem => InstanceManager.WiaSystem;
         protected static IReadCompletedEventArgs ReadCompletedEventArgs => InstanceManager.ReadCompletedEventArgs;
@@ -35,15 +31,6 @@ namespace TestWiaSystem
         protected static IAcquireImageCompletedEventArgs AcquireImageCompletedEventArgs => InstanceManager.AcquireImageCompletedEventArgs;
         protected static ILogMessageEventArgs LogMessageEventArgs => InstanceManager.LogMessageEventArgs;
 
-        //インスタンスのgetter setterテスト用
-        protected static IWiaSystem getCopyIWiaSystem()
-        {
-            return WiaSystem;
-        }
-        protected static IReadCompletedEventArgs getCopyIReadCompletedEventArgs()
-        {
-            return new StubIReadCompletedEventArgs();
-        }
         /// <summary>
         /// プロパティのGetter/SetterおよびINotifyPropertyChangedを検証する汎用メソッド
         /// </summary>
@@ -264,51 +251,48 @@ namespace TestWiaSystem
             } 
         }
 
+
         /// <summary>
-        /// オブジェクトのディープコピーを作成します。
+        /// オブジェクトのシャローコピー（浅いコピー）を作成します。
+        /// インスタンスは新しく生成されますが、内部の参照型プロパティは同じインスタンスを指します。
         /// </summary>
-        /// <typeparam name="T">コピーする型</typeparam>
-        /// <param name="source">コピー元インスタンス</param>
-        /// <returns>複製されたインスタンス</returns>
-        public static T DeepCopy<T>(T source)
+        public static T ShallowCopy<T>(T source)
         {
             if (ReferenceEquals(source, null)) return default;
-            
-            // 型情報を含めてシリアライズ・デシリアライズする設定
+
+            // ソースの実際の型を取得（インターフェース経由でも実体の型で生成するため）
+            Type type = source.GetType();
+
             try
             {
-                var settings = new JsonSerializerSettings
+                // 引数なしコンストラクタで新しいインスタンスを生成
+                T clone = (T)Activator.CreateInstance(type, true);
+
+                // 全てのフィールドをコピー（バッキングフィールドも含むため、より確実にコピー可能）
+                // BindingFlags.NonPublic | BindingFlags.Instance を指定することで private な変数も対象にする
+                FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                foreach (FieldInfo field in fields)
                 {
-                    ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    TypeNameHandling = TypeNameHandling.All,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    field.SetValue(clone, field.GetValue(source));
+                }
 
-                    // 【追加】ここでIPAddress用のコンバーターを登録する
-                    Converters = new System.Collections.Generic.List<JsonConverter> { new IPAddressConverter() },
-                    // エラーが発生した際、どのパスで起きたか詳細を出す設定
-                    Error = (sender, args) => {
-                        System.Diagnostics.Debug.WriteLine($"Serialization Error: {args.ErrorContext.Path}");
+                // プロパティのうち、フィールドでカバーされない自動実装以外のものがある場合のためにプロパティもスキャン
+                PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                foreach (PropertyInfo prop in properties)
+                {
+                    // 書き込み可能かつインデクサでない場合のみコピー
+                    if (prop.CanWrite && prop.GetIndexParameters().Length == 0)
+                    {
+                        prop.SetValue(clone, prop.GetValue(source));
                     }
-                };
+                }
 
-                // Serialize時にも必ず settings を渡す
-                var json = JsonConvert.SerializeObject(source, settings);
-                return JsonConvert.DeserializeObject<T>(json, settings);
+                return clone;
             }
             catch (Exception ex)
             {
-                var messages = new List<string>();
-                var currentEx = ex;
-                while (currentEx != null)
-                {
-                    messages.Add($"{currentEx.GetType().Name}: {currentEx.Message}\n{currentEx.StackTrace}");
-                    currentEx = currentEx.InnerException;
-                }
-
-                string fullMessage = string.Join("\n\n--- Inner Exception ---\n\n", messages);
-                throw new Exception($"{typeof(T).Name} のコピー中に致命的なエラーが発生しました。\n{fullMessage}", ex);
+                throw new Exception($"{type.Name} のシャローコピー中にエラーが発生しました。引数なしコンストラクタが存在するか確認してください。", ex);
             }
-
         }
     }
 }

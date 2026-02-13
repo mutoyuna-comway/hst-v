@@ -27,9 +27,9 @@ namespace TestWiaSystem
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Delimeter", DelimeterType.CRLF, false };
                 yield return new object[] { "CommType", CommunicatorType.Serial, false };
-                yield return new object[] { "Socket", DeepCopy(iSystemCommSettings.Socket), false };
-                yield return new object[] { "Serial", DeepCopy(iSystemCommSettings.Serial), false };
-                yield return new object[] { "Response", DeepCopy(iSystemCommSettings.Response), false };
+                yield return new object[] { "Socket", ShallowCopy(iSystemCommSettings.Socket), false };
+                yield return new object[] { "Serial", ShallowCopy(iSystemCommSettings.Serial), false };
+                yield return new object[] { "Response", ShallowCopy(iSystemCommSettings.Response), false };
 
             }
         }

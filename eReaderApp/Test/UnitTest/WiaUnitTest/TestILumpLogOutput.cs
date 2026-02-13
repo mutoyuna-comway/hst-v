@@ -24,13 +24,13 @@ namespace TestWiaSystem
             {
                 ILumpLogOutput iLumpLogOutput = WiaSystem.LogSettings.LogOutput;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "AllImage", DeepCopy(iLumpLogOutput.AllImage), false };
-                yield return new object[] { "FailImage", DeepCopy(iLumpLogOutput.FailImage), false };
-                yield return new object[] { "JobData", DeepCopy(iLumpLogOutput.JobData), false };
-                yield return new object[] { "LogData", DeepCopy(iLumpLogOutput.LogData), false };
-                yield return new object[] { "ConfData", DeepCopy(iLumpLogOutput.ConfData), false };
-                yield return new object[] { "PCInfo", DeepCopy(iLumpLogOutput.PCInfo), false };
-                yield return new object[] { "SelfDiagnosisInfo", DeepCopy(iLumpLogOutput.SelfDiagnosisInfo), false };
+                yield return new object[] { "AllImage", ShallowCopy(iLumpLogOutput.AllImage), false };
+                yield return new object[] { "FailImage", ShallowCopy(iLumpLogOutput.FailImage), false };
+                yield return new object[] { "JobData", ShallowCopy(iLumpLogOutput.JobData), false };
+                yield return new object[] { "LogData", ShallowCopy(iLumpLogOutput.LogData), false };
+                yield return new object[] { "ConfData", ShallowCopy(iLumpLogOutput.ConfData), false };
+                yield return new object[] { "PCInfo", ShallowCopy(iLumpLogOutput.PCInfo), false };
+                yield return new object[] { "SelfDiagnosisInfo", ShallowCopy(iLumpLogOutput.SelfDiagnosisInfo), false };
                 yield return new object[] { "SizeOfDevidedLog", 10, false };
 
 
