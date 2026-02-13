@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAcquireCondition.cs" />
     <Compile Include="IAcquireResult.cs" />
     <Compile Include="IConfigStore.cs" />
     <Compile Include="IIdReadingService.cs" />

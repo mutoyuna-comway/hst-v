@@ -21,9 +21,25 @@ namespace Wia.Abstractions
         // ------------------------------
 
         /// <summary>
+        /// 照明数を返す
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// 照明データの列挙
+        /// </summary>
+        IEnumerable<ILightData> LightItems { get; }
+
+        /// <summary>
+        /// 照明データのインデックス参照
+        /// </summary>
+
+        ILightData this[int key] { get; }
+
+        /// <summary>
         /// 照明構成番号
         /// </summary>
-        int LightConfigID { get; }
+        int LightConfigID { get; set; }
 
         /// <summary>
         /// 照明強度
@@ -61,47 +77,27 @@ namespace Wia.Abstractions
         /// <param name="power">照明強度</param>
         /// <remarks>有効なLight全てに値を指定</remarks>
         void SetLightPower(int power);
+    }
+
+    /// <summary>
+    /// 照明データ
+    /// </summary>
+    public interface ILightData : INotifyPropertyChanged
+    {
 
         /// <summary>
-        /// 照明の数を取得する
+        /// 照明番号
         /// </summary>
-        /// <returns>照明数</returns>
-        int GetLightCount();
+        int LightNumber { get; }
 
         /// <summary>
-        /// 個別照明の有効無効の取得
+        /// 照明の有効/無効
         /// </summary>
-        /// <param name="index">照明インデックス番号</param>
-        /// <return>true: 有効、false:無効</return>
-        bool GetLightEnable(int index);
+        bool Available { get; set; }
 
         /// <summary>
-        /// 個別照明の有効無効の設定
+        /// 照明強度[0-255]
         /// </summary>
-        /// <param name="index">照明インデックス番号</param>
-        /// <param name="enable">true: 有効、false:無効</param>
-        void SetLightEnable(int index, bool enable);
-
-        /// <summary>
-        /// 個別照明の照明強度の取得
-        /// </summary>
-        /// <param name="index">照明インデックス番号</param>
-        /// <return>照明強度</return>
-        int GetLightPower(int index);
-
-        /// <summary>
-        /// 個別照明の照明強度の設定
-        /// </summary>
-        /// <param name="index">照明インデックス番号</param>
-        /// <param name="power">照明強度</param>
-        void SetLightPower(int index, int power);
-
-        /// <summary>
-        /// 個別照明のIDの取得
-        /// </summary>
-        /// <param name="index">照明インデックス番号</param>
-        /// <returns>ID番号</returns>
-        int GetLightId(int index);
-
+        int Power { get; set; }
     }
 }

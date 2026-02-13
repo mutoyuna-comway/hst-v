@@ -9,6 +9,8 @@ namespace Wia.Abstractions
         public const string AppVersion = "1.0.0.5";
         public const string ParamsBackupFolderName = "ParamsBackup";
         public const string CamErrorImageFolderName = "CamErrorImage";
+        public const int ConfigMaxNum = 16;
+        public const int ExpandedConfigMaxNum = 50;
     }
 
     //
