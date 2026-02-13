@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyReadResult = WiaSystem.Job.SelectedConfig.Clone().LatestReadResult;
+                IReadResult iReadResult = WiaSystem.Job.SelectedConfig.LatestReadResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
                 yield return new object[] { "ReadString", "", true };
@@ -31,14 +31,14 @@ namespace TestWiaSystem
                 yield return new object[] { "MinScore", 10.0, true };
                 yield return new object[] { "ElapsedTime", 10.0, true };
                 yield return new object[] { "ConfigID", 10, true };
-                yield return new object[] { "ROI", copyReadResult.ROI, true };
-                yield return new object[] { "CharSize", copyReadResult.CharSize, true };
+                yield return new object[] { "ROI", DeepCopy(iReadResult.ROI), true };
+                yield return new object[] { "CharSize", DeepCopy(iReadResult.CharSize), true };
                 yield return new object[] { "Pass", true, true };
                 yield return new object[] { "IsTimeout", true, true };
                 yield return new object[] { "ConfusionString", "", true };
                 yield return new object[] { "IsCorrectConfChecksum", true, true };
-                yield return new object[] { "OcrResults", copyReadResult.OcrResults, true };
-                yield return new object[] { "ReadSettings", copyReadResult.ReadSettings, true };
+                yield return new object[] { "OcrResults", DeepCopy(iReadResult.OcrResults), true };
+                yield return new object[] { "ReadSettings", DeepCopy(iReadResult.ReadSettings), true };
 
             }
         }

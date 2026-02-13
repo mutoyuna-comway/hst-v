@@ -23,8 +23,9 @@ namespace TestWiaSystem
         {
             get
             {
+                IConfigStore iConfigStore = WiaSystem.Job.Configs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "ParentJob", getCopyIWiaSystem().Job, true };
+                yield return new object[] { "ParentJob", DeepCopy(iConfigStore.ParentJob), true };
                 yield return new object[] { "Count", 10, true };
             }
         }

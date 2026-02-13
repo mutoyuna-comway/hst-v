@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copySystemSettings = getCopyIWiaSystem().SystemSettings;
+                ISystemSettings iSystemSettings = WiaSystem.SystemSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Password", "", false };
                 yield return new object[] { "SystemRootFolderName", "", false };
@@ -31,7 +31,7 @@ namespace TestWiaSystem
                 yield return new object[] { "SystemFolder", "", false };
                 yield return new object[] { "DeviceFolder", "", false };
                 yield return new object[] { "DeviceID", 10, false };
-                yield return new object[] { "ProcSetting", copySystemSettings.ProcSetting, false };
+                yield return new object[] { "ProcSetting", DeepCopy(iSystemSettings.ProcSetting), false };
                 yield return new object[] { "UseExternalLight", true, false };
                 yield return new object[] { "UseLanguage", "", false };
                 yield return new object[] { "ExpandConfig", true, false };

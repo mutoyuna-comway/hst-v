@@ -23,19 +23,19 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyWiaSystem = getCopyIWiaSystem();
+                IWiaSystem iWiaSystem = WiaSystem;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "AcquisitionSettings", copyWiaSystem.AcquisitionSettings, true };
-                yield return new object[] { "SystemSettings", copyWiaSystem.SystemSettings, true };
-                yield return new object[] { "GUISettings", copyWiaSystem.GUISettings, true };
-                yield return new object[] { "CommunicationSettings", copyWiaSystem.CommunicationSettings, true };
-                yield return new object[] { "ReadSettings", copyWiaSystem.ReadSettings, true };
-                yield return new object[] { "LogSettings", copyWiaSystem.LogSettings, true };
-                yield return new object[] { "Device", copyWiaSystem.Device, true };
-                yield return new object[] { "ImageSource", copyWiaSystem.ImageSource, true };
-                yield return new object[] { "CommManager", copyWiaSystem.CommManager, true };
-                yield return new object[] { "Job", copyWiaSystem.Job, true };
-                yield return new object[] { "MaintenanceServices", copyWiaSystem.MaintenanceServices, true };
+                yield return new object[] { "AcquisitionSettings", DeepCopy(iWiaSystem.AcquisitionSettings), true };
+                yield return new object[] { "SystemSettings", DeepCopy(iWiaSystem.SystemSettings), true };
+                yield return new object[] { "GUISettings", DeepCopy(iWiaSystem.GUISettings), true };
+                yield return new object[] { "CommunicationSettings", DeepCopy(iWiaSystem.CommunicationSettings), true };
+                yield return new object[] { "ReadSettings", DeepCopy(iWiaSystem.ReadSettings), true };
+                yield return new object[] { "LogSettings", DeepCopy(iWiaSystem.LogSettings), true };
+                yield return new object[] { "Device", DeepCopy(iWiaSystem.Device), true };
+                yield return new object[] { "ImageSource", DeepCopy(iWiaSystem.ImageSource), true };
+                yield return new object[] { "CommManager", DeepCopy(iWiaSystem.CommManager), true };
+                yield return new object[] { "Job", DeepCopy(iWiaSystem.Job), true };
+                yield return new object[] { "MaintenanceServices", DeepCopy(iWiaSystem.MaintenanceServices), true };
                 yield return new object[] { "AppVersion", "", true };
                 yield return new object[] { "IsOnline", true, true };
                 yield return new object[] { "IsScreenLocked", true, false };

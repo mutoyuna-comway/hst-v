@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyWiaDevice = getCopyIWiaSystem().Device;
+                IWiaDevice iWiaDevice = WiaSystem.Device;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "IsCameraFound", true, true };
                 yield return new object[] { "IsValidLicense", true, true };
@@ -36,8 +36,8 @@ namespace TestWiaSystem
                 yield return new object[] { "GainMin", 10, true };
                 yield return new object[] { "ExposureMin", 10, true };
                 yield return new object[] { "ExposureMax", 10, true };
-                yield return new object[] { "CameraInfo", copyWiaDevice.CameraInfo, true };
-                yield return new object[] { "CurrentAcqSettings", copyWiaDevice.CurrentAcqSettings, true };
+                yield return new object[] { "CameraInfo", DeepCopy(iWiaDevice.CameraInfo), true };
+                yield return new object[] { "CurrentAcqSettings", DeepCopy(iWiaDevice.CurrentAcqSettings), true };
 
             }
         }

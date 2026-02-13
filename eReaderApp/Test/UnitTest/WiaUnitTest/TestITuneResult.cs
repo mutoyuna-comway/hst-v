@@ -24,7 +24,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyTuneResult = WiaSystem.Job.SelectedConfig.Clone().TuneLatestResult;
+                ITuneResult iTuneResult = WiaSystem.Job.SelectedConfig.TuneLatestResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
                 yield return new object[] { "NumRead", 10, true };
@@ -35,11 +35,11 @@ namespace TestWiaSystem
                 yield return new object[] { "NumTuneFailed", 10, true };
                 yield return new object[] { "CurrentMinimumScore", 10.0, true };
                 yield return new object[] { "BestMinimumScore", 10.0, true };
-                yield return new object[] { "AcqSettings", copyTuneResult.AcqSettings.Clone(), true };
-                yield return new object[] { "ReadSettings", copyTuneResult.ReadSettings.Clone(), true };
-                yield return new object[] { "BestAcqSettings", copyTuneResult.BestAcqSettings.Clone(), true };
-                yield return new object[] { "BestReadSettings", copyTuneResult.BestReadSettings.Clone(), true };
-                yield return new object[] { "BestPassedImage", copyTuneResult.Clone().BestPassedImage, true };
+                yield return new object[] { "AcqSettings", DeepCopy(iTuneResult.AcqSettings), true };
+                yield return new object[] { "ReadSettings", DeepCopy(iTuneResult.ReadSettings), true };
+                yield return new object[] { "BestAcqSettings", DeepCopy(iTuneResult.BestAcqSettings), true };
+                yield return new object[] { "BestReadSettings", DeepCopy(iTuneResult.BestReadSettings), true };
+                yield return new object[] { "BestPassedImage", DeepCopy(iTuneResult.BestPassedImage), true };
                 yield return new object[] { "BestRecordNumber", 2, true };
             }
         }

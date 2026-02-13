@@ -23,20 +23,20 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyJobConfig = WiaSystem.Job.SelectedConfig.Clone();
+                IJobReadSettings ijobReadSettings = WiaSystem.Job.SelectedConfig.ReadSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.T7, false };
                 yield return new object[] { "Checksum", ChecksumType.Semi, false };
-                yield return new object[] { "CharSize", copyJobConfig.ReadSettings.CharSize, false };
+                yield return new object[] { "CharSize", DeepCopy(ijobReadSettings.CharSize), false };
                 yield return new object[] { "FieldString", "", false };
                 yield return new object[] { "FieldDef", "", false };
                 yield return new object[] { "Color", MarkColor.White, false };
                 yield return new object[] { "AcceptThreshold", 10, false };
-                yield return new object[] { "OCR", copyJobConfig.ReadSettings.OCR, true };
-                yield return new object[] { "T7", copyJobConfig.ReadSettings.T7, true };
-                yield return new object[] { "QR", copyJobConfig.ReadSettings.QR, true };
-                yield return new object[] { "DM", copyJobConfig.ReadSettings.DM, true };
-                yield return new object[] { "Barcode", copyJobConfig.ReadSettings.Barcode, true };
+                yield return new object[] { "OCR", DeepCopy(ijobReadSettings.OCR), true };
+                yield return new object[] { "T7", DeepCopy(ijobReadSettings.T7), true };
+                yield return new object[] { "QR", DeepCopy(ijobReadSettings.QR), true };
+                yield return new object[] { "DM", DeepCopy(ijobReadSettings.DM), true };
+                yield return new object[] { "Barcode", DeepCopy(ijobReadSettings.Barcode), true };
             }
         }
 

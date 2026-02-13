@@ -23,10 +23,10 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyJobAcqSettings = WiaSystem.Job.SelectedConfig.Clone().AcquireSettings;
+                IJobAcqSettings iJobAcqSettings = WiaSystem.Job.SelectedConfig.AcquireSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "AcqOrient", ImageOrient.Normal, false };
-                yield return new object[] { "WOI", copyJobAcqSettings.WOI, false };
+                yield return new object[] { "WOI", DeepCopy(iJobAcqSettings.WOI), false };
                 yield return new object[] { "Gain", 10, false };
                 yield return new object[] { "Exposure", 10, false };
                 yield return new object[] { "Rotate", 10.0, false };
@@ -35,7 +35,7 @@ namespace TestWiaSystem
                 yield return new object[] { "AcqFilterColor", MarkColor.Auto, false };
                 yield return new object[] { "AcqFilterIteration", 10, false };
                 yield return new object[] { "AcqMode", AcquireMethod.AdvancedAuto, false };
-                yield return new object[] { "SelectedLightConfig", copyJobAcqSettings.SelectedLightConfig, false };
+                yield return new object[] { "SelectedLightConfig", DeepCopy(iJobAcqSettings.SelectedLightConfig), false };
                 yield return new object[] { "SelectedLightConfigIndex", 10, false };
             }
         }

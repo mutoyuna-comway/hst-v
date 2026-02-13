@@ -3,6 +3,7 @@
 using StubWia;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Wia.Abstractions;
 
 /// <summary>
@@ -23,15 +24,15 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyJob = getCopyIWiaSystem().Job;
+                IJob iJob = WiaSystem.Job;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ReadType", ReadMethod.All, false };
                 yield return new object[] { "ScoreType", ScoreMode.MinScore, false };
-                yield return new object[] { "SelectedConfig", copyJob.SelectedConfig, true };
+                yield return new object[] { "SelectedConfig", DeepCopy(iJob.SelectedConfig), true };
                 yield return new object[] { "SelectedConfigIndex", 10, false };
-                yield return new object[] { "Configs", copyJob.Configs, true };
+                yield return new object[] { "Configs", iJob.Configs, true };// Configsはコンテナクラスへの参照なので、コピーせずインスタンス比較で問題なし
                 yield return new object[] { "MaxNumConfig", MaxNumConfigType.Num16, false };
-                yield return new object[] { "SystemService", getCopyIWiaSystem(), false };
+                yield return new object[] { "SystemService", WiaSystem, false };
             }
         }
 

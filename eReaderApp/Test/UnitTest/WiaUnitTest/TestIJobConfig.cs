@@ -21,18 +21,18 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyConfig = WiaSystem.Job.SelectedConfig.Clone();
+                IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
                 yield return new object[] { "ParentJob", WiaSystem.Job, true };
                 yield return new object[] { "ConfigID", 10, true };
-                yield return new object[] { "AcquireSettings", copyConfig.AcquireSettings, false };
-                yield return new object[] { "ReadSettings", copyConfig.ReadSettings, false };
-                yield return new object[] { "TuneSettings", copyConfig.TuneSettings, false };
-                yield return new object[] { "TuneLatestResult", copyConfig.TuneLatestResult, false };
+                yield return new object[] { "AcquireSettings", DeepCopy(iJobConfig.AcquireSettings), false };
+                yield return new object[] { "ReadSettings", DeepCopy(iJobConfig.ReadSettings), false };
+                yield return new object[] { "TuneSettings", DeepCopy(iJobConfig.TuneSettings), false };
+                yield return new object[] { "TuneLatestResult", DeepCopy(iJobConfig.TuneLatestResult), false };
                 yield return new object[] { "TuneProgress", 2.345, true };
                 yield return new object[] { "Enable", true, false };
                 yield return new object[] { "IsReadCompletedEventEnabled", true, false };
-                yield return new object[] { "LatestReadResult", copyConfig.LatestReadResult.Clone(), true };
+                yield return new object[] { "LatestReadResult", DeepCopy(iJobConfig.LatestReadResult), true };
             }
         }
         /// <summary>
@@ -57,10 +57,10 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copyReadCompletedEventArgs = getCopyIReadCompletedEventArgs();
+                IReadCompletedEventArgs iReadCompletedEventArgs = ReadCompletedEventArgs;
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
-                yield return new object[] { "Result", ReadCompletedEventArgs.Result.Clone(), true };
-                yield return new object[] { "AcqResult", copyReadCompletedEventArgs.AcqResult, true };
+                yield return new object[] { "Result", DeepCopy(ReadCompletedEventArgs.Result), true };
+                yield return new object[] { "AcqResult", DeepCopy(iReadCompletedEventArgs.AcqResult), true };
                 yield return new object[] { "LogIdString", "", true };
             }
         }

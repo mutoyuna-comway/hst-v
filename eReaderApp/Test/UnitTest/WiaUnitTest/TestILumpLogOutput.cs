@@ -22,16 +22,15 @@ namespace TestWiaSystem
         {
             get
             {
-                // ここでテスト設定値用のインスタンスを生成
-                var copyLumpLogOutput = getCopyIWiaSystem().LogSettings.LogOutput;
+                ILumpLogOutput iLumpLogOutput = WiaSystem.LogSettings.LogOutput;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "AllImage", copyLumpLogOutput.AllImage, false };
-                yield return new object[] { "FailImage", copyLumpLogOutput.FailImage, false };
-                yield return new object[] { "JobData", copyLumpLogOutput.JobData, false };
-                yield return new object[] { "LogData", copyLumpLogOutput.LogData, false };
-                yield return new object[] { "ConfData", copyLumpLogOutput.ConfData, false };
-                yield return new object[] { "PCInfo", copyLumpLogOutput.PCInfo, false };
-                yield return new object[] { "SelfDiagnosisInfo", copyLumpLogOutput.SelfDiagnosisInfo, false };
+                yield return new object[] { "AllImage", DeepCopy(iLumpLogOutput.AllImage), false };
+                yield return new object[] { "FailImage", DeepCopy(iLumpLogOutput.FailImage), false };
+                yield return new object[] { "JobData", DeepCopy(iLumpLogOutput.JobData), false };
+                yield return new object[] { "LogData", DeepCopy(iLumpLogOutput.LogData), false };
+                yield return new object[] { "ConfData", DeepCopy(iLumpLogOutput.ConfData), false };
+                yield return new object[] { "PCInfo", DeepCopy(iLumpLogOutput.PCInfo), false };
+                yield return new object[] { "SelfDiagnosisInfo", DeepCopy(iLumpLogOutput.SelfDiagnosisInfo), false };
                 yield return new object[] { "SizeOfDevidedLog", 10, false };
 
 

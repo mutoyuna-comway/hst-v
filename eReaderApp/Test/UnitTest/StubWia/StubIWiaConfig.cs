@@ -158,7 +158,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PacketSize)));
             }
         }
-        private IPAddress _connectedIPAddress;
+        private IPAddress _connectedIPAddress = new IPAddress(0L);
         public IPAddress ConnectedIPAddress {
             get { return this._connectedIPAddress; }
             private set

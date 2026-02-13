@@ -20,7 +20,7 @@ namespace StubWia
             }
         }
 
-        private int _count = 0;
+        private int _count = 1;
         public int Count
         {
             get { return this._count; }
@@ -33,17 +33,18 @@ namespace StubWia
 
         public event PropertyChangedEventHandler PropertyChanged;
         
-        public StubIConfigStore() { }
         public event EventHandler CollectionChanging;
         public event EventHandler CollectionChanged;
+
         public IEnumerator<IJobConfig> GetEnumerator()
         {
-            return null;
+            return new List<IJobConfig>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return null;
+            return GetEnumerator();
         }
+
     }
 }

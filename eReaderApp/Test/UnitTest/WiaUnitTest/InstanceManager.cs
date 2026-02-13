@@ -20,6 +20,8 @@ namespace TestWiaSystem
                 {
                     // .runsettings のキー名を指定してインスタンス化
                     _wiaSystem = getInstance<IWiaSystem>("WiaSystemImpl");
+                    var privateObject = new PrivateObject(_wiaSystem.Job.Configs);
+                    privateObject.SetProperty(nameof(_wiaSystem.Job.Configs.ParentJob), _wiaSystem.Job);
                 }
                 return _wiaSystem;
             }

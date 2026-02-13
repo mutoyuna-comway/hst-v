@@ -23,13 +23,13 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                var copySystemCommSettings = getCopyIWiaSystem().CommunicationSettings;
+                ISystemCommSettings iSystemCommSettings = WiaSystem.CommunicationSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Delimeter", DelimeterType.CRLF, false };
                 yield return new object[] { "CommType", CommunicatorType.Serial, false };
-                yield return new object[] { "Socket", copySystemCommSettings.Socket, false };
-                yield return new object[] { "Serial", copySystemCommSettings.Serial, false };
-                yield return new object[] { "Response", copySystemCommSettings.Response, false };
+                yield return new object[] { "Socket", DeepCopy(iSystemCommSettings.Socket), false };
+                yield return new object[] { "Serial", DeepCopy(iSystemCommSettings.Serial), false };
+                yield return new object[] { "Response", DeepCopy(iSystemCommSettings.Response), false };
 
             }
         }

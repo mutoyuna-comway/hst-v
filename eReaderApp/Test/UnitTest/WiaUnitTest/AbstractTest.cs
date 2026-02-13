@@ -1,7 +1,9 @@
 ﻿
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using StubWia;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using Wia.Abstractions;
@@ -260,6 +262,53 @@ namespace TestWiaSystem
             {
                 this.propertyTestExe(viewModel, propertyName, newValue);
             } 
+        }
+
+        /// <summary>
+        /// オブジェクトのディープコピーを作成します。
+        /// </summary>
+        /// <typeparam name="T">コピーする型</typeparam>
+        /// <param name="source">コピー元インスタンス</param>
+        /// <returns>複製されたインスタンス</returns>
+        public static T DeepCopy<T>(T source)
+        {
+            if (ReferenceEquals(source, null)) return default;
+            
+            // 型情報を含めてシリアライズ・デシリアライズする設定
+            try
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    ObjectCreationHandling = ObjectCreationHandling.Replace,
+                    TypeNameHandling = TypeNameHandling.All,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+
+                    // 【追加】ここでIPAddress用のコンバーターを登録する
+                    Converters = new System.Collections.Generic.List<JsonConverter> { new IPAddressConverter() },
+                    // エラーが発生した際、どのパスで起きたか詳細を出す設定
+                    Error = (sender, args) => {
+                        System.Diagnostics.Debug.WriteLine($"Serialization Error: {args.ErrorContext.Path}");
+                    }
+                };
+
+                // Serialize時にも必ず settings を渡す
+                var json = JsonConvert.SerializeObject(source, settings);
+                return JsonConvert.DeserializeObject<T>(json, settings);
+            }
+            catch (Exception ex)
+            {
+                var messages = new List<string>();
+                var currentEx = ex;
+                while (currentEx != null)
+                {
+                    messages.Add($"{currentEx.GetType().Name}: {currentEx.Message}\n{currentEx.StackTrace}");
+                    currentEx = currentEx.InnerException;
+                }
+
+                string fullMessage = string.Join("\n\n--- Inner Exception ---\n\n", messages);
+                throw new Exception($"{typeof(T).Name} のコピー中に致命的なエラーが発生しました。\n{fullMessage}", ex);
+            }
+
         }
     }
 }
