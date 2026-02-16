@@ -41,6 +41,31 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReflectedColor)));
             }
         }
+
+        private int _count;
+        public int Count
+        {
+            get => _count;
+            set
+            {
+                this._count = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+            }
+        }
+
+        public IEnumerable<ILightData> LightItems => throw new NotImplementedException();
+
+        int ILightConfig.LightConfigID { 
+            get => LightConfigID;
+            set
+            {
+                LightConfigID = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+            }
+        }
+
+        public ILightData this[int key] => throw new NotImplementedException();
+
         public int GetLightPower() { return 0; }
         public void SetLightPower(int power) { }
         public int GetLightCount() { return 0; }

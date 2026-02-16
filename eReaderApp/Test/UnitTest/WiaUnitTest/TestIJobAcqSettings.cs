@@ -30,7 +30,7 @@ namespace TestWiaSystem
                 yield return new object[] { "Gain", 10, false };
                 yield return new object[] { "Exposure", 10, false };
                 yield return new object[] { "Rotate", 10.0, false };
-                yield return new object[] { "AcqFilter", FilterType.Median, false };
+                yield return new object[] { "AcqFilterType", FilterType.Median, false };
                 yield return new object[] { "AcqFilterSize", 10, false };
                 yield return new object[] { "AcqFilterColor", MarkColor.Auto, false };
                 yield return new object[] { "AcqFilterIteration", 10, false };

@@ -10,8 +10,8 @@ namespace StubWia
        
         public StubIAcquireResult() { }
 
-        private IJobAcqSettings _acqParams = new StubIJobAcqSettings();
-        public IJobAcqSettings AcqParams
+        private IAcquireCondition _acqParams = new StubIAcquireCondition();
+        public IAcquireCondition AcqParams
         {
             get { return this._acqParams; }
             private set

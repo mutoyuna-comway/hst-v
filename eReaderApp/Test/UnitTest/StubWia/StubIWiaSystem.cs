@@ -176,6 +176,8 @@ namespace StubWia
         public event EventHandler LiveViewStopped;
         public event EventHandler AcquireImageAvailable;
         public event EventHandler ReadResultAvailable;
+        public event EventHandler ImageAcquisitionFailed;
+
         /// <summary>
         /// アプリケーションを終了する
         /// </summary>
@@ -409,6 +411,20 @@ namespace StubWia
             IsTuning = false;
         }
 
+        public void ApplicationExit(uint waitTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreateNewJob()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SaveJobOverwrite()
+        {
+            throw new NotImplementedException();
+        }
     }
     public class StubIScreenVisibilityChangeEventArgs : IScreenVisibilityChangeEventArgs
     {

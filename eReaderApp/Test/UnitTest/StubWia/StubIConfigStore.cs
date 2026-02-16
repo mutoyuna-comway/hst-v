@@ -46,5 +46,9 @@ namespace StubWia
             return GetEnumerator();
         }
 
+        public IJobConfig GetOrDefault(int configId)
+        {
+            return new StubIJobConfig();
+        }
     }
 }

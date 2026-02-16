@@ -130,7 +130,7 @@ namespace TestWiaSystem
                 yield return new object[] { "Exposure", 1, true };
                 yield return new object[] { "Gain", 1, true };
                 yield return new object[] { "Orient", ImageOrient.HorizontalFlip, true };
-                yield return new object[] { "LightConfs", AcquireCondition.LightConfs.Clone(), true };
+                yield return new object[] { "AcqLightConfig", ShallowCopy(AcquireCondition.AcqLightConfig), true };
 
             }
         }

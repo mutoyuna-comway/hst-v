@@ -132,14 +132,14 @@ namespace StubWia
             }
         }
 
-        private IJobAcqSettings _acqSettings = new StubIJobAcqSettings();
-        public IJobAcqSettings AcqSettings
+        private IAcquireCondition _acqCondition = new StubIAcquireCondition();
+        public IAcquireCondition AcqCondition
         {
-            get { return this._acqSettings; }
+            get { return this._acqCondition; }
             private set
             {
-                this._acqSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcqSettings)));
+                this._acqCondition = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcqCondition)));
             }
         }
 
@@ -153,14 +153,14 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
             }
         }
-        private IJobAcqSettings _bestAcqSettings = new StubIJobAcqSettings();
-        public IJobAcqSettings BestAcqSettings
+        private IAcquireCondition _bestAcqCondition  = new StubIAcquireCondition();
+        public IAcquireCondition BestAcqCondition
         {
-            get { return this._bestAcqSettings; }
+            get { return this._bestAcqCondition ; }
             private set
             {
-                this._bestAcqSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestAcqSettings)));
+                this._bestAcqCondition  = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BestAcqCondition)));
             }
         }
         private IJobReadSettings _bestReadSettings = new StubIJobReadSettings();

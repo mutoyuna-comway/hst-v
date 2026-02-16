@@ -213,47 +213,6 @@ namespace StubWia
         }
     }
 
-    public class StubIAcquireCondition : IAcquireCondition
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public StubIAcquireCondition() { }
-        private int _exposure;
-        public int Exposure {
-            get => _exposure;
-            set
-            {
-                _exposure = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Exposure)));
-            }
-        }
-        private int _gain;
-        public int Gain {
-            get => _gain;
-            set
-            {
-                _gain = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Gain)));
-            }
-        }
-        private ImageOrient _orient;
-        public ImageOrient Orient {
-            get => _orient;
-            set
-            {
-                _orient = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Orient)));
-            }
-        }
-        private ILightConfig[] _lightConfs = new[] { new StubILightConfig() };
-        public ILightConfig[] LightConfs {
-            get => _lightConfs;
-            set
-            {
-                _lightConfs = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightConfs)));
-            }
-        }
-    }
 
     public class StubIWaitResponse : IWaitResponse
     {
