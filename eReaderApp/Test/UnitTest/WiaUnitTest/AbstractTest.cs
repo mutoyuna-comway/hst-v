@@ -65,10 +65,10 @@ namespace TestWiaSystem
                 setter(newValue);
 
                 // 3. 値が正しく更新されたか確認 (Getterのテスト)
-                Assert.AreEqual(newValue, getter(), $"プロパティ '{propertyName}' の値が正しく更新されていません。");
+                Assert.AreEqual(newValue, getter(), $"property '{propertyName}' value is not update");
 
                 // 4. イベントが発火したか確認 (INotifyPropertyChangedのテスト)
-                Assert.IsTrue(isEventRaised, $"プロパティ '{propertyName}' の変更通知(INotifyPropertyChanged)が発火しませんでした。");
+                Assert.IsTrue(isEventRaised, $"property '{propertyName}' change event (INotifyPropertyChanged) not done。");
             }
             finally
             {
@@ -94,7 +94,7 @@ namespace TestWiaSystem
             // Setterを実行
             setter(newValue);
             // 値が正しく更新されたか確認 (Getterのテスト)
-            Assert.AreEqual(newValue, getter(), $"プロパティ '{propertyName}' の値が正しく更新されていません。");
+            Assert.AreEqual(newValue, getter(), $"property '{propertyName}' is not update。");
         }
 
 
@@ -128,7 +128,7 @@ namespace TestWiaSystem
             PropertyInfo property = type.GetProperty(propertyName);
             if (property == null)
             {
-                throw new ArgumentException($"フィールド '{propertyName}' が型 '{type.FullName}' に見つかりませんでした。");
+                throw new ArgumentException($"field '{propertyName}' type '{type.FullName}' is not find。");
             }
 
             // 値をセット
@@ -152,7 +152,7 @@ namespace TestWiaSystem
             PropertyInfo property = type.GetProperty(propertyName);
             if (property == null)
             {
-                throw new ArgumentException($"フィールド '{propertyName}' が型 '{type.FullName}' に見つかりませんでした。");
+                throw new ArgumentException($"field '{propertyName}' type '{type.FullName}' is not find。");
             }
 
             // 値をセット
@@ -239,7 +239,7 @@ namespace TestWiaSystem
         /// <param name="isPrivate">プロパティがprivateかどうか</param>
         protected void PropertyTest<TModel, TValue>(TModel viewModel, string propertyName, TValue newValue, Boolean isPrivate) {
 
-            System.Console.WriteLine("{0}のメンバ[{1}]のgetter setterテスト private={2}", nameof(viewModel), propertyName, isPrivate);
+            System.Console.WriteLine(" [{1}] menber of {0} ,getter setter test private={2}", nameof(viewModel), propertyName, isPrivate);
 
             if (isPrivate)
             {
@@ -291,8 +291,30 @@ namespace TestWiaSystem
             }
             catch (Exception ex)
             {
-                throw new Exception($"{type.Name} のシャローコピー中にエラーが発生しました。引数なしコンストラクタが存在するか確認してください。", ex);
+                throw new Exception($"error is Occurred at {type.Name} ShallowCopy。check arguments and constractor", ex);
             }
+        }
+
+
+        public static Exception ExceptionTest<TException>(Action action) where TException : Exception
+        {
+            try
+            {
+                action();
+            }
+            catch (TException ex)
+            {
+                // 期待通りの型がキャッチできたら、その例外オブジェクトを返す
+                return ex;
+            }
+            catch (Exception ex)
+            {
+                // 違う型の例外が発生した場合
+                throw new AssertFailedException($"expected exception type is {typeof(TException).Name} actual is {ex.GetType().Name} ");
+            }
+
+            // 例外が全く発生しなかった場合
+            throw new AssertFailedException($"{typeof(TException).Name} is not throw");
         }
     }
 }

@@ -115,36 +115,7 @@ namespace TestWiaSystem
             this.PropertyTest(iImage, name, value, isPrivate);
         }
     }
-    /// <summary>
-    /// AcquireConditionのユニットテストクラス
-    /// </summary>
-    [TestClass]
-    public class TestIAcquireCondition : AbstractTest
-    {
-        // テストデータを生成するプロパティ
-        public static IEnumerable<object[]> TestIAcquireConditionData
-        {
-            get
-            {
-                /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
-                yield return new object[] { "Exposure", 1, true };
-                yield return new object[] { "Gain", 1, true };
-                yield return new object[] { "Orient", ImageOrient.HorizontalFlip, true };
-                yield return new object[] { "AcqLightConfig", ShallowCopy(AcquireCondition.AcqLightConfig), true };
-
-            }
-        }
-        /// <summary>
-        /// プロパティのテスト
-        /// </summary>
-        [TestMethod]
-        [DynamicData(nameof(TestIAcquireConditionData))]
-        public void IAcquireConditionPropertyTest(string name, object value, bool isPrivate)
-        {
-            IAcquireCondition iAcquireCondition = AcquireCondition;
-            this.PropertyTest(iAcquireCondition, name, value, isPrivate);
-        }
-    }
+    
     /// <summary>
     /// WaitResponseのユニットテストクラス
     /// </summary>

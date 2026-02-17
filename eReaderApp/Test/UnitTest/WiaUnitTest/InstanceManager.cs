@@ -185,20 +185,20 @@ namespace TestWiaSystem
         {
             if (TestContext == null)
             {
-                throw new InvalidOperationException("TestContext が null です。TestInitialize または ClassInitialize で InstanceManager.TestContext を設定してください。");
+                throw new InvalidOperationException("TestContext is null .  InstanceManager.TestContext setting at TestInitialize or ClassInitialize");
             }
 
             // 1. 設定値（クラス名文字列）を取得
             if (!TestContext.Properties.ContainsKey(settingKeyName))
             {
-                throw new ArgumentException($"runsettings にパラメータ '{settingKeyName}' が定義されていません。");
+                throw new ArgumentException($"in runsettings , '{settingKeyName}' is not defined");
             }
 
             string className = TestContext.Properties[settingKeyName] as string;
 
             if (string.IsNullOrWhiteSpace(className))
             {
-                throw new ArgumentException($"パラメータ '{settingKeyName}' の値が空です。");
+                throw new ArgumentException($" '{settingKeyName}' is empty");
             }
 
             // 2. 型情報を取得 (アセンブリ修飾名なら別DLLでもロード可能)
@@ -206,7 +206,7 @@ namespace TestWiaSystem
 
             if (type == null)
             {
-                throw new TypeLoadException($"クラス '{className}' が見つかりません。アセンブリ名が含まれているか確認してください。(例: 'Namespace.Class, AssemblyName')");
+                throw new TypeLoadException($" '{className}'is not find");
             }
 
             // 3. インスタンス生成
@@ -216,7 +216,7 @@ namespace TestWiaSystem
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"クラス '{className}' のインスタンス生成に失敗しました。デフォルトコンストラクタが存在するか確認してください。", ex);
+                throw new InvalidOperationException($"fail '{className}' create instance", ex);
             }
         }
     }

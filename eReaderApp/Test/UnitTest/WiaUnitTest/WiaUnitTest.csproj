@@ -117,6 +117,7 @@
     <Compile Include="InstanceManager.cs" />
     <Compile Include="AbstractTest.cs" />
     <Compile Include="TestBootstrapper.cs" />
+    <Compile Include="TestIAcquireCondition.cs" />
     <Compile Include="TestIBarcodeParameters.cs" />
     <Compile Include="TestIAcquireResult.cs" />
     <Compile Include="TestIITuningStrategy.cs" />

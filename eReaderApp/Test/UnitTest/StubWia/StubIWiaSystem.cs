@@ -2,467 +2,462 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
-using System.Threading;
+using System.Threading.Tasks;
 using Wia.Abstractions;
 
 namespace StubWia
 {
-
     public class StubIWiaSystem : IWiaSystem
     {
+        // プロパティ変更通知イベント
         public event PropertyChangedEventHandler PropertyChanged;
+
         public StubIWiaSystem() { }
+
+        /// <summary>
+        /// プロパティ値をセットし、変更があった場合に通知を行うヘルパーメソッド
+        /// </summary>
+        protected bool SetProperty<T>(ref T storage, T value, string propertyName)
+        {
+            
+            storage = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return true;
+        }
+
+        #region Properties (Sub-Interfaces & Simple Types)
+
         private ISystemAcqSettings _acquisitionSettings = new StubISystemAcqSettings();
-        public ISystemAcqSettings AcquisitionSettings {
-            get { return this._acquisitionSettings; }
-            private set
-            {
-                this._acquisitionSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AcquisitionSettings)));
-            }
+        public ISystemAcqSettings AcquisitionSettings
+        {
+            get => _acquisitionSettings;
+            private set => SetProperty(ref _acquisitionSettings, value, nameof(AcquisitionSettings));
         }
+
         private ISystemSettings _systemSettings = new StubISystemSettings();
-        public ISystemSettings SystemSettings {
-            get { return this._systemSettings; }
-            private set
-            {
-                this._systemSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemSettings)));
-            }
+        public ISystemSettings SystemSettings
+        {
+            get => _systemSettings;
+            private set => SetProperty(ref _systemSettings, value, nameof(SystemSettings));
         }
+
         private ISystemGUISettings _gUISettings = new StubISystemGUISettings();
-        public ISystemGUISettings GUISettings {
-            get { return this._gUISettings; }
-            private set
-            {
-                this._gUISettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GUISettings)));
-            }
+        public ISystemGUISettings GUISettings
+        {
+            get => _gUISettings;
+            private set => SetProperty(ref _gUISettings, value, nameof(GUISettings));
         }
+
         private ISystemCommSettings _communicationSettings = new StubISystemCommSettings();
-        public ISystemCommSettings CommunicationSettings {
-            get { return this._communicationSettings; }
-            private set
-            {
-                this._communicationSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CommunicationSettings)));
-            }
+        public ISystemCommSettings CommunicationSettings
+        {
+            get => _communicationSettings;
+            private set => SetProperty(ref _communicationSettings, value, nameof(CommunicationSettings));
         }
+
         private ISystemReadSettings _readSettings = new StubISystemReadSettings();
-        public ISystemReadSettings ReadSettings {
-            get { return this._readSettings; }
-            private set
-            {
-                this._readSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReadSettings)));
-            }
+        public ISystemReadSettings ReadSettings
+        {
+            get => _readSettings;
+            private set => SetProperty(ref _readSettings, value, nameof(ReadSettings));
         }
+
         private ISystemLogSettings _logSettings = new StubISystemLogSettings();
-        public ISystemLogSettings LogSettings {
-            get { return this._logSettings; }
-            private set
-            {
-                this._logSettings = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LogSettings)));
-            }
+        public ISystemLogSettings LogSettings
+        {
+            get => _logSettings;
+            private set => SetProperty(ref _logSettings, value, nameof(LogSettings));
         }
+
         private IWiaDevice _device = new StubIWiaDevice();
-        public IWiaDevice Device {
-            get { return this._device; }
-            private set
-            {
-                this._device = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Device)));
-            }
+        public IWiaDevice Device
+        {
+            get => _device;
+            private set => SetProperty(ref _device, value, nameof(Device));
         }
-        private IWiaCommManager _commManager = new StubIWiaCommManager();
-        public IWiaCommManager CommManager {
-            get { return this._commManager; }
-            private set
-            {
-                this._commManager = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CommManager)));
-            }
+
+        private IImageSource _imageSource;
+        public IImageSource ImageSource
+        {
+            get => _imageSource;
+            // ImageSourceはインターフェイス上も set がないので private set に統一しても良いが、
+            // もしインターフェイス定義で { get; } なら private set、 { get; set; } なら public set になります。
+            // 今回はインターフェイス定義に従い private set とします。
+            private set => SetProperty(ref _imageSource, value, nameof(ImageSource));
         }
+
         private IJob _job = new StubIJob();
-        public IJob Job {
-            get { return this._job; }
-            private set
-            {
-                this._job = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Job)));
-            }
+        public IJob Job
+        {
+            get => _job;
+            private set => SetProperty(ref _job, value, nameof(Job));
         }
+
         private IMaintenanceService _maintenanceServices = new StubIMaintenanceService();
-        public IMaintenanceService MaintenanceServices {
-            get { return this._maintenanceServices; }
-            private set
-            {
-                this._maintenanceServices = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MaintenanceServices)));
-            }
+        public IMaintenanceService MaintenanceServices
+        {
+            get => _maintenanceServices;
+            private set => SetProperty(ref _maintenanceServices, value, nameof(MaintenanceServices));
         }
-        private string _appVersion;
-        public string AppVersion {
-            get { return this._appVersion; }
-            private set
-            {
-                this._appVersion = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppVersion)));
-            }
+
+        private string _appVersion = "1.0.0.0";
+        public string AppVersion
+        {
+            get => _appVersion;
+            private set => SetProperty(ref _appVersion, value, nameof(AppVersion));
         }
+
         private bool _isOnline;
-        public bool IsOnline {
-            get { return this._isOnline; }
-            private set
-            {
-                this._isOnline = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOnline)));
-            }
+        public bool IsOnline
+        {
+            get => _isOnline;
+            private set => SetProperty(ref _isOnline, value, nameof(IsOnline));
         }
-        //public bool IsScreenLocked { get; set; }
+
+        // Interface: { get; set; }
         private bool _isScreenLocked;
         public bool IsScreenLocked
         {
             get => _isScreenLocked;
-            set
-            {
-                _isScreenLocked = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsScreenLocked)));
-            }
+            set => SetProperty(ref _isScreenLocked, value, nameof(IsScreenLocked));
         }
-        //public bool IsAcquireDisabled { get; set; }
+
+        // Interface: { get; set; }
         private bool _isAcquireDisabled;
         public bool IsAcquireDisabled
         {
             get => _isAcquireDisabled;
-            set
-            {
-                _isAcquireDisabled = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAcquireDisabled)));
-            }
+            set => SetProperty(ref _isAcquireDisabled, value, nameof(IsAcquireDisabled));
         }
-        private string _activeJobName;
-        public string ActiveJobName {
-            get => _activeJobName;
-            set
-            {
-                _activeJobName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobName)));
-            }
-        }
-        private DateTime _activeJobLoadTime;
-        public DateTime ActiveJobLoadTime {
-            get => _activeJobLoadTime;
-            set
-            {
-                _activeJobLoadTime = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobLoadTime)));
-            }
-        }
-        private DateTime _bootTime;
-        public DateTime BootTime {
-            get => _bootTime;
-            set
-            {
-                _bootTime = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BootTime)));
-            }
-        }
-        public event EventHandler CloseApplicationRequested;
-        public event EventHandler<IScreenVisibilityChangeEventArgs> ScreenVisibilityChangeRequested;
-        public event EventHandler LiveViewStarted;
-        public event EventHandler LiveViewStopped;
-        public event EventHandler AcquireImageAvailable;
-        public event EventHandler ReadResultAvailable;
-        public event EventHandler ImageAcquisitionFailed;
 
-        /// <summary>
-        /// アプリケーションを終了する
-        /// </summary>
-        /// <param name="waitTime">終了処理を開始するまでの待ち時間。msec</param>
-        public void ApplicationExit(int waitTime)
+        private string _activeJobName = "";
+        public string ActiveJobName
         {
-            // 実際には終了しないが、要求があったことをログ出力などでシミュレート可能
-            Debug.WriteLine($"ApplicationExit called with waitTime: {waitTime}");
+            get => _activeJobName;
+            private set => SetProperty(ref _activeJobName, value, nameof(ActiveJobName));
         }
-        /// <summary>
-        /// Jobフォルダの取得
-        /// </summary>
-        /// <returns>Jobフォルダのフルパスフォルダ名</returns>
-        public string GetJobFolder() { return @"C:\Wia\Jobs"; }
-        /// <summary>
-        /// デバイスフォルダ取得　例) C:\ProgramData\HstVision\e-Reader\dev00
-        /// </summary>
-        /// <returns>デバイスフォルダのフルパスフォルダ名</returns>
-        public string GetDeviceFolder() { return @"C:\ProgramData\HstVision\e-Reader\dev00"; }
-        public void WriteCommandLogException(Exception exp, string msg = "") { }
-        /// <summary>
-        /// 画面の表示、非表示と位置を変更する
-        /// </summary>
-        /// <param name="visible">表示、非表示</param>
-        /// <param name="x">画面左上の位置x</param>
-        /// <param name="y">画面左上の位置y</param>
-        /// <remarks>ScreenVisibilityChangeRequestedイベントが発行される。</remarks>
-        public void SetScreenVisibility(bool visible, int x, int y)
+
+        private DateTime _activeJobLoadTime;
+        public DateTime ActiveJobLoadTime
         {
-            // イベントを発行する
-            var args = new StubIScreenVisibilityChangeEventArgs(visible, x, y);
-            ScreenVisibilityChangeRequested?.Invoke(this, args);
+            get => _activeJobLoadTime;
+            private set => SetProperty(ref _activeJobLoadTime, value, nameof(ActiveJobLoadTime));
         }
-        /// <summary>
-        /// ジョブファイルを読み込む
-        /// </summary>
-        /// <param name="fileName">ジョブファイルのフルパスファイル名</param>
-        /// <returns>true:成功</returns>
-        /// <remarks>Jobプロパティが変更される</remarks>
-        public bool LoadJobFile(string fileName)
+
+        private DateTime _bootTime = DateTime.Now;
+        public DateTime BootTime
         {
-            this.ActiveJobName = System.IO.Path.GetFileName(fileName);
-            this.ActiveJobLoadTime = DateTime.Now;
-            return true;
-        }
-        public bool SaveJobFile(String fileName) { return true; }
-        public bool LoadBitmapFile(string fileName)
-        {
-            // 画像取込みが無効となり、IsAcquireDisabledが変更される
-            IsAcquireDisabled = true;
-            return true;
-        }
-        /// <summary>
-        /// 接続モードオンラインに移行する
-        /// </summary>
-        /// <remarks>IsOnlineプロパティが変更される。</remarks>
-        public void GoOnline()
-        {
-            this.IsOnline = true; // Setterを通じてPropertyChangedも飛ぶ
-        }
-        /// <summary>
-        /// 接続モードオフラインに移行する
-        /// </summary>
-        /// <remarks>IsOnlineプロパティが変更される。</remarks>
-        public void GoOffline()
-        {
-            this.IsOnline = false;
-        }
-        public int GetStatsResultsCount() { return 3; }
-        public int GetStatsResultsPassNum(int index) { return 1; }
-        public int GetStatsResultsFailNum(int index) { return 2; }
-        public double GetStatsResultsAvgScore(int index) { return 77; }
-        public bool GetConfigNumPassed(int configID, string jobFileName, out int num) { num = 0; return true; }
-        public bool GetConfigNumFailed(int configID, string jobFileName, out int num) { num = 0; return true; }
-        public bool GetConfigAvgScore(int configID, string jobFileName, out int score) { score = 0; return true; }
-        public bool FindJobFilePath(String dispName, out String filePath) { filePath = ""; return true; }
-        public int GetAllNumPassed(int configID) { return 0; }
-        public int GetAllNumFailed(int configID) { return 0; }
-        public int GetAllAverageScore(int configID) { return 0; }
-        public void AllStatsClear() { }
-        public IRecogCondition CreateRecogCond() { return null; }
-        public ICameraInfo GetCamInfo() { return null; }
-        /// <summary>
-        /// ライブ表示を開始する
-        /// </summary>
-        /// <remarks>LiveViewStartedイベントが発行される。</remarks>
-        public void StartLiveView()
-        {
-            this.IsLiveViewActive = true;
-            LiveViewStarted?.Invoke(this, EventArgs.Empty);
-        }
-        /// <summary>
-        /// ライブ表示を終了する
-        /// </summary>
-        /// <remarks>LiveViewStoppedイベントが発行される。</remarks>
-        public void StopLiveView()
-        {
-            this.IsLiveViewActive = false;
-            LiveViewStopped?.Invoke(this, EventArgs.Empty);
-        }
-        public int LastBestTarget() { return 0; }
-        public void ClearTuneResult() { }
-        private bool _isTuning;
-        public bool IsTuning {
-            get => _isTuning;
-            set
-            {
-                _isTuning = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsTuning)));
-            }
-        }
-        private TuneState _tuneCurrentState;
-        public TuneState TuneCurrentState {
-            get => _tuneCurrentState;
-            set
-            {
-                _tuneCurrentState = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneCurrentState)));
-            }
-        }
-        private int _tuneCurrentSeqNumber;
-        public int TuneCurrentSeqNumber {
-            get => _tuneCurrentSeqNumber;
-            set
-            {
-                _tuneCurrentSeqNumber = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneCurrentSeqNumber)));
-            }
-        }
-        private int _tuneCurrentConfigNumber;
-        public int TuneCurrentConfigNumber {
-            get => _tuneCurrentConfigNumber;
-            set
-            {
-                _tuneCurrentConfigNumber = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuneCurrentConfigNumber)));
-            }
-        }
-        private IImageSource _imageSource;
-        public IImageSource ImageSource {
-            get => _imageSource;
-            set
-            {
-                _imageSource = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ImageSource)));
-            }
+            get => _bootTime;
+            private set => SetProperty(ref _bootTime, value, nameof(BootTime));
         }
 
         private IIdReadingService _idReadingService = new StubIIdReadingService();
         public IIdReadingService IdReadingService
         {
             get => _idReadingService;
-            private set
-            {
-                _idReadingService = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IdReadingService)));
-            }
+            private set => SetProperty(ref _idReadingService, value, nameof(IdReadingService));
         }
 
         private ITuningService _tuningService = new StubITuningService();
         public ITuningService TuningService
         {
             get => _tuningService;
-            private set
-            {
-                _tuningService = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TuningService)));
-            }
+            private set => SetProperty(ref _tuningService, value, nameof(TuningService));
         }
 
-        private bool _isLiveViewActive = false;
+        private bool _isLiveViewActive;
         public bool IsLiveViewActive
         {
             get => _isLiveViewActive;
-            private set
-            {
-                _isLiveViewActive = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLiveViewActive)));
-            }
+            private set => SetProperty(ref _isLiveViewActive, value, nameof(IsLiveViewActive));
         }
 
         private IAcquireResult _latestAcquireResult = new StubIAcquireResult();
         public IAcquireResult LatestAcquireResult
         {
             get => _latestAcquireResult;
-            private set
-            {
-                _latestAcquireResult = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestAcquireResult)));
-            }
+            private set => SetProperty(ref _latestAcquireResult, value, nameof(LatestAcquireResult));
         }
 
         private IImage _latestAcquiredImage = new StubIImage();
         public IImage LatestAcquiredImage
         {
             get => _latestAcquiredImage;
-            private set
-            {
-                _latestAcquiredImage = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LatestAcquiredImage)));
-            }
+            private set => SetProperty(ref _latestAcquiredImage, value, nameof(LatestAcquiredImage));
         }
 
-        public bool ReadCommandSync(bool withRetry, int timeOut, ref int lastReadConfig) { return true; }
-        public int TuneStart(bool isCommand, int tuningConf) { return 0; }
-        public bool TuneResultJudge() { return true; }
-        public void TuneCancel(bool isCommand, bool cancelFlag) { }
-        public bool JudgeChecksum(String str, ChecksumType chk) { return true; }
-        public int AddChecksumScore(double score, bool pass, ScoreRange range, IJobReadSettings prm) { return 0; }
-        public bool AcquireImage(int config) { return true; }
-        public bool ReadOnceCommandSync(int configID, bool withRetry, bool byCommand, int timeOut) { return true; }
-        public int ReadRetry(int configID, int lightRange, int LightStep, int sizeRange, int sizeStep,
-            int internalFilter, int timeOut, int overwrite, out IReadResult result)
-        { result = null; return 0; }
-        public IReadResult GetReadBestResult(int configID) { return null; }
-
-        public int AddChecksumScore(double score, bool pass, IJobReadSettings readSettings)
+        private bool _isTuning;
+        public bool IsTuning
         {
-            return 1;
+            get => _isTuning;
+            private set => SetProperty(ref _isTuning, value, nameof(IsTuning));
+        }
+
+        private TuneState _tuneCurrentState;
+        public TuneState TuneCurrentState
+        {
+            get => _tuneCurrentState;
+            private set => SetProperty(ref _tuneCurrentState, value, nameof(TuneCurrentState));
+        }
+
+        private int _tuneCurrentSeqNumber;
+        public int TuneCurrentSeqNumber
+        {
+            get => _tuneCurrentSeqNumber;
+            private set => SetProperty(ref _tuneCurrentSeqNumber, value, nameof(TuneCurrentSeqNumber));
+        }
+
+        private int _tuneCurrentConfigNumber;
+        public int TuneCurrentConfigNumber
+        {
+            get => _tuneCurrentConfigNumber;
+            private set => SetProperty(ref _tuneCurrentConfigNumber, value, nameof(TuneCurrentConfigNumber));
+        }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler CloseApplicationRequested;
+        public event EventHandler<IScreenVisibilityChangeEventArgs> ScreenVisibilityChangeRequested;
+        public event EventHandler LiveViewStarted;
+        public event EventHandler LiveViewStopped;
+        public event EventHandler AcquireImageAvailable;
+        public event EventHandler ImageAcquisitionFailed;
+
+        #endregion
+
+        #region Methods
+
+        public void ApplicationExit(uint waitTime)
+        {
+            Task.Delay((int)waitTime).ContinueWith(t =>
+            {
+                CloseApplicationRequested?.Invoke(this, EventArgs.Empty);
+            });
+        }
+
+        public string GetJobFolder() { return @"C:\Wia\Jobs"; }
+
+        public string GetDeviceFolder() { return @"C:\ProgramData\HstVision\e-Reader\dev00"; }
+
+        public void WriteCommandLogException(Exception exp, string msg = "")
+        {
+            Debug.WriteLine($"Log: {msg}, Ex: {exp?.Message}");
+        }
+
+        public void SetScreenVisibility(bool visible, int x, int y)
+        {
+            var args = new StubIScreenVisibilityChangeEventArgs(visible, x, y);
+            ScreenVisibilityChangeRequested?.Invoke(this, args);
+        }
+
+        public bool CreateNewJob()
+        {
+            this.ActiveJobName = "NewJob"; // private set経由でPropertyChanged発火
+            this.ActiveJobLoadTime = DateTime.Now;
+            // Jobオブジェクト自体の再生成が必要ならここで行う
+            this.Job = new StubIJob(); 
+            return true;
+        }
+
+        public bool LoadJobFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return false;
+
+            this.ActiveJobName = System.IO.Path.GetFileName(fileName);
+            this.ActiveJobLoadTime = DateTime.Now;
+            // Jobの中身が変わったとみなして通知
+            this.Job = new StubIJob();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Job)));
+            return true;
+        }
+
+        public bool SaveJobFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return false;
+            this.ActiveJobName = System.IO.Path.GetFileName(fileName);
+            this.ActiveJobLoadTime = DateTime.Now;
+            return true;
+        }
+
+        public bool SaveJobOverwrite()
+        {
+            if (string.IsNullOrEmpty(ActiveJobName)) return false;
+            // 名前は変わらないが、保存アクションとして通知が必要なら
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobName)));
+            return true;
+        }
+
+        public bool LoadBitmapFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return false;
+
+            IsAcquireDisabled = true; // public set経由で発火
+            AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+
+        public void GoOnline()
+        {
+            IsOnline = true; // private set経由で発火
+        }
+
+        public void GoOffline()
+        {
+            IsOnline = false; // private set経由で発火
+        }
+
+        // --- Stats Methods (Stubbed values) ---
+        public int GetStatsResultsCount() => 100;
+        public int GetStatsResultsPassNum(int configID) {
+            if (50 < configID) {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 50;
+        } 
+        public int GetStatsResultsFailNum(int configID)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 20;
+        }
+        public double GetStatsResultsAvgScore(int configID)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 85.5;
+        }
+
+        public bool GetConfigNumPassed(int configID, string jobFileName, out int num)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            num = 50;
+            return true;
+        }
+        public bool GetConfigNumFailed(int configID, string jobFileName, out int num)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            num = 5;
+            return true;
+        }
+
+        public bool GetConfigAvgScore(int configID, string jobFileName, out int score)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            score = 90;
+            return true;
+        }
+
+        public bool FindJobFilePath(string dispName, out string filePath)
+        {
+            if (string.IsNullOrEmpty(dispName)) {
+                throw new ArgumentOutOfRangeException();
+            }
+            filePath = $@"C:\Jobs\{dispName}.wia";
+            return true;
+        }
+
+        public int GetAllNumPassed(int configID)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 1000;
+        }
+        public int GetAllNumFailed(int configID)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 50;
+        }
+        public int GetAllAverageScore(int configID)
+        {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return 88;
+        }
+        public void AllStatsClear() { }
+
+        public IRecogCondition CreateRecogCond() => new StubIRecogCondition();
+        public ICameraInfo GetCamInfo() => new StubICameraInfo();
+
+        public void StartLiveView()
+        {
+            IsLiveViewActive = true; // private set経由で発火
+            LiveViewStarted?.Invoke(this, EventArgs.Empty);
+            AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void StopLiveView()
+        {
+            IsLiveViewActive = false; // private set経由で発火
+            LiveViewStopped?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool AcquireImage(int configID)
+        {
+            this.LatestAcquireResult = new StubIAcquireResult();
+            this.LatestAcquiredImage = new StubIImage();
+            AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
+            return true;
         }
 
         public int TuneStart(int configId, bool isMultiLightTuneForced)
         {
             IsTuning = true;
+            TuneCurrentSeqNumber++;
             TuneCurrentConfigNumber = configId;
-            return 123; // ダミーの実行ID
+            TuneCurrentState = TuneState.Running;
+            return 12345;
         }
 
         public void TuneAbort()
         {
             IsTuning = false;
+            TuneCurrentState = TuneState.Completed;
         }
 
-        public void ApplicationExit(uint waitTime)
+        public bool TuneResultJudge()
         {
-            throw new NotImplementedException();
+            IsTuning = false;
+            TuneCurrentState = TuneState.Waiting;
+            return true;
         }
 
-        public bool CreateNewJob()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SaveJobOverwrite()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
+
+    // 依存するスタブクラス（StubIScreenVisibilityChangeEventArgs以外）は省略していますが、
+    // 既存のコードにある通りStubISystemAcqSettingsなどが存在することを前提としています。
     public class StubIScreenVisibilityChangeEventArgs : IScreenVisibilityChangeEventArgs
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public StubIScreenVisibilityChangeEventArgs() { }
         public StubIScreenVisibilityChangeEventArgs(bool visible, int x, int y)
         {
-            this.IsVisible = visible;
-            this.LocationX = x;
-            this.LocationY = y;
+            IsVisible = visible;
+            LocationX = x;
+            LocationY = y;
         }
-        private bool _isVisible;
-        public bool IsVisible {
-            get { return this._isVisible; }
-            private set
-            {
-
-                this._isVisible = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVisible)));
-            }
-        }
-        private int _locationX;
-        public int LocationX {
-            get { return this._locationX; }
-            private set
-            {
-                _locationX = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocationX)));
-            }
-        }
-        private int _locationY;
-        public int LocationY {
-            get { return this._locationY; }
-            private set
-            {
-                _locationY = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LocationY)));
-            }
-        }
+        public bool IsVisible { get; }
+        public int LocationX { get; }
+        public int LocationY { get; }
     }
 }
