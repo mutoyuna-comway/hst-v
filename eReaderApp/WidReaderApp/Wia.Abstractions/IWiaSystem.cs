@@ -20,66 +20,73 @@ namespace Wia.Abstractions
         /// <summary>
         /// システム設定、画像取込
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemAcqSettings AcquisitionSettings { get; }
 
         /// <summary>
         /// システム設定、システム全般
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemSettings SystemSettings { get; }
 
         /// <summary>
         /// システム設定、画面制御
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemGUISettings GUISettings { get; }
 
         /// <summary>
         /// システム設定、通信設定
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemCommSettings CommunicationSettings { get; }
 
         /// <summary>
         /// システム設定、読取設定
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemReadSettings ReadSettings { get; }
 
         /// <summary>
         /// システム設定、ログ記録
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ISystemLogSettings LogSettings { get; }
 
         /// <summary>
         /// 読取りデバイス情報
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         IWiaDevice Device { get; }
 
         /// <summary>
         /// 画像取込みソース
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         IImageSource ImageSource { get; }
-
-        /// <summary>
-        /// 通信管理
-        /// </summary>
-        IWiaCommManager CommManager { get; }
 
         /// <summary>
         /// ジョブ
         /// </summary>
+        /// <remarks>ジョブの新規作成<see cref="CreateNewJob()"/>、ジョブファイルの読込み<see cref="LoadJobFile(string)"/>で変更される。</remarks>
         IJob Job { get; }
 
         /// <summary>
         /// 保守機能サービス
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         IMaintenanceService MaintenanceServices { get; }
 
         /// <summary>
         /// アプリケーションソフトウェアのバージョン
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         string AppVersion { get; }
 
         /// <summary>
-        /// オンライン状態 tru:オンライン false:
+        /// オンライン状態 tru:オンライン false:オフライン
         /// </summary>
+        /// <remarks><see cref="GoOnline()"/>、<see cref="GoOffline()"/>で変更される。</remarks>
         bool IsOnline { get; }
 
         /// <summary>
@@ -93,67 +100,105 @@ namespace Wia.Abstractions
         bool IsAcquireDisabled { get; set; }
 
         /// <summary>
-        /// ライブラリモード
-        /// </summary>
-
-        /// <summary>
         /// 現在開かれているジョブ名
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// 以下のメソッド呼び出しでで変更される。
+        /// </para>
+        /// <see cref="CreateNewJob()"/>、
+        /// <see cref="LoadJobFile(string)"/>、
+        /// <see cref="SaveJobFile(string)"/>、
+        /// </remarks>
         string ActiveJobName { get; }
 
         /// <summary>
         /// 現在開かれているジョブの開いた日時
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// 以下のメソッド呼び出しでで変更される。
+        /// </para>
+        /// <see cref="CreateNewJob()"/>、
+        /// <see cref="LoadJobFile(string)"/>、
+        /// <see cref="SaveJobFile(string)"/>、
+        /// </remarks>
         DateTime ActiveJobLoadTime { get; }
 
         /// <summary>
         /// アプリケーションを起動した日時
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         DateTime BootTime { get; }
 
         /// <summary>
         /// ID読取り管理
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         IIdReadingService IdReadingService { get; }
 
         /// <summary>
         /// チューニング管理
         /// </summary>
+        /// <remarks>このプロパティはReadonlyで変更されることはない。</remarks>
         ITuningService TuningService { get; }
 
         /// <summary>
         /// ライブ中
         /// </summary>
+        /// <remarks><see cref="StartLiveView()"/>、<see cref="StopLiveView()"/>で変更される。</remarks>
         bool IsLiveViewActive { get; }
 
         /// <summary>
         /// 最新の画像取り込み結果の取得
         /// </summary>
+        /// <remarks><see cref="AcquireImage(int)"/>で変更される。</remarks>
+        /// <remarks> TODO: チューニング中、ライブ表示中の画像取込で変更されるかどうかは確認が必要</remarks>
         IAcquireResult LatestAcquireResult { get; }
 
         /// <summary>
         /// 最新の取り込み画像の取得
         /// </summary>
+        /// <remarks><see cref="AcquireImage(int)"/>で変更される。</remarks>
+        /// <remarks> TODO: チューニング中、ライブ表示中の画像取込で変更されるかどうかは確認が必要</remarks>
         IImage LatestAcquiredImage { get; }
 
         /// <summary>
         /// チューニングの実行中かどうかを取得
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// 以下のメソッド呼び出しでで変更される。
+        /// </para>
+        /// <see cref="TuneStart(int, bool)"/>、
+        /// <see cref="TuneAbort()"/>、
+        /// <see cref="TuneResultJudge()"/>、
+        /// </remarks>
         bool IsTuning { get; }
 
         /// <summary>
         /// チューニングの現在の状態を取得
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// 以下のメソッド呼び出しでで変更される。
+        /// </para>
+        /// <see cref="TuneStart(int, bool)"/>、
+        /// <see cref="TuneAbort()"/>、
+        /// <see cref="TuneResultJudge()"/>、
+        /// </remarks>
         TuneState TuneCurrentState { get; }
 
         /// <summary>
         /// チューニングの実行連番の取得
         /// </summary>
+        /// <remarks><see cref="TuneStart(int, bool)"/>で変更される。</remarks>
         int TuneCurrentSeqNumber { get; }
 
         /// <summary>
         /// チューニング実行中のジョブコンフィグ番号の取得
         /// </summary>
+        /// <remarks><see cref="TuneStart(int, bool)"/>で変更される。</remarks>
         int TuneCurrentConfigNumber { get; }
 
         // ------------------------------
