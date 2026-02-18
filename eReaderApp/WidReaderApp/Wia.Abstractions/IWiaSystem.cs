@@ -256,6 +256,24 @@ namespace Wia.Abstractions
         /// </remarks>
         event EventHandler ImageAcquisitionFailed;
 
+        /// <summary>
+        /// ジョブが変更されることを通知するイベント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="CreateNewJob()"/> によって発火される。
+        /// <see cref="LoadJobFile(string)"/> によって発火される。
+        /// </remarks>
+        event EventHandler JobChanging;
+
+        /// <summary>
+        /// ジョブが変更されたことを通知するイベント
+        /// </summary>
+        /// <remarks>
+        /// <see cref="CreateNewJob()"/> によって発火される。
+        /// <see cref="LoadJobFile(string)"/> によって発火される。
+        /// </remarks>
+        event EventHandler JobChanged;
+
         // ------------------------------
         //
         // メソッド
