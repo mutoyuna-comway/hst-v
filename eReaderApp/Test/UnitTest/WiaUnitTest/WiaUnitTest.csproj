@@ -114,6 +114,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParameterManager.cs" />
     <Compile Include="InstanceManager.cs" />
     <Compile Include="AbstractTest.cs" />
     <Compile Include="TestBootstrapper.cs" />

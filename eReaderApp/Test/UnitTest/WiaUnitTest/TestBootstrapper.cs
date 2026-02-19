@@ -10,5 +10,6 @@ public class TestBootstrapper
         // 全テストの開始前に一度だけ実行され、InstanceManagerにContextを渡す
         // これにより getMode() 内での null チェックを通過できるようになる
         InstanceManager.TestContext = context;
+        ParameterManager.TestContext = context;
     }
 }

@@ -76,7 +76,7 @@ namespace StubWia
             private set => SetProperty(ref _device, value, nameof(Device));
         }
 
-        private IImageSource _imageSource;
+        private IImageSource _imageSource = new StubIImageSource();
         public IImageSource ImageSource
         {
             get => _imageSource;
@@ -224,6 +224,8 @@ namespace StubWia
         public event EventHandler LiveViewStopped;
         public event EventHandler AcquireImageAvailable;
         public event EventHandler ImageAcquisitionFailed;
+        public event EventHandler JobChanging;
+        public event EventHandler JobChanged;
 
         #endregion
 
@@ -254,22 +256,24 @@ namespace StubWia
 
         public bool CreateNewJob()
         {
+            JobChanging?.Invoke(this, null);
             this.ActiveJobName = "NewJob"; // private set経由でPropertyChanged発火
             this.ActiveJobLoadTime = DateTime.Now;
             // Jobオブジェクト自体の再生成が必要ならここで行う
-            this.Job = new StubIJob(); 
+            this.Job = new StubIJob();
+            JobChanged?.Invoke(this, null);
             return true;
         }
 
         public bool LoadJobFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) return false;
-
+            JobChanging?.Invoke(this, null);
             this.ActiveJobName = System.IO.Path.GetFileName(fileName);
             this.ActiveJobLoadTime = DateTime.Now;
             // Jobの中身が変わったとみなして通知
             this.Job = new StubIJob();
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Job)));
+            JobChanged?.Invoke(this, null);
             return true;
         }
 
@@ -339,6 +343,9 @@ namespace StubWia
             {
                 throw new ArgumentOutOfRangeException();
             }
+            if (string.IsNullOrEmpty(jobFileName)) {
+                throw new ArgumentException();
+            }
             num = 50;
             return true;
         }
@@ -347,6 +354,10 @@ namespace StubWia
             if (50 < configID)
             {
                 throw new ArgumentOutOfRangeException();
+            }
+            if (string.IsNullOrEmpty(jobFileName))
+            {
+                throw new ArgumentException();
             }
             num = 5;
             return true;
@@ -358,6 +369,10 @@ namespace StubWia
             {
                 throw new ArgumentOutOfRangeException();
             }
+            if (string.IsNullOrEmpty(jobFileName))
+            {
+                throw new ArgumentException();
+            }
             score = 90;
             return true;
         }
@@ -365,9 +380,9 @@ namespace StubWia
         public bool FindJobFilePath(string dispName, out string filePath)
         {
             if (string.IsNullOrEmpty(dispName)) {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentException();
             }
-            filePath = $@"C:\Jobs\{dispName}.wia";
+            filePath = $@"{this.GetJobFolder()}\{dispName}.wia";
             return true;
         }
 
@@ -415,17 +430,25 @@ namespace StubWia
 
         public bool AcquireImage(int configID)
         {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             this.LatestAcquireResult = new StubIAcquireResult();
             this.LatestAcquiredImage = new StubIImage();
             AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
-        public int TuneStart(int configId, bool isMultiLightTuneForced)
+        public int TuneStart(int configID, bool isMultiLightTuneForced)
         {
+            if (50 < configID)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             IsTuning = true;
             TuneCurrentSeqNumber++;
-            TuneCurrentConfigNumber = configId;
+            TuneCurrentConfigNumber = configID;
             TuneCurrentState = TuneState.Running;
             return 12345;
         }

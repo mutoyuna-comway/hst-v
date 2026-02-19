@@ -9,6 +9,7 @@ namespace StubWia
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<IReadCompletedEventArgs> ConfigReadResultAvailable;
+        public event EventHandler<IReadCompletedEventArgs> ConfigReadCompleted;
 
         public StubIJob() {
 

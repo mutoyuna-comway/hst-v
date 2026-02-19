@@ -188,13 +188,16 @@ namespace TestWiaSystem
                 throw new InvalidOperationException("TestContext is null .  InstanceManager.TestContext setting at TestInitialize or ClassInitialize");
             }
 
+            string envName = TestContext.Properties["TargetEnv"] as string;
+
+
             // 1. 設定値（クラス名文字列）を取得
-            if (!TestContext.Properties.ContainsKey(settingKeyName))
+            if (!TestContext.Properties.ContainsKey(envName + settingKeyName))
             {
                 throw new ArgumentException($"in runsettings , '{settingKeyName}' is not defined");
             }
 
-            string className = TestContext.Properties[settingKeyName] as string;
+            string className = TestContext.Properties[envName + settingKeyName] as string;
 
             if (string.IsNullOrWhiteSpace(className))
             {
