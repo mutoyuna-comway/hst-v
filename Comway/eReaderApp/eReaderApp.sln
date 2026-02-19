@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiaUnitTest", "..\..\eReade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubWia", "..\..\eReaderApp\Test\UnitTest\StubWia\StubWia.csproj", "{F0738257-A791-42D7-953E-194222F8628D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuncUnitTest", "..\..\eReaderApp\Test\UnitTest\FuncUnitTest\FuncUnitTest.csproj", "{4F72E3F7-4741-4154-94A2-A168E16E7610}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{F0738257-A791-42D7-953E-194222F8628D}.Release|x64.Build.0 = Release|Any CPU
 		{F0738257-A791-42D7-953E-194222F8628D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F0738257-A791-42D7-953E-194222F8628D}.Release|x86.Build.0 = Release|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Release|x64.Build.0 = Release|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F72E3F7-4741-4154-94A2-A168E16E7610}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
