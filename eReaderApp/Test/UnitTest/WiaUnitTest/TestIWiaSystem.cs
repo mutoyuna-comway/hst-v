@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Wia.Abstractions;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace TestWiaSystem
 {
@@ -101,6 +102,8 @@ namespace TestWiaSystem
         public void TestApplicationExit()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+
+            //10msでApplicationExitを指定して実行、50ms後であればイベントは動いているはずなのでそこでイベントチェック
             try
             {
                 iWiaSystem.ApplicationExit(10);
@@ -108,7 +111,6 @@ namespace TestWiaSystem
                 iWiaSystem.CloseApplicationRequested += (s, e) => {
                     eventFired = true;
                 };
-                //50ms後であればイベントは動いているはず
                 Task.Delay(50).ContinueWith(t =>
                 {
                     Assert.IsTrue(eventFired, "CloseApplicationRequested event is not fired");
@@ -159,6 +161,8 @@ namespace TestWiaSystem
             {
                 Assert.Fail($"WriteCommandLogException is fail: {ex.Message}");
             }
+            // 異常系
+            ExceptionTest<ArgumentException>(() => iWiaSystem.WriteCommandLogException(null, ""));
         }
         /// <summary>
         /// SetScreenVisibilityのテスト
@@ -167,6 +171,7 @@ namespace TestWiaSystem
         public void TestSetScreenVisibility()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            // イベントの発火と値の確認を行う
             bool eventFired = false;
             iWiaSystem.ScreenVisibilityChangeRequested += (s, e) => {
                 eventFired = true;
@@ -185,18 +190,21 @@ namespace TestWiaSystem
         public void TestCreateNewJob()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            // イベントの発火と値の確認を行う
             DateTime time = DateTime.Now;
             bool eventFired1 = false;
             bool eventFired2 = false;
             iWiaSystem.JobChanging += (s, e) => {
-                eventFired1 = true;
+                eventFired1 = true; //ジョブ変更中イベント
             };
             iWiaSystem.JobChanged += (s, e) => {
-                eventFired2 = true;
+                eventFired2 = true; //ジョブ変更完了イベント
             };
 
             Assert.IsTrue(iWiaSystem.CreateNewJob(), "CreateNewJob is fail");
+            // ロード時間が更新され、テスト開始時の時刻よりも後であること
             Assert.IsGreaterThanOrEqualTo(iWiaSystem.ActiveJobLoadTime, time, "ActiveJobLoadTime is not updated");
+            // runsettingsから実行環境による期待値を取得して比較する
             Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem) + "NewJob"), iWiaSystem.ActiveJobName, "ActiveJobName is not updated to NewJob");
             Assert.IsTrue(eventFired1, "JobChanging event is not fired");
             Assert.IsTrue(eventFired2, "JobChanged event is not fired");
@@ -212,15 +220,18 @@ namespace TestWiaSystem
             DateTime time = DateTime.Now;
             bool eventFired1 = false;
             bool eventFired2 = false;
+            // イベントの発火と値の確認を行う
             iWiaSystem.JobChanging += (s, e) => {
-                eventFired1 = true;
+                eventFired1 = true; //ジョブ変更中イベント
             };
             iWiaSystem.JobChanged += (s, e) => {
-                eventFired2 = true;
+                eventFired2 = true; //ジョブ変更完了イベント
             };
 
             Assert.IsTrue(iWiaSystem.LoadJobFile(testPath), "LoadJobFile is fail");
+            // ロード時間が更新され、テスト開始時の時刻よりも後であること
             Assert.IsGreaterThanOrEqualTo(iWiaSystem.ActiveJobLoadTime, time, "ActiveJobLoadTime is not updated");
+            // Job名がパスが取り除かれファイル名だけになっている
             Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, "ActiveJobName is not updated correctly");
             Assert.IsTrue(eventFired1, "JobChanging event is not fired");
             Assert.IsTrue(eventFired2, "JobChanged event is not fired");
@@ -239,8 +250,11 @@ namespace TestWiaSystem
             DateTime time = DateTime.Now;
 
             Assert.IsTrue(iWiaSystem.SaveJobFile(testPath), "SaveJobFile is fail");
+            // Job名がパスが取り除かれファイル名だけになっている
             Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, "ActiveJobName is not updated correctly");
+            // ロード時間が更新され、テスト開始時の時刻よりも後であること
             Assert.IsGreaterThanOrEqualTo(iWiaSystem.ActiveJobLoadTime, time, "ActiveJobLoadTime is not updated");
+
             // 異常系 
             Assert.IsFalse(iWiaSystem.SaveJobFile(""), "LoadJobFile is not fail");
         }
@@ -264,7 +278,7 @@ namespace TestWiaSystem
             Assert.IsTrue(eventFired, "PropertyChanged event for ActiveJobName is not fired");
 
             // 異常系 
-            privateSet(iWiaSystem,nameof(iWiaSystem.ActiveJobName),"");
+            privateSet(iWiaSystem,nameof(iWiaSystem.ActiveJobName),"");//エラーになるようにファイル名を空にする
             Assert.IsFalse(iWiaSystem.SaveJobOverwrite(), "SaveJobOverwrite is not fail");
         }
         /// <summary>
@@ -274,6 +288,7 @@ namespace TestWiaSystem
         public void TestLoadBitmapFile()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            //イベントの発火と値の変更確認
             bool acquireAvailableFired = false;
             iWiaSystem.AcquireImageAvailable += (s, e) => acquireAvailableFired = true;
 
@@ -291,6 +306,7 @@ namespace TestWiaSystem
         public void TestGoOnline()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            //値の変更確認
             iWiaSystem.GoOnline();
             Assert.IsTrue(iWiaSystem.IsOnline, "GoOnline is fail: IsOnline is false");
         }
@@ -301,7 +317,9 @@ namespace TestWiaSystem
         public void TestGoOffline()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            //値の変更確認
             iWiaSystem.GoOnline(); // 一度オンラインにする
+            Assert.IsTrue(iWiaSystem.IsOnline, "GoOnline is fail: IsOnline is false");//一応trueになったことを見ておく
             iWiaSystem.GoOffline();
             Assert.IsFalse(iWiaSystem.IsOnline, "GoOffline is fail: IsOnline is true");
         }
@@ -326,6 +344,7 @@ namespace TestWiaSystem
 
             // 正常系
             int validId = 1;
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0, iWiaSystem.GetStatsResultsPassNum(validId), "GetStatsResultsPassNum is fail for valid ID");
 
             // 異常系 (configID > 50)
@@ -342,6 +361,7 @@ namespace TestWiaSystem
 
             // 正常系
             int validId = 1;
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0, iWiaSystem.GetStatsResultsFailNum(validId), "GetStatsResultsFailNum is fail for valid ID");
 
             // 異常系
@@ -358,6 +378,7 @@ namespace TestWiaSystem
 
             // 正常系
             int validId = 1;
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0.0, iWiaSystem.GetStatsResultsAvgScore(validId), "GetStatsResultsAvgScore is fail for valid ID");
 
             // 異常系
@@ -375,11 +396,14 @@ namespace TestWiaSystem
 
             // 正常系
             Assert.IsTrue(iWiaSystem.GetConfigNumPassed(1, jobName, out int num), "GetConfigNumPassed is fail for valid ID");
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0, num, "GetConfigNumPassed returned incorrect out parameter");
+            //ジョブ名空文字
+            Assert.IsTrue(iWiaSystem.GetConfigNumPassed(1, "", out int num2), "GetConfigNumPassed is fail for valid ID");
+            Assert.IsGreaterThanOrEqualTo(0, num2, "all GetConfigNumPassed returned incorrect out parameter");
 
             // 異常系
             ExceptionTest<ArgumentOutOfRangeException>(() => iWiaSystem.GetConfigNumPassed(51, jobName, out _));
-            ExceptionTest<ArgumentException>(() => iWiaSystem.GetConfigNumPassed(1, "", out _));
         }
         /// <summary>
         /// GetConfigNumFailedのテスト
@@ -392,11 +416,14 @@ namespace TestWiaSystem
 
             // 正常系
             Assert.IsTrue(iWiaSystem.GetConfigNumFailed(1, jobName, out int num), "GetConfigNumFailed is fail for valid ID");
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0, num, "GetConfigNumFailed returned incorrect out parameter");
+            //ジョブ名空文字
+            Assert.IsTrue(iWiaSystem.GetConfigNumFailed(1, "", out int num2), "GetConfigNumFailed is fail for valid ID");
+            Assert.IsGreaterThanOrEqualTo(0, num2, "all GetConfigNumFailed returned incorrect out parameter");
 
             // 異常系
             ExceptionTest<ArgumentOutOfRangeException>(() => iWiaSystem.GetConfigNumFailed(51, jobName, out _));
-            ExceptionTest<ArgumentException>(() => iWiaSystem.GetConfigNumPassed(1, "", out _));
         }
         /// <summary>
         /// GetConfigAvgScoreのテスト
@@ -409,11 +436,14 @@ namespace TestWiaSystem
 
             // 正常系
             Assert.IsTrue(iWiaSystem.GetConfigAvgScore(1, jobName, out int score), "GetConfigAvgScore is fail for valid ID");
+            // 0以上の数値が返ってくる
             Assert.IsGreaterThanOrEqualTo(0, score, "GetConfigAvgScore returned incorrect out parameter");
+            //ジョブ名空文字
+            Assert.IsTrue(iWiaSystem.GetConfigAvgScore(1, "", out int num2), "GetConfigAvgScore is fail for valid ID");
+            Assert.IsGreaterThanOrEqualTo(0, num2, "all GetConfigAvgScore returned incorrect out parameter");
 
             // 異常系
             ExceptionTest<ArgumentOutOfRangeException>(() => iWiaSystem.GetConfigAvgScore(51, jobName, out _));
-            ExceptionTest<ArgumentException>(() => iWiaSystem.GetConfigNumPassed(1, "", out _));
         }
         /// <summary>
         /// FindJobFilePathのテスト
@@ -425,6 +455,7 @@ namespace TestWiaSystem
 
             // 正常系
             Assert.IsTrue(iWiaSystem.FindJobFilePath("JobA", out string path), "FindJobFilePath is fail for valid name");
+            // ジョブフォルダ付きのパスになっている
             Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem) + "JobFolder") + $@"\JobA.wia", path, "FindJobFilePath returned incorrect path");
 
             // 異常系
@@ -516,6 +547,7 @@ namespace TestWiaSystem
         public void TestStartLiveView()
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            //値の変更とイベントのチェック
             bool startedFired = false;
             bool acquireAvailableFired = false;
             bool acquisitionFailed = false;
@@ -527,9 +559,15 @@ namespace TestWiaSystem
             iWiaSystem.StartLiveView();
 
             Assert.IsTrue(iWiaSystem.IsLiveViewActive, "StartLiveView is fail: IsLiveViewActive is not true");
+            // 開始イベントと成功イベントは発火すること
             Assert.IsTrue(startedFired, "LiveViewStarted event is not fired");
             Assert.IsTrue(acquireAvailableFired, "AcquireImageAvailable event is not fired at start");
+            //失敗時イベントは発火しないはず;
             Assert.IsFalse(acquisitionFailed, "ImageAcquisitionFailed event is fired after successed");
+            //スタート中にスタートをしたらエラーになりエラーイベントが発火するはず
+            iWiaSystem.StartLiveView();
+            Assert.IsFalse(acquisitionFailed, "ImageAcquisitionFailed event is fired after successed");
+
         }
         /// <summary>
         /// StopLiveViewのテスト

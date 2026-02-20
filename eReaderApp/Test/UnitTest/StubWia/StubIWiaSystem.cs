@@ -165,7 +165,7 @@ namespace StubWia
             private set => SetProperty(ref _tuningService, value, nameof(TuningService));
         }
 
-        private bool _isLiveViewActive;
+        private bool _isLiveViewActive = false;
         public bool IsLiveViewActive
         {
             get => _isLiveViewActive;
@@ -245,6 +245,9 @@ namespace StubWia
 
         public void WriteCommandLogException(Exception exp, string msg = "")
         {
+            if (exp == null && string.IsNullOrEmpty(msg)) {
+                throw new ArgumentException();
+            }
             Debug.WriteLine($"Log: {msg}, Ex: {exp?.Message}");
         }
 
@@ -344,7 +347,7 @@ namespace StubWia
                 throw new ArgumentOutOfRangeException();
             }
             if (string.IsNullOrEmpty(jobFileName)) {
-                throw new ArgumentException();
+                num = 250;
             }
             num = 50;
             return true;
@@ -357,7 +360,7 @@ namespace StubWia
             }
             if (string.IsNullOrEmpty(jobFileName))
             {
-                throw new ArgumentException();
+                num = 15;
             }
             num = 5;
             return true;
@@ -369,11 +372,12 @@ namespace StubWia
             {
                 throw new ArgumentOutOfRangeException();
             }
+            score = 90;
             if (string.IsNullOrEmpty(jobFileName))
             {
-                throw new ArgumentException();
+                score = 100;
             }
-            score = 90;
+            
             return true;
         }
 
@@ -417,6 +421,9 @@ namespace StubWia
 
         public void StartLiveView()
         {
+            if (IsLiveViewActive) {
+                ImageAcquisitionFailed.Invoke(this, EventArgs.Empty);
+            }
             IsLiveViewActive = true; // private set経由で発火
             LiveViewStarted?.Invoke(this, EventArgs.Empty);
             AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
