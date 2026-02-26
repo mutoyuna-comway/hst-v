@@ -40,15 +40,15 @@
 		<Parameter name="ProdLogMessageEventArgsImpl" value="StubWia.StubILogMessageEventArgs, StubWia" />
 		<!-- テスト設定値 スタブ -->
 		<Parameter name="StubIWiaSystemAppVersion" value="1.0.0.0" />
-		<Parameter name="StubIWiaSystemNewJob" value="NewJob" />
-		<Parameter name="StubIWiaSystemJobFolder" value="C:\Wia\Jobs" />
-		<Parameter name="StubIWiaSystemDeviceFolder" value="C:\ProgramData\HstVision\e-Reader\dev00" />
+		<Parameter name="StubIWiaSystemNewJob" value="無題.job" />
+		<Parameter name="StubSystemRoot" value="C:\ProgramData\HstVision" />
+		<Parameter name="StubSystemFolder" value="e-Reader" />
 
 		<!-- テスト設定値 本番 -->
 		<Parameter name="ProdIWiaSystemAppVersion" value="1.0.0.0" />
-		<Parameter name="ProdIWiaSystemNewJob" value="無題" />
-		<Parameter name="ProdJobFolder" value="C:\Wia\Jobs" />
-		<Parameter name="ProdDeviceFolder" value="C:\ProgramData\HstVision\e-Reader\dev00" />
+		<Parameter name="ProdIWiaSystemNewJob" value="無題.job" />
+		<Parameter name="ProdSystemRoot" value="C:\ProgramData\HstVision" />
+		<Parameter name="ProdSystemFolder" value="e-Reader" />
 
 	</TestRunParameters>
 </RunSettings>

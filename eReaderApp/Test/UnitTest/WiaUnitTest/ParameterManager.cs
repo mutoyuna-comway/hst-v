@@ -11,7 +11,7 @@ namespace TestWiaSystem
     public static class ParameterManager
     {
         public static TestContext TestContext { get; set; }
-       
+
         public static TValue getParam<TValue>(string settingKeyName)
         {
             if (TestContext == null)
@@ -28,8 +28,18 @@ namespace TestWiaSystem
                 throw new ArgumentException($"in runsettings , '{settingKeyName}' is not defined");
             }
 
-            return (TValue)TestContext.Properties[envName + settingKeyName] ;
+            return (TValue)TestContext.Properties[envName + settingKeyName];
 
+        }
+
+        public static String getDeviceFolder()
+        {
+
+            return getParam<String>("SystemRoot") + @"\" + getParam<String>("SystemFolder") + @"\dev00";
+        }
+        public static String getJobFolder(){
+
+            return getDeviceFolder() + @"\Job";
         }
     }
 }

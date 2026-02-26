@@ -2,6 +2,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using Wia.Abstractions;
 
@@ -315,6 +317,32 @@ namespace TestWiaSystem
 
             // 例外が全く発生しなかった場合
             throw new AssertFailedException($"{typeof(TException).Name} is not throw");
+        }
+
+
+        public void CleanupFromBaseTime(DateTime basetime, string _targetDirectory)
+        {
+            if (!Directory.Exists(_targetDirectory)) return;
+
+            DirectoryInfo di = new DirectoryInfo(_targetDirectory);
+
+            // 1. テスト開始時刻よりも後に作成されたファイルを取得
+            // 2.念のため、特定の拡張子やファイル名のパターンで絞り込むとさらに安全
+            var filesToDelete = di.GetFiles()
+                .Where(f => f.CreationTime >= basetime);
+
+            foreach (var file in filesToDelete)
+            {
+                try
+                {
+                    file.Delete();
+                }
+                catch (Exception ex)
+                {
+                    // 本番フォルダなので、ロックされている場合などのエラーハンドリング
+                    Console.WriteLine($"削除失敗: {file.Name} - {ex.Message}");
+                }
+            }
         }
     }
 }

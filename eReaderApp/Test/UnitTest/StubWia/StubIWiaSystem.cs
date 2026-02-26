@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Wia.Abstractions;
 
@@ -239,7 +240,7 @@ namespace StubWia
             });
         }
 
-        public string GetJobFolder() { return @"C:\Wia\Jobs"; }
+        public string GetJobFolder() { return @"C:\ProgramData\HstVision\e-Reader\dev00\Job"; }
 
         public string GetDeviceFolder() { return @"C:\ProgramData\HstVision\e-Reader\dev00"; }
 
@@ -248,6 +249,15 @@ namespace StubWia
             if (exp == null && string.IsNullOrEmpty(msg)) {
                 throw new ArgumentException();
             }
+
+            DateTime now = DateTime.Now;
+            string format = "yyyy.MM.dd_hh.mm.ss";
+            string dateString = "Seq_" + now.ToString(format) + ".000.log";
+            using (FileStream fs = File.Create(GetDeviceFolder() + "/log/" + dateString)) ;
+            string format2 = "yyyyMMdd_hh";
+            string dateString2 = "AssertionLog_" + now.ToString(format2) + ".log";
+            using (FileStream fs = File.Create(GetDeviceFolder() + "/log/" + dateString2)) ;
+
             Debug.WriteLine($"Log: {msg}, Ex: {exp?.Message}");
         }
 
@@ -260,7 +270,7 @@ namespace StubWia
         public bool CreateNewJob()
         {
             JobChanging?.Invoke(this, null);
-            this.ActiveJobName = "NewJob"; // private set経由でPropertyChanged発火
+            this.ActiveJobName = "無題.job"; // private set経由でPropertyChanged発火
             this.ActiveJobLoadTime = DateTime.Now;
             // Jobオブジェクト自体の再生成が必要ならここで行う
             this.Job = new StubIJob();
@@ -271,6 +281,10 @@ namespace StubWia
         public bool LoadJobFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) return false;
+            if (!File.Exists(fileName)) {
+                return false;
+            }
+
             JobChanging?.Invoke(this, null);
             this.ActiveJobName = System.IO.Path.GetFileName(fileName);
             this.ActiveJobLoadTime = DateTime.Now;
@@ -283,6 +297,10 @@ namespace StubWia
         public bool SaveJobFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) return false;
+            if (!Directory.Exists(System.IO.Path.GetDirectoryName(fileName))) {
+                return false;
+            }
+            using (FileStream fs = File.Create(fileName)) ;
             this.ActiveJobName = System.IO.Path.GetFileName(fileName);
             this.ActiveJobLoadTime = DateTime.Now;
             return true;
@@ -290,7 +308,9 @@ namespace StubWia
 
         public bool SaveJobOverwrite()
         {
-            if (string.IsNullOrEmpty(ActiveJobName)) return false;
+            if (string.IsNullOrEmpty(ActiveJobName) ||
+                ActiveJobName.EndsWith("無題.job")
+                ) return false;
             // 名前は変わらないが、保存アクションとして通知が必要なら
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobName)));
             return true;
@@ -298,7 +318,7 @@ namespace StubWia
 
         public bool LoadBitmapFile(string fileName)
         {
-            if (string.IsNullOrEmpty(fileName)) return false;
+            if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName)) return false;
 
             IsAcquireDisabled = true; // public set経由で発火
             AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
@@ -318,34 +338,23 @@ namespace StubWia
         // --- Stats Methods (Stubbed values) ---
         public int GetStatsResultsCount() => 100;
         public int GetStatsResultsPassNum(int configID) {
-            if (50 < configID) {
-                throw new ArgumentOutOfRangeException();
-            }
-            return 50;
+            this.ConfigIdCheck(configID);
+            return ((StubIJob)(this.Job))._readSuccessNum;
         } 
         public int GetStatsResultsFailNum(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            return 20;
+            this.ConfigIdCheck(configID);
+            return ((StubIJob)(this.Job))._readFailedNum;
         }
         public double GetStatsResultsAvgScore(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             return 85.5;
         }
 
         public bool GetConfigNumPassed(int configID, string jobFileName, out int num)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             if (string.IsNullOrEmpty(jobFileName)) {
                 num = 250;
             }
@@ -354,10 +363,7 @@ namespace StubWia
         }
         public bool GetConfigNumFailed(int configID, string jobFileName, out int num)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             if (string.IsNullOrEmpty(jobFileName))
             {
                 num = 15;
@@ -368,10 +374,7 @@ namespace StubWia
 
         public bool GetConfigAvgScore(int configID, string jobFileName, out int score)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             score = 90;
             if (string.IsNullOrEmpty(jobFileName))
             {
@@ -392,26 +395,17 @@ namespace StubWia
 
         public int GetAllNumPassed(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             return 1000;
         }
         public int GetAllNumFailed(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             return 50;
         }
         public int GetAllAverageScore(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             return 88;
         }
         public void AllStatsClear() { }
@@ -437,10 +431,7 @@ namespace StubWia
 
         public bool AcquireImage(int configID)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             this.LatestAcquireResult = new StubIAcquireResult();
             this.LatestAcquiredImage = new StubIImage();
             AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
@@ -449,10 +440,7 @@ namespace StubWia
 
         public int TuneStart(int configID, bool isMultiLightTuneForced)
         {
-            if (50 < configID)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            this.ConfigIdCheck(configID);
             IsTuning = true;
             TuneCurrentSeqNumber++;
             TuneCurrentConfigNumber = configID;
@@ -472,7 +460,17 @@ namespace StubWia
             TuneCurrentState = TuneState.Waiting;
             return true;
         }
+        private void ConfigIdCheck(int id)
+        {
+            if (id < 0) {
+                throw new ArgumentOutOfRangeException();
+            }
+            else if (this.Job.GetConfigMaxNum() < id)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
+        }
         #endregion
     }
 
@@ -490,4 +488,6 @@ namespace StubWia
         public int LocationX { get; }
         public int LocationY { get; }
     }
+
+    
 }

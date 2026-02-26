@@ -129,7 +129,15 @@ namespace StubWia
         public IJobConfig[] GetSortedEnableConfigArray() {  return null; }
         public bool CheckFontIdValidity() { return true; }
         public bool CopyConfig(int srcConfID, int dstConfID) { return true; }
-        public int RunRead() {  return 1; }
+        public int RunRead() {
+            _readFailedNum++;
+            return -1; 
+        
+        
+        }
+
+        public int _readSuccessNum = 0; //とりあえずの保持方法
+        public int _readFailedNum = 0;
         /// <summary>
         /// チューン結果のリセット
         /// </summary>
@@ -138,7 +146,7 @@ namespace StubWia
         public IReadResult GetReadBestResult(int configID) { return null; }
         public bool CheckValidConfigID(int configID) { return true; }
         public bool CheckExistenceConfig(int targetConfig) { return true; }
-        public int GetConfigMaxNum() { return 0; }
+        public int GetConfigMaxNum() { return WiaConstants.ConfigMaxNum; }
         public int RunReadRetry(int configID, int lightRange, int lightStep, int sizeRange, int sizeStep,
             int internalFilter, int timeOut, int overwrite, out IReadResult result)
         { result = null; return 1; }
