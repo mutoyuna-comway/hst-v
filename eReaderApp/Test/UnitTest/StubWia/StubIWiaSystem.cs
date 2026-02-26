@@ -415,7 +415,7 @@ namespace StubWia
 
         public void StartLiveView()
         {
-            if (IsLiveViewActive) {
+            if (IsLiveViewActive ) {
                 ImageAcquisitionFailed.Invoke(this, EventArgs.Empty);
             }
             IsLiveViewActive = true; // private set経由で発火
