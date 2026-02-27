@@ -266,11 +266,21 @@ namespace TestWiaSystem
         /// <remarks>
         /// 新規ジョブ作成時に、変更前・変更後のイベントが正しい順序で発火し、
         /// プロパティ（ジョブ名やロード時刻）が適切に初期化されるかを検証します。
+        /// jobがnullの時も同様の結果になることを確認
         /// </remarks>
         [TestMethod]
-        public void TestCreateNewJob()
+        [DataRow(true)]
+        [DataRow(false)]
+        public void TestCreateNewJob(Boolean isJobNull)
         {
             IWiaSystem iWiaSystem = WiaSystem;
+            IJob initJob = WiaSystem.Job;
+            string initJobName = WiaSystem.ActiveJobName;
+            if (isJobNull)
+            {
+                privateSet<IJob>(WiaSystem,nameof(WiaSystem.Job), null);
+                privateSet<IJob>(WiaSystem, nameof(WiaSystem.ActiveJobName), null);
+            }
 
             // 【準備】状態確認用の初期値とフラグを変数に保持
             DateTime time = DateTime.Now;
@@ -312,6 +322,9 @@ namespace TestWiaSystem
             // 【後始末】ハンドラの解除（他のテストへの影響を防ぐため）
             iWiaSystem.JobChanging -= JobChangingHandler;
             iWiaSystem.JobChanged -= JobChangedHandler;
+            privateSet(WiaSystem, nameof(WiaSystem.Job), initJob);
+            privateSet(WiaSystem, nameof(WiaSystem.ActiveJobName), initJobName);
+            
         }
 
         /// <summary>
@@ -418,6 +431,9 @@ namespace TestWiaSystem
 
                 // 【実行：正常系】指定パスへの保存
                 Assert.IsTrue(iWiaSystem.SaveJobFile(testPath), "SaveJobFile is fail");
+
+                // 【検証】アクティブなジョブ名が、保存したファイル名（パス無し）に更新されているか
+                Assert.IsTrue(System.IO.File.Exists(testPath), "SaveJobFile is not exists");
 
                 // 【検証】アクティブなジョブ名が、保存したファイル名（パス無し）に更新されているか
                 Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, "ActiveJobName is not updated correctly");
@@ -959,7 +975,7 @@ namespace TestWiaSystem
         /// 既に開始済みの状態でもう一度開始した際のエラーハンドリング（ImageAcquisitionFailed）も確認します。
         /// </remarks>
         [TestMethod]
-        public void TestStartLiveView()
+        public async Task TestStartLiveView()
         {
             IWiaSystem iWiaSystem = WiaSystem;
 
@@ -1017,7 +1033,7 @@ namespace TestWiaSystem
             
             // テスト終了のためライブビューを停止し、非同期処理の完了を少し待つ
             iWiaSystem.StopLiveView();
-            TestUtils.Delaymsec(500);
+            await TestUtils.Delaymsec(500);
         }
 
         /// <summary>
