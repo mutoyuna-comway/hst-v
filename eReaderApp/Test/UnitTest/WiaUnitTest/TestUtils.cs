@@ -10,7 +10,7 @@ namespace TestWiaSystem
 {
     public static class TestUtils
     {
-        public static async void DelaySample(int timeMs)
+        public static async Task Delaymsec(int timeMs)
         {
             await Task.Delay(timeMs);
         }

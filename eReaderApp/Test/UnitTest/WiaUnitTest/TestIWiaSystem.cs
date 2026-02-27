@@ -116,7 +116,7 @@ namespace TestWiaSystem
         /// 指定時間経過後にアプリケーション終了要求イベントが発火する、非同期的な振る舞いを検証します。
         /// </remarks>
         [TestMethod]
-        public void TestApplicationExit()
+        public async Task TestApplicationExit()
         {
             IWiaSystem iWiaSystem = WiaSystem;
             // 【準備】イベント発火検知用のフラグ
@@ -133,11 +133,11 @@ namespace TestWiaSystem
                 iWiaSystem.ApplicationExit(1000);
 
                 // 500ms待機してチェック
-                TestUtils.DelaySample(500);
+                await TestUtils.Delaymsec(500);
                 Assert.IsFalse(eventFired, "CloseApplicationRequested event is fired before 1000ms");
 
                 // さらに1000ms待機（合計1500ms）してチェック
-                TestUtils.DelaySample(1000);
+                await TestUtils.Delaymsec(1000);
                 Assert.IsTrue(eventFired, "CloseApplicationRequested event is not fired after 1000ms");
             }
             finally
@@ -1017,7 +1017,7 @@ namespace TestWiaSystem
             
             // テスト終了のためライブビューを停止し、非同期処理の完了を少し待つ
             iWiaSystem.StopLiveView();
-            TestUtils.DelaySample(500);
+            TestUtils.Delaymsec(500);
         }
 
         /// <summary>
