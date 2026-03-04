@@ -42,7 +42,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemCameraSettingsData))]
         public void ISystemCameraSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemCameraSettings iSystemCameraSettings = WiaSystem.AcquisitionSettings.CurrentCameraSetting;
+            ISystemCameraSettings iSystemCameraSettings = WiaService.AcquisitionSettings.CurrentCameraSetting;
             this.PropertyTest(iSystemCameraSettings, name, value, isPrivate);
         }
     }

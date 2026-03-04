@@ -270,7 +270,7 @@ namespace StubWia
         public bool CreateNewJob()
         {
             JobChanging?.Invoke(this, null);
-            this.ActiveJobName = "無題.job"; // private set経由でPropertyChanged発火
+            this.ActiveJobName = "無題"; // private set経由でPropertyChanged発火
             this.ActiveJobLoadTime = DateTime.Now;
             // Jobオブジェクト自体の再生成が必要ならここで行う
             this.Job = new StubIJob();
@@ -309,7 +309,7 @@ namespace StubWia
         public bool SaveJobOverwrite()
         {
             if (string.IsNullOrEmpty(ActiveJobName) ||
-                ActiveJobName.EndsWith("無題.job")
+                ActiveJobName.EndsWith("無題")
                 ) return false;
             // 名前は変わらないが、保存アクションとして通知が必要なら
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveJobName)));

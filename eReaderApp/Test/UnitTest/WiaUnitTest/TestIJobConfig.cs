@@ -21,9 +21,9 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;
+                IJobConfig iJobConfig = WiaService.Job.SelectedConfig;
                 /*  プロパティ名。テスト用の設定値,プライベートプロパティか否か */
-                yield return new object[] { "ParentJob", WiaSystem.Job, true };
+                yield return new object[] { "ParentJob", WiaService.Job, true };
                 yield return new object[] { "ConfigID", 10, true };
                 yield return new object[] { "AcquireSettings", ShallowCopy(iJobConfig.AcquireSettings), false };
                 yield return new object[] { "ReadSettings", ShallowCopy(iJobConfig.ReadSettings), false };
@@ -44,7 +44,7 @@ namespace TestWiaSystem
         [TestMethod]
         [DynamicData(nameof(TestIJobConfigData))]
         public void IJobConfigPropertyTest(string name, object value, Boolean isPrivate) {
-            IJobConfig iJobConfig = WiaSystem.Job.SelectedConfig;
+            IJobConfig iJobConfig = WiaService.Job.SelectedConfig;
             this.PropertyTest(iJobConfig, name, value, isPrivate);
         }
     }

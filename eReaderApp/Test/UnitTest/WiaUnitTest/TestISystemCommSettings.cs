@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                ISystemCommSettings iSystemCommSettings = WiaSystem.CommunicationSettings;
+                ISystemCommSettings iSystemCommSettings = WiaService.CommunicationSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Delimeter", DelimeterType.CRLF, false };
                 yield return new object[] { "CommType", CommunicatorType.Serial, false };
@@ -41,7 +41,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemCommSettingsData))]
         public void ISystemCommSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemCommSettings iSystemCommSettings = WiaSystem.CommunicationSettings;
+            ISystemCommSettings iSystemCommSettings = WiaService.CommunicationSettings;
             this.PropertyTest(iSystemCommSettings, name, value, isPrivate);
         }
     }

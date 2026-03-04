@@ -40,7 +40,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIImageSaveSettingsData))]
         public void IImageSaveSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            IImageSaveSettings iImageSaveSettings = WiaSystem.LogSettings.ImgSaveSetting;
+            IImageSaveSettings iImageSaveSettings = WiaService.LogSettings.ImgSaveSetting;
             this.PropertyTest(iImageSaveSettings, name, value, isPrivate);
         }
     }

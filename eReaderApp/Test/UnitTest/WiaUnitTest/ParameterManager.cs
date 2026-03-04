@@ -19,25 +19,24 @@ namespace TestWiaSystem
                 throw new InvalidOperationException("TestContext is null .  InstanceManager.TestContext setting at TestInitialize or ClassInitialize");
             }
 
-            string envName = TestContext.Properties["TargetEnv"] as string;
 
 
             // 1. 設定値（クラス名文字列）を取得
-            if (!TestContext.Properties.ContainsKey(envName + settingKeyName))
+            if (!TestContext.Properties.ContainsKey(settingKeyName))
             {
                 throw new ArgumentException($"in runsettings , '{settingKeyName}' is not defined");
             }
 
-            return (TValue)TestContext.Properties[envName + settingKeyName];
+            return (TValue)TestContext.Properties[settingKeyName];
 
         }
 
-        public static String getDeviceFolder()
+        public static string getDeviceFolder()
         {
 
-            return getParam<String>("SystemRoot") + @"\" + getParam<String>("SystemFolder") + @"\dev00";
+            return getParam<string>("SystemRoot") + @"\" + getParam<string>("SystemFolder") + @"\dev00";
         }
-        public static String getJobFolder(){
+        public static string getJobFolder(){
 
             return getDeviceFolder() + @"\Job";
         }

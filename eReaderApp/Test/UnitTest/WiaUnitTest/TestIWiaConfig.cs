@@ -77,7 +77,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestICameraInfoData))]
         public void ICameraInfoPropertyTest(string name, object value, bool isPrivate)
         {
-            ICameraInfo iCameraInfo = WiaSystem.Device.CameraInfo;
+            ICameraInfo iCameraInfo = WiaService.Device.CameraInfo;
             this.PropertyTest(iCameraInfo, name, value, isPrivate);
         }
     }
@@ -196,7 +196,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestICharacterSizeData))]
         public void ICharacterSizePropertyTest(string name, object value, bool isPrivate)
         {
-            ICharacterSize iCharacterSize = WiaSystem.Job.SelectedConfig.ReadSettings.CharSize;
+            ICharacterSize iCharacterSize = WiaService.Job.SelectedConfig.ReadSettings.CharSize;
             this.PropertyTest(iCharacterSize, name, value, isPrivate);
         }
     }
@@ -230,7 +230,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIRegionData))]
         public void IRegionPropertyTest(string name, object value, bool isPrivate)
         {
-            IRegion iRegion = WiaSystem.Job.SelectedConfig.AcquireSettings.WOI;
+            IRegion iRegion = WiaService.Job.SelectedConfig.AcquireSettings.WOI;
             this.PropertyTest(iRegion, name, value, isPrivate);
         }
     }

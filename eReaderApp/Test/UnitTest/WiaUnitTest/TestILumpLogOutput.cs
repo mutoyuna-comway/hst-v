@@ -22,7 +22,7 @@ namespace TestWiaSystem
         {
             get
             {
-                ILumpLogOutput iLumpLogOutput = WiaSystem.LogSettings.LogOutput;
+                ILumpLogOutput iLumpLogOutput = WiaService.LogSettings.LogOutput;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "AllImage", ShallowCopy(iLumpLogOutput.AllImage), false };
                 yield return new object[] { "FailImage", ShallowCopy(iLumpLogOutput.FailImage), false };
@@ -44,7 +44,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestILumpLogOutputData))]
         public void ILumpLogOutputPropertyTest(string name, object value, bool isPrivate)
         {
-            ILumpLogOutput iLumpLogOutput = WiaSystem.LogSettings.LogOutput;
+            ILumpLogOutput iLumpLogOutput = WiaService.LogSettings.LogOutput;
             this.PropertyTest(iLumpLogOutput, name, value, isPrivate);
         }
     }
@@ -82,7 +82,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestILumpLogElementData))]
         public void ILumpLogElementPropertyTest(string name, object value, bool isPrivate)
         {
-            ILumpLogElement iILumpLogElement = WiaSystem.LogSettings.LogOutput.AllImage;
+            ILumpLogElement iILumpLogElement = WiaService.LogSettings.LogOutput.AllImage;
             this.PropertyTest(iILumpLogElement, name, value, isPrivate);
         }
     }

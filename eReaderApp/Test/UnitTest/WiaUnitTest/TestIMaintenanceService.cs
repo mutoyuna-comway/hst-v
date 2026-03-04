@@ -37,7 +37,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIMaintenanceServiceData))]
         public void IMaintenanceServicePropertyTest(string name, object value, bool isPrivate)
         {
-            IMaintenanceService iMaintenanceService = WiaSystem.MaintenanceServices;
+            IMaintenanceService iMaintenanceService = WiaService.MaintenanceServices;
             this.PropertyTest(iMaintenanceService, name, value, isPrivate);
         }
     }
