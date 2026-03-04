@@ -82,7 +82,9 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MaxNumConfig)));
             }
         }
-
+        // コンストラクタを介さずにStubインスタンスを生成
+        // コンストラクタ内の複雑なロジックや依存関係をスキップし、
+        // テスト専用の純粋なオブジェクトを取得するためにGetUninitializedObjectを使用している。
         private IWiaSystem _systemService = (IWiaSystem)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(StubIWiaSystem));
         public IWiaSystem SystemService
         {
@@ -153,6 +155,7 @@ namespace StubWia
                 return -1;
             }
             var args = new StubIReadCompletedEventArgs();
+            // 登録されているリスナーに読取り結果の更新と完了を通知
             ConfigReadResultAvailable?.Invoke(this, args);
             ConfigReadCompleted?.Invoke(this, args);
             _readFailedNum++;
