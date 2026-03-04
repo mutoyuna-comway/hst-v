@@ -165,7 +165,7 @@ namespace StubWia
 
         public void ClearTuneResult()
         {
-            
+            this.TuneLatestResult = null;
         }
 
         public int GetAdjustedChecksumScore(double score, string readedString, bool pass, IJobReadSettings readSettings)
