@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IJobAcqSettings iJobAcqSettings = WiaSystem.Job.SelectedConfig.AcquireSettings;
+                IJobAcqSettings iJobAcqSettings = WiaService.Job.SelectedConfig.AcquireSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "AcqOrient", ImageOrient.Normal, false };
                 yield return new object[] { "WOI", ShallowCopy(iJobAcqSettings.WOI), false };
@@ -47,7 +47,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIJobAcqSettingsData))]
         public void IJobAcqSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            IJobAcqSettings iJobAcqSettings = WiaSystem.Job.SelectedConfig.AcquireSettings;
+            IJobAcqSettings iJobAcqSettings = WiaService.Job.SelectedConfig.AcquireSettings;
             this.PropertyTest(iJobAcqSettings, name, value, isPrivate);
         }
     }

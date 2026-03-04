@@ -24,7 +24,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                ITuneResult iTuneResult = WiaSystem.Job.SelectedConfig.TuneLatestResult;
+                ITuneResult iTuneResult = WiaService.Job.SelectedConfig.TuneLatestResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
                 yield return new object[] { "NumRead", 10, true };
@@ -51,7 +51,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestITuneResultData))]
         public void ITuneResultPropertyTest(string name, object value, bool isPrivate)
         {
-            ITuneResult iTuneResult = WiaSystem.Job.SelectedConfig.TuneLatestResult;
+            ITuneResult iTuneResult = WiaService.Job.SelectedConfig.TuneLatestResult;
             this.PropertyTest(iTuneResult, name, value, isPrivate);
         }
     }

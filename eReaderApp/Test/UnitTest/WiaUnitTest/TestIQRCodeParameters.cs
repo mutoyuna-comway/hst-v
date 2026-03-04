@@ -38,7 +38,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIQRCodeParametersData))]
         public void tIQRCodeParametersPropertyTest(string name, object value, bool isPrivate)
         {
-            IQRCodeParameters iIQRCodeParameters = WiaSystem.Job.SelectedConfig.ReadSettings.QR;
+            IQRCodeParameters iIQRCodeParameters = WiaService.Job.SelectedConfig.ReadSettings.QR;
             this.PropertyTest(iIQRCodeParameters, name, value, isPrivate);
         }
     }

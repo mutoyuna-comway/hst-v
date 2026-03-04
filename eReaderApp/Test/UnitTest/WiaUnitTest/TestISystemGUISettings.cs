@@ -42,7 +42,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemGUISettingsData))]
         public void ISystemGUISettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemGUISettings iSystemGUISettings = WiaSystem.GUISettings;
+            ISystemGUISettings iSystemGUISettings = WiaService.GUISettings;
             this.PropertyTest(iSystemGUISettings, name, value, isPrivate);
         }
     }

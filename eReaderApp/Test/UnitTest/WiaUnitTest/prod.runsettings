@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<MSTest>
+		<DeploymentEnabled>False</DeploymentEnabled>
+	</MSTest>
+	<TestRunParameters>
+		<!-- ターゲット環境　-->
+		<Parameter name="TargetEnv" value="Prod" />
+		<!-- インスタンス　本番 -->
+		<Parameter name="WiaSystemImpl" value="StubWia.StubIWiaSystem, StubWia" />
+		<Parameter name="ReadCompletedEventArgsImpl" value="StubWia.StubIReadCompletedEventArgs, StubWia" />
+		<Parameter name="RecogConditionImpl" value="StubWia.StubIRecogCondition, StubWia" />
+		<Parameter name="CamContlolerImpl" value="StubWia.StubICamContloler, StubWia" />
+		<Parameter name="StatsResultImpl" value="StubWia.StubIStatsResult, StubWia" />
+		<Parameter name="WaitResponseImpl" value="StubWia.StubIWaitResponse, StubWia" />
+		<Parameter name="FilterConfigImpl" value="StubWia.StubIFilterConfig, StubWia" />
+		<Parameter name="AcquireConditionImpl" value="StubWia.StubIAcquireCondition, StubWia" />
+		<Parameter name="TuningStrategyImpl" value="StubWia.StubITuningStrategy, StubWia" />
+		<Parameter name="ReadOperationStartedEventArgsImpl" value="StubWia.StubIReadOperationStartedEventArgs, StubWia" />
+		<Parameter name="ReadOperationCompletedEventArgsImpl" value="StubWia.StubIReadOperationCompletedEventArgs, StubWia" />
+		<Parameter name="AcquireImageStartedEventArgsImpl" value="StubWia.StubIAcquireImageStartedEventArgs, StubWia" />
+		<Parameter name="AcquireImageCompletedEventArgsImpl" value="StubWia.StubIAcquireImageCompletedEventArgs, StubWia" />
+		<Parameter name="JobAcqSettingsImpl" value="StubWia.StubIJobAcqSettings, StubWia" />
+		<Parameter name="LogMessageEventArgsImpl" value="StubWia.StubILogMessageEventArgs, StubWia" />
+
+
+		<!-- テスト設定値 本番 -->
+		<Parameter name="IWiaSystem.AppVersion" value="1.0.0.0" />
+		<Parameter name="IWiaSystem.Untitled" value="無題" />
+		<Parameter name="SystemRoot" value="C:\ProgramData\HstVision" />
+		<Parameter name="SystemFolder" value="e-Reader" />
+
+	</TestRunParameters>
+</RunSettings>

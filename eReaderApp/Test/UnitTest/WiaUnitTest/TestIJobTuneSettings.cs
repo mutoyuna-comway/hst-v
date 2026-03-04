@@ -48,7 +48,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIJobTuneSettingsData))]
         public void IJobTuneSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            IJobTuneSettings iJobTuneSettings = WiaSystem.Job.SelectedConfig.TuneSettings; ;
+            IJobTuneSettings iJobTuneSettings = WiaService.Job.SelectedConfig.TuneSettings; ;
             this.PropertyTest(iJobTuneSettings, name, value, isPrivate);
         }
     }

@@ -18,7 +18,7 @@ namespace TestWiaSystem
         /// <summary>
         /// 各インスタンスを保持
         /// </summary>
-        protected static IWiaSystem WiaSystem => InstanceManager.WiaSystem;
+        protected static IWiaSystem WiaService => InstanceManager.WiaService;
         protected static IReadCompletedEventArgs ReadCompletedEventArgs => InstanceManager.ReadCompletedEventArgs;
         protected static IRecogCondition RecogCondition => InstanceManager.RecogCondition;
         protected static ICamContloler CamContloler => InstanceManager.CamContloler;
@@ -344,5 +344,26 @@ namespace TestWiaSystem
                 }
             }
         }
+        /// <summary>
+        /// プロパティチェンジイベントの作成
+        /// </summary>
+        /// <param name="name">プロパティ名</param>
+        /// <param name="flagUpdate">フラグ更新処理</param>
+        /// <returns></returns>
+        protected PropertyChangedEventHandler getPropertyChangeHandler(string name, Action flagUpdate)
+        {
+
+            void Handler(object sender, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == name)
+                {
+                    flagUpdate();
+                }
+
+            }
+            return Handler;
+
+        }
+
     }
 }

@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                ISystemLogSettings iSystemLogSettings = WiaSystem.LogSettings;
+                ISystemLogSettings iSystemLogSettings = WiaService.LogSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "CommandLogOutput",true, false };
                 yield return new object[] { "LogOutput", ShallowCopy(iSystemLogSettings.LogOutput), false };
@@ -46,7 +46,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemLogSettingsData))]
         public void ISystemLogSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemLogSettings iSystemLogSettings = WiaSystem.LogSettings;
+            ISystemLogSettings iSystemLogSettings = WiaService.LogSettings;
             this.PropertyTest(iSystemLogSettings, name, value, isPrivate);
         }
     }

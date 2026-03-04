@@ -38,7 +38,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIT7ParametersData))]
         public void IT7ParametersPropertyTest(string name, object value, bool isPrivate)
         {
-            IT7Parameters iT7Parameters = WiaSystem.Job.SelectedConfig.ReadSettings.T7;
+            IT7Parameters iT7Parameters = WiaService.Job.SelectedConfig.ReadSettings.T7;
             this.PropertyTest(iT7Parameters, name, value, isPrivate);
         }
     }

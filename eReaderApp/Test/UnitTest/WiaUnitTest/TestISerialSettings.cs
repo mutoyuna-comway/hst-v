@@ -40,7 +40,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISerialSettingsData))]
         public void ISerialSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISerialSettings iSerialSettings = WiaSystem.CommunicationSettings.Serial;
+            ISerialSettings iSerialSettings = WiaService.CommunicationSettings.Serial;
             this.PropertyTest(iSerialSettings, name, value, isPrivate);
         }
     }

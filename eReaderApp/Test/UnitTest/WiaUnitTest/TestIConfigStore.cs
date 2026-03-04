@@ -23,7 +23,7 @@ namespace TestWiaSystem
         {
             get
             {
-                IConfigStore iConfigStore = WiaSystem.Job.Configs;
+                IConfigStore iConfigStore = WiaService.Job.Configs;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ParentJob", ShallowCopy(iConfigStore.ParentJob), true };
                 yield return new object[] { "Count", 10, true };
@@ -37,7 +37,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIConfigStoreData))]
         public void IConfigStorePropertyTest(string name, object value, bool isPrivate)
         {
-            IConfigStore iConfigStore = WiaSystem.Job.Configs;
+            IConfigStore iConfigStore = WiaService.Job.Configs;
             this.PropertyTest(iConfigStore, name, value, isPrivate);
         }
 

@@ -38,7 +38,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIDataMatrixParametersData))]
         public void IDataMatrixParametersPropertyTest(string name, object value, bool isPrivate)
         {
-            IDataMatrixParameters iDataMatrixParameters = WiaSystem.Job.SelectedConfig.ReadSettings.DM;
+            IDataMatrixParameters iDataMatrixParameters = WiaService.Job.SelectedConfig.ReadSettings.DM;
             this.PropertyTest(iDataMatrixParameters, name, value, isPrivate);
         }
     }

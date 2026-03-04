@@ -24,7 +24,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IJob iJob = WiaSystem.Job;
+                IJob iJob = WiaService.Job;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "ReadType", ReadMethod.All, false };
                 yield return new object[] { "ScoreType", ScoreMode.MinScore, false };
@@ -32,7 +32,7 @@ namespace TestWiaSystem
                 yield return new object[] { "SelectedConfigIndex", 10, false };
                 yield return new object[] { "Configs", iJob.Configs, true };// Configsはコンテナクラスへの参照なので、コピーせずインスタンス比較で問題なし
                 yield return new object[] { "MaxNumConfig", MaxNumConfigType.Num16, false };
-                yield return new object[] { "SystemService", WiaSystem, false };
+                yield return new object[] { "SystemService", WiaService, false };
             }
         }
 
@@ -43,7 +43,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIJobData))]
         public void IJobPropertyTest(string name, object value, bool isPrivate)
         {
-            IJob iJob = WiaSystem.Job;
+            IJob iJob = WiaService.Job;
             this.PropertyTest(iJob, name, value, isPrivate);
         }
     }

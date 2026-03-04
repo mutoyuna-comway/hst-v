@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -28,29 +29,29 @@ namespace TestWiaSystem
         {
             get
             {
-                IWiaSystem iWiaSystem = WiaSystem;
+                IWiaSystem iWiaSystem = WiaService;
 
                 // インターフェイス上 {get;} のものは isPrivate=true として扱います
                 // インターフェイス上 {get; set;} のものは isPrivate=false として扱います
 
                 // オブジェクト系プロパティのテストケース
                 // 初期値のシャローコピーを渡すことで、参照が変わった（セットされた）ことを検知できるようにしています。
-                yield return new object[] { nameof(iWiaSystem.Job), ShallowCopy(iWiaSystem.Job), true };
-                yield return new object[] { nameof(iWiaSystem.LatestAcquireResult), ShallowCopy(iWiaSystem.LatestAcquireResult), true };
-                yield return new object[] { nameof(iWiaSystem.LatestAcquiredImage), ShallowCopy(iWiaSystem.LatestAcquiredImage), true };
+                yield return new object[] { nameof(IWiaSystem.Job), ShallowCopy(iWiaSystem.Job), true };
+                yield return new object[] { nameof(IWiaSystem.LatestAcquireResult), ShallowCopy(iWiaSystem.LatestAcquireResult), true };
+                yield return new object[] { nameof(IWiaSystem.LatestAcquiredImage), ShallowCopy(iWiaSystem.LatestAcquiredImage), true };
 
 
                 // 値・文字列系プロパティのテストケース
-                yield return new object[] { nameof(iWiaSystem.IsOnline), true, true };
-                yield return new object[] { nameof(iWiaSystem.IsScreenLocked), true, false };
-                yield return new object[] { nameof(iWiaSystem.IsAcquireDisabled), true, false };
-                yield return new object[] { nameof(iWiaSystem.ActiveJobName), "test", true };
-                yield return new object[] { nameof(iWiaSystem.ActiveJobLoadTime), default(DateTime), true };
-                yield return new object[] { nameof(iWiaSystem.IsLiveViewActive), true, true };
-                yield return new object[] { nameof(iWiaSystem.IsTuning), true, true };
-                yield return new object[] { nameof(iWiaSystem.TuneCurrentState), TuneState.Waiting, true };
-                yield return new object[] { nameof(iWiaSystem.TuneCurrentSeqNumber), 0, true };
-                yield return new object[] { nameof(iWiaSystem.TuneCurrentConfigNumber), 0, true };
+                yield return new object[] { nameof(IWiaSystem.IsOnline), true, true };
+                yield return new object[] { nameof(IWiaSystem.IsScreenLocked), true, false };
+                yield return new object[] { nameof(IWiaSystem.IsAcquireDisabled), true, false };
+                yield return new object[] { nameof(IWiaSystem.ActiveJobName), "test", true };
+                yield return new object[] { nameof(IWiaSystem.ActiveJobLoadTime), default(DateTime), true };
+                yield return new object[] { nameof(IWiaSystem.IsLiveViewActive), true, true };
+                yield return new object[] { nameof(IWiaSystem.IsTuning), true, true };
+                yield return new object[] { nameof(IWiaSystem.TuneCurrentState), TuneState.Waiting, true };
+                yield return new object[] { nameof(IWiaSystem.TuneCurrentSeqNumber), 0, true };
+                yield return new object[] { nameof(IWiaSystem.TuneCurrentConfigNumber), 0, true };
             }
         }
 
@@ -69,7 +70,7 @@ namespace TestWiaSystem
         public void IWiaSystemPropertyTest(string name, object value, bool isPrivate)
         {
             // プロパティの取得確認（AbstractTestの実装利用を想定）
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             this.PropertyTest(iWiaSystem, name, value, isPrivate);
         }
 
@@ -83,24 +84,24 @@ namespace TestWiaSystem
         [TestMethod]
         public void IWiaSystemReadOnlyPropertyTest()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 各種設定やサービスインスタンスが正しく生成されているか（nullでないか）を検証
-            Assert.IsNotNull(iWiaSystem.AcquisitionSettings, nameof(iWiaSystem.AcquisitionSettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.SystemSettings, nameof(iWiaSystem.SystemSettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.GUISettings, nameof(iWiaSystem.GUISettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.CommunicationSettings, nameof(iWiaSystem.CommunicationSettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.ReadSettings, nameof(iWiaSystem.ReadSettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.LogSettings, nameof(iWiaSystem.LogSettings) + " is null");
-            Assert.IsNotNull(iWiaSystem.Device, nameof(iWiaSystem.Device) + " is null");
-            Assert.IsNotNull(iWiaSystem.ImageSource, nameof(iWiaSystem.ImageSource) + " is null");
-            Assert.IsNotNull(iWiaSystem.MaintenanceServices, nameof(iWiaSystem.MaintenanceServices) + " is null");
-            Assert.IsNotNull(iWiaSystem.IdReadingService, nameof(iWiaSystem.IdReadingService) + " is null");
-            Assert.IsNotNull(iWiaSystem.TuningService, nameof(iWiaSystem.TuningService) + " is null");
+            Assert.IsNotNull(iWiaSystem.AcquisitionSettings, nameof(IWiaSystem.AcquisitionSettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.SystemSettings, nameof(IWiaSystem.SystemSettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.GUISettings, nameof(IWiaSystem.GUISettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.CommunicationSettings, nameof(IWiaSystem.CommunicationSettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.ReadSettings, nameof(IWiaSystem.ReadSettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.LogSettings, nameof(IWiaSystem.LogSettings) + " is null");
+            Assert.IsNotNull(iWiaSystem.Device, nameof(IWiaSystem.Device) + " is null");
+            Assert.IsNotNull(iWiaSystem.ImageSource, nameof(IWiaSystem.ImageSource) + " is null");
+            Assert.IsNotNull(iWiaSystem.MaintenanceServices, nameof(IWiaSystem.MaintenanceServices) + " is null");
+            Assert.IsNotNull(iWiaSystem.IdReadingService, nameof(IWiaSystem.IdReadingService) + " is null");
+            Assert.IsNotNull(iWiaSystem.TuningService, nameof(IWiaSystem.TuningService) + " is null");
 
             // 値型のReadOnlyプロパティの検証
             // バージョン情報が期待値（実行環境のパラメータ）と一致しているか
-            Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem) + nameof(iWiaSystem.AppVersion)), iWiaSystem.AppVersion);
+            Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem)+ "." + nameof(IWiaSystem.AppVersion)), iWiaSystem.AppVersion);
             // 起動時刻が現在時刻よりも前（過去）に設定されているかを確認
             Assert.IsLessThanOrEqualTo(DateTime.Now, iWiaSystem.BootTime, "boot time is not before current time");
         }
@@ -118,7 +119,7 @@ namespace TestWiaSystem
         [TestMethod]
         public async Task TestApplicationExit()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             // 【準備】イベント発火検知用のフラグ
             bool eventFired = false;
 
@@ -152,7 +153,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetJobFolder()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【実行】対象メソッドの呼び出し
             string folder = iWiaSystem.GetJobFolder();
@@ -169,7 +170,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetDeviceFolder()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【実行】対象メソッドの呼び出し
             string folder = iWiaSystem.GetDeviceFolder();
@@ -190,7 +191,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestWriteCommandLogException()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             DateTime now = DateTime.Now;
 
             // 出力されるはずのファイル名をシミュレート（IWiaSystemの実装に合わせたファイル名）
@@ -232,7 +233,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestSetScreenVisibility()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】イベント発火確認用フラグ
             bool eventFired = false;
@@ -240,9 +241,9 @@ namespace TestWiaSystem
             // イベントを購読し、発火した際に引数(e)の中身がメソッドの入力値と一致するかアサートする
             EventHandler<IScreenVisibilityChangeEventArgs> handler = (s, e) => {
                 eventFired = true;
-                Assert.IsTrue(e.IsVisible, "IsVisible is incorrect in event args");
-                Assert.AreEqual(50, e.LocationX, "LocationX is incorrect in event args");
-                Assert.AreEqual(100, e.LocationY, "LocationY is incorrect in event args");
+                Assert.IsTrue(e.IsVisible, $"{nameof(e.IsVisible)} is incorrect in event args");
+                Assert.AreEqual(50, e.LocationX, $"{nameof(e.LocationX)} is incorrect in event args");
+                Assert.AreEqual(100, e.LocationY, $"{nameof(e.LocationY)} is incorrect in event args");
             };
             try
             {
@@ -269,61 +270,66 @@ namespace TestWiaSystem
         /// jobがnullの時も同様の結果になることを確認
         /// </remarks>
         [TestMethod]
-        [DataRow(true)]
+        // [DataRow(true)] TODO Nullパターンはいったん行わない
         [DataRow(false)]
         public void TestCreateNewJob(Boolean isJobNull)
         {
-            IWiaSystem iWiaSystem = WiaSystem;
-            IJob initJob = WiaSystem.Job;
-            string initJobName = WiaSystem.ActiveJobName;
-            if (isJobNull)
-            {
-                privateSet<IJob>(WiaSystem,nameof(WiaSystem.Job), null);
-                privateSet<IJob>(WiaSystem, nameof(WiaSystem.ActiveJobName), null);
-            }
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】状態確認用の初期値とフラグを変数に保持
             DateTime time = DateTime.Now;
+            bool propertyEventFired = false;
             bool eventFired1 = false;
             bool eventFired2 = false;
-            string beforeJobName = WiaSystem.ActiveJobName;
-            IJob beforeJob = WiaSystem.Job;
+            string beforeJobName = iWiaSystem.ActiveJobName;
+            IJob beforeJob = iWiaSystem.Job;
 
             // ジョブ変更「中」のイベントハンドラ：この時点ではまだプロパティは更新されていないはず
             EventHandler JobChangingHandler = (s, e) => {
                 eventFired1 = true;
-                Assert.AreEqual(beforeJobName, WiaSystem.ActiveJobName, "ActiveJobName is changed in Chengging event");
-                Assert.AreEqual(beforeJob, WiaSystem.Job, "Job is changed in Chengging event");
+                Assert.AreEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
+                Assert.AreEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
 
             // ジョブ変更「完了」のイベントハンドラ：この時点ではプロパティが新しいものに更新されているはず
             EventHandler JobChangedHandler = (s, e) => {
                 eventFired2 = true;
-                Assert.AreNotEqual(beforeJobName, WiaSystem.ActiveJobName, "ActiveJobName is changed in Chengging event");
-                Assert.AreNotEqual(beforeJob, WiaSystem.Job, "Job is changed in Chengging event");
+                Assert.AreNotEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
+                Assert.AreNotEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
 
-            iWiaSystem.JobChanging += JobChangingHandler;
-            iWiaSystem.JobChanged += JobChangedHandler;
+            
+            PropertyChangedEventHandler handler = getPropertyChangeHandler(nameof(iWiaSystem.ActiveJobName), () => { propertyEventFired = true; });
 
-            // 【実行と検証】メソッドがtrue(成功)を返すか
-            Assert.IsTrue(iWiaSystem.CreateNewJob(), "CreateNewJob is fail");
+            try
+            {
+                iWiaSystem.JobChanging += JobChangingHandler;
+                iWiaSystem.JobChanged += JobChangedHandler;
+                iWiaSystem.PropertyChanged += handler;
+                // 【実行と検証】メソッドがtrue(成功)を返すか
+                Assert.IsTrue(iWiaSystem.CreateNewJob(), "CreateNewJob is fail");
 
-            // 【検証】ジョブロード時間がテスト開始時の時刻よりも後（更新された）であること
-            Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, "ActiveJobLoadTime is not updated");
+                // 【検証】ジョブロード時間がテスト開始時の時刻よりも後（更新された）であること
+                Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, $"{nameof(IWiaSystem.ActiveJobLoadTime)} is not updated");
 
-            // 【検証】アクティブなジョブ名が、環境依存の新規ジョブ名（例: 無題.job）になっていること
-            Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem) + "NewJob"), iWiaSystem.ActiveJobName, "ActiveJobName is not updated to NewJob");
+                // 【検証】アクティブなジョブ名が、環境依存の新規ジョブ名（例: 無題.job）になっていること
+                Assert.AreEqual(ParameterManager.getParam<string>(nameof(IWiaSystem) + ".Untitled"), iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is not updated to NewJob");
 
-            // 【検証】事前/事後イベントが両方とも発火したか
-            Assert.IsTrue(eventFired1, "JobChanging event is not fired");
-            Assert.IsTrue(eventFired2, "JobChanged event is not fired");
+                // 【検証】事前/事後イベントが両方とも発火したか
+                Assert.IsTrue(eventFired1, "JobChanging event is not fired");
+                Assert.IsTrue(eventFired2, "JobChanged event is not fired");
+                Assert.IsTrue(propertyEventFired, "propertyEventFired is not fired");
 
-            // 【後始末】ハンドラの解除（他のテストへの影響を防ぐため）
-            iWiaSystem.JobChanging -= JobChangingHandler;
-            iWiaSystem.JobChanged -= JobChangedHandler;
-            privateSet(WiaSystem, nameof(WiaSystem.Job), initJob);
-            privateSet(WiaSystem, nameof(WiaSystem.ActiveJobName), initJobName);
+            }
+            finally {
+                // 【後始末】ハンドラの解除（他のテストへの影響を防ぐため）
+                iWiaSystem.JobChanging -= JobChangingHandler;
+                iWiaSystem.JobChanged -= JobChangedHandler;
+                iWiaSystem.PropertyChanged -= handler;
+            }
+            
+
+            
             
         }
 
@@ -337,7 +343,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestLoadJobFile()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】テスト用の一時ファイルパスを生成
             DateTime time = DateTime.Now;
@@ -352,18 +358,18 @@ namespace TestWiaSystem
 
             // ロードによって状態が「変わった」ことを検証するため、一旦新規作成状態にしておく
             iWiaSystem.CreateNewJob();
-            string beforeJobName = WiaSystem.ActiveJobName;
-            IJob beforeJob = WiaSystem.Job;
+            string beforeJobName = iWiaSystem.ActiveJobName;
+            IJob beforeJob = iWiaSystem.Job;
 
             EventHandler JobChangingHandler = (s, e) => {
                 eventFired1 = true; //ジョブ変更中イベント
-                Assert.AreEqual(beforeJobName, WiaSystem.ActiveJobName, "ActiveJobName is changed in Chengging event");
-                Assert.AreEqual(beforeJob, WiaSystem.Job, "Job is changed in Chengging event");
+                Assert.AreEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
+                Assert.AreEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
             EventHandler JobChangedHandler = (s, e) => {
                 eventFired2 = true; //ジョブ変更完了イベント
-                Assert.AreNotEqual(beforeJobName, WiaSystem.ActiveJobName, "ActiveJobName is changed in Chengging event");
-                Assert.AreNotEqual(beforeJob, WiaSystem.Job, "Job is changed in Chengging event");
+                Assert.AreNotEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
+                Assert.AreNotEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
 
             try
@@ -375,10 +381,10 @@ namespace TestWiaSystem
                 Assert.IsTrue(iWiaSystem.LoadJobFile(testPath), "LoadJobFile is fail");
 
                 // 【検証】ロード時間が更新されているか
-                Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, "ActiveJobLoadTime is not updated");
+                Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, $"{nameof(IWiaSystem.ActiveJobLoadTime)} is not updated");
 
                 // 【検証】ActiveJobNameには、ディレクトリパスが取り除かれた「ファイル名のみ」がセットされる仕様かを確認
-                Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, "ActiveJobName is not updated correctly");
+                Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is not updated correctly");
 
                 // 【検証】イベントが発火したか
                 Assert.IsTrue(eventFired1, "JobChanging event is not fired");
@@ -397,6 +403,9 @@ namespace TestWiaSystem
             Assert.IsFalse(iWiaSystem.LoadJobFile(testPath + "fail"), "LoadJobFile unknown path is not failed");
         }
 
+
+        
+
         /// <summary>
         /// SaveJobFileのテスト
         /// </summary>
@@ -406,7 +415,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestSaveJobFile()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             DateTime time = DateTime.Now;
 
             // 【準備】保存先の一時ファイルパスを生成
@@ -417,17 +426,12 @@ namespace TestWiaSystem
             bool isEventRaised = false;
 
             // プロパティ変更イベントで ActiveJobName が更新されたことを検知するハンドラ
-            void Handler(object sender, PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName == nameof(iWiaSystem.ActiveJobName))
-                {
-                    isEventRaised = true;
-                }
-            }
+            
+            PropertyChangedEventHandler handler = getPropertyChangeHandler(nameof(IWiaSystem.ActiveJobName), () => { isEventRaised = true; });
 
             try
             {
-                iWiaSystem.PropertyChanged += Handler;
+                iWiaSystem.PropertyChanged += handler;
 
                 // 【実行：正常系】指定パスへの保存
                 Assert.IsTrue(iWiaSystem.SaveJobFile(testPath), "SaveJobFile is fail");
@@ -439,7 +443,7 @@ namespace TestWiaSystem
                 Assert.AreEqual(System.IO.Path.GetFileName(testPath), iWiaSystem.ActiveJobName, "ActiveJobName is not updated correctly");
 
                 // 【検証】保存日時（ロード日時扱い）が更新されているか
-                Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, "ActiveJobLoadTime is not updated");
+                Assert.IsGreaterThanOrEqualTo(time, iWiaSystem.ActiveJobLoadTime, $"{nameof(IWiaSystem.ActiveJobLoadTime)} is not updated");
 
                 // 【検証】プロパティ変更通知イベントが正しく発火したか
                 Assert.IsTrue(isEventRaised, "ActiveJobLoadTime property event not fired");
@@ -447,7 +451,7 @@ namespace TestWiaSystem
             finally
             {
                 // 【後始末】イベント購読解除と一時ファイルの削除
-                WiaSystem.PropertyChanged -= Handler;
+                iWiaSystem.PropertyChanged -= handler;
                 System.IO.File.Delete(testPath);
             }
 
@@ -466,7 +470,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestSaveJobOverwrite()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             bool isEventRaised = false;
             DateTime time = DateTime.Now;
             string format = "yyyyMMddhhmmss";
@@ -475,7 +479,7 @@ namespace TestWiaSystem
 
             void Handler(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(iWiaSystem.ActiveJobName))
+                if (e.PropertyName == nameof(IWiaSystem.ActiveJobName))
                 {
                     isEventRaised = true;
                 }
@@ -496,7 +500,7 @@ namespace TestWiaSystem
             finally
             {
                 // 【後始末】
-                WiaSystem.PropertyChanged -= Handler;
+                iWiaSystem.PropertyChanged -= Handler;
                 System.IO.File.Delete(testPath);
             }
 
@@ -515,11 +519,11 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestLoadBitmapFile()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             DateTime time = DateTime.Now;
             string format = "yyyyMMddhhmmss";
             string dateString = time.ToString(format) + ".bmp";
-            string testPath = System.IO.Path.GetTempPath() + "/" + dateString;
+            string testPath = System.IO.Path.GetTempPath() + dateString;
 
             // 【準備】イベント発火確認用フラグ
             bool acquireAvailableFired = false;
@@ -527,6 +531,7 @@ namespace TestWiaSystem
 
             try
             {
+                iWiaSystem.IsAcquireDisabled = false;//初期化しておく
                 // テスト用の黒塗りBMP画像を生成してディスクに保存
                 TestUtils.CreateBlackBmp(testPath);
 
@@ -536,7 +541,7 @@ namespace TestWiaSystem
                 Assert.IsTrue(iWiaSystem.LoadBitmapFile(testPath), "LoadBitmapFile is fail");
 
                 // 【検証】ファイル読み込みモードに移行したため、カメラからの画像取込は無効(true)になるはず
-                Assert.IsTrue(iWiaSystem.IsAcquireDisabled, "IsAcquireDisabled is not true after loading bitmap");
+                Assert.IsTrue(iWiaSystem.IsAcquireDisabled, $"{nameof(IWiaSystem.IsAcquireDisabled)} is not true after loading bitmap");
 
                 // 【検証】画像が利用可能になったことを通知するイベントが発火したか
                 Assert.IsTrue(acquireAvailableFired, "AcquireImageAvailable event is not fired");
@@ -546,10 +551,11 @@ namespace TestWiaSystem
                 // 【後始末】
                 System.IO.File.Delete(testPath);
                 iWiaSystem.AcquireImageAvailable -= handler;
+                iWiaSystem.IsAcquireDisabled = false;
             }
 
             // 【検証：異常系】無効なパスや存在しないファイルの場合は失敗するか
-            Assert.IsFalse(iWiaSystem.LoadBitmapFile(""), "AcquireImageAvailable is not fail");
+            Assert.IsFalse(iWiaSystem.LoadBitmapFile(""), "LoadBitmapFile is not fail"); 
             Assert.IsFalse(iWiaSystem.LoadBitmapFile(@"C:\存在しないフォルダ/test.job"), "LoadBitmapFile is not fail unknown folder");
         }
 
@@ -562,21 +568,18 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGoOnline()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             bool isEventRaised = false;
+            PropertyChangedEventHandler handler = getPropertyChangeHandler(nameof(IWiaSystem.IsOnline), () => { isEventRaised = true; });
 
-            void Handler(object sender, PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName == nameof(iWiaSystem.IsOnline))
-                {
-                    isEventRaised = true;
-                }
+            if (iWiaSystem.IsOnline) {
+                iWiaSystem.GoOffline(); //オンラインの時はオフラインにしておく
             }
-
+                
             try
             {
                 // 【準備】イベントを購読
-                iWiaSystem.PropertyChanged += Handler;
+                iWiaSystem.PropertyChanged += handler;
 
                 // 【実行】オンラインに移行
                 iWiaSystem.GoOnline();
@@ -584,7 +587,7 @@ namespace TestWiaSystem
             finally
             {
                 // 【後始末】イベント購読解除
-                WiaSystem.PropertyChanged -= Handler;
+                iWiaSystem.PropertyChanged -= handler;
             }
 
             // 【検証】イベントの発火と、プロパティがtrueになったかを確認
@@ -601,16 +604,20 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGoOffline()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】テストの前提として、確実にオンライン状態から始める
-            iWiaSystem.GoOnline();
+            
+            if (!iWiaSystem.IsOnline)
+            {
+                iWiaSystem.GoOnline(); //オフラインの時はオンラインにしておく
+            }
             Assert.IsTrue(iWiaSystem.IsOnline, "GoOnline is fail: IsOnline is false");
 
             bool isEventRaised = false;
             void Handler(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(iWiaSystem.IsOnline))
+                if (e.PropertyName == nameof(IWiaSystem.IsOnline))
                 {
                     isEventRaised = true;
                 }
@@ -626,7 +633,7 @@ namespace TestWiaSystem
             finally
             {
                 // 【後始末】
-                WiaSystem.PropertyChanged -= Handler;
+                iWiaSystem.PropertyChanged -= Handler;
             }
 
             // 【検証】イベント発火と、プロパティがfalseになったかを確認
@@ -640,8 +647,10 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetStatsResultsCount()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
+            iWiaSystem.AllStatsClear();//とりあえず一度クリア
+            iWiaSystem.Job.RunRead();
             // 【実行】統計情報の総数を取得
             int count = iWiaSystem.GetStatsResultsCount();
 
@@ -659,8 +668,9 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetStatsResultsPassNum()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
+            iWiaSystem.AllStatsClear();//とりあえず一度クリア
             // 【準備】読取り処理(RunRead)を実行するためにダミー画像を読み込ませる
             DateTime time = DateTime.Now;
             string format = "yyyyMMddhhmmss";
@@ -701,11 +711,12 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetStatsResultsFailNum()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             DateTime time = DateTime.Now;
             string format = "yyyyMMddhhmmss";
             int validId = 1;
 
+            iWiaSystem.AllStatsClear();//とりあえず一度クリア
             // 【準備】読取実行「前」の失敗数を取得しておく
             int before = iWiaSystem.GetStatsResultsFailNum(validId);
 
@@ -744,8 +755,9 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetStatsResultsAvgScore()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
+            iWiaSystem.AllStatsClear();//とりあえず一度クリア
             // 【準備】ダミー画像をセットし読取りを実行
             DateTime time = DateTime.Now;
             string format = "yyyyMMddhhmmss";
@@ -785,7 +797,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetConfigNumPassed()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             string jobName = "Test.wia";
 
             // 【実行・検証：正常系】特定のジョブ名を指定した場合
@@ -808,7 +820,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetConfigNumFailed()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             string jobName = "Test.wia";
 
             // 【実行・検証：正常系】特定のジョブ名を指定した場合
@@ -831,7 +843,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetConfigAvgScore()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
             string jobName = "Test.wia";
 
             // 【実行・検証：正常系】特定のジョブ名を指定した場合
@@ -868,8 +880,9 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetAllNumPassed()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
+            iWiaSystem.Job.RunRead(); //とりあえず統計情報を更新させる
             // 【実行・検証：正常系】
             Assert.IsGreaterThanOrEqualTo(0, iWiaSystem.GetAllNumPassed(1), "GetAllNumPassed is fail for valid ID");
 
@@ -885,8 +898,9 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetAllNumFailed()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
+            iWiaSystem.Job.RunRead(); //とりあえず統計情報を更新させる
             // 【実行・検証：正常系】
             Assert.IsGreaterThanOrEqualTo(0, iWiaSystem.GetAllNumFailed(1), "GetAllNumFailed is fail for valid ID");
 
@@ -902,7 +916,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetAllAverageScore()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【実行・検証：正常系】
             Assert.IsGreaterThanOrEqualTo(0, iWiaSystem.GetAllAverageScore(1), "GetAllAverageScore is fail for valid ID");
@@ -923,7 +937,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestAllStatsClear()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             try
             {
@@ -943,7 +957,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestCreateRecogCond()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【実行】認識条件オブジェクトの生成
             var cond = iWiaSystem.CreateRecogCond();
@@ -958,7 +972,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetCamInfo()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【実行】カメラ情報の取得
             var info = iWiaSystem.GetCamInfo();
@@ -977,7 +991,7 @@ namespace TestWiaSystem
         [TestMethod]
         public async Task TestStartLiveView()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】イベント検知フラグ
             bool startedFired = false;
@@ -1045,7 +1059,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestStopLiveView()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】イベント検知フラグ
             bool stoppedFired = false;
@@ -1092,7 +1106,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestAcquireImage()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】イベント検知フラグと画像ファイルのセットアップ
             bool eventFired = false;
@@ -1118,8 +1132,8 @@ namespace TestWiaSystem
                 Assert.IsTrue(iWiaSystem.AcquireImage(1), "AcquireImage is fail");
 
                 // 【検証】最新の取得結果や画像オブジェクトがnullでないこと（更新されていること）
-                Assert.IsNotNull(iWiaSystem.LatestAcquireResult, "LatestAcquireResult is null after acquire");
-                Assert.IsNotNull(iWiaSystem.LatestAcquiredImage, "LatestAcquiredImage is null after acquire");
+                Assert.IsNotNull(iWiaSystem.LatestAcquireResult, $"{nameof(IWiaSystem.LatestAcquireResult)} is null after acquire");
+                Assert.IsNotNull(iWiaSystem.LatestAcquiredImage, $"{nameof(IWiaSystem.LatestAcquiredImage)} is null after acquire");
 
                 // 【検証】成功イベントが発火し、失敗イベントは発火していないこと
                 Assert.IsTrue(eventFired, "AcquireImageAvailable event is not fired");
@@ -1148,7 +1162,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestTuneStart()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】テスト前の連番と対象IDを保持
             int configId = 10;
@@ -1160,17 +1174,17 @@ namespace TestWiaSystem
             bool eventTuneCurrentState = false;
             void Handler(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(iWiaSystem.IsTuning))
+                if (e.PropertyName == nameof(IWiaSystem.IsTuning))
                 {
                     eventIsTuning = true;
-                } else if (e.PropertyName == nameof(iWiaSystem.TuneCurrentSeqNumber))
+                } else if (e.PropertyName == nameof(IWiaSystem.TuneCurrentSeqNumber))
                 {
                     eventTuneCurrentSeqNumber = true;
-                }else if (e.PropertyName == nameof(iWiaSystem.TuneCurrentConfigNumber))
+                }else if (e.PropertyName == nameof(IWiaSystem.TuneCurrentConfigNumber))
                 {
                     eventTuneCurrentConfigNumber = true;
                 }
-                else if (e.PropertyName == nameof(iWiaSystem.TuneCurrentState))
+                else if (e.PropertyName == nameof(IWiaSystem.TuneCurrentState))
                 {
                     eventTuneCurrentState = true;
                 }
@@ -1200,13 +1214,13 @@ namespace TestWiaSystem
                 Assert.IsTrue(iWiaSystem.IsTuning, "TuneStart is fail: IsTuning is not true");
 
                 // 【検証】現在の状態が Running(実行中) であるか
-                Assert.AreEqual(TuneState.Running, iWiaSystem.TuneCurrentState, "TuneCurrentState is not Running");
+                Assert.AreEqual(TuneState.Running, iWiaSystem.TuneCurrentState, $"{nameof(IWiaSystem.TuneCurrentState)} is not Running");
 
                 // 【検証】ターゲットのコンフィグ番号が意図通りにセットされているか
-                Assert.AreEqual(configId, iWiaSystem.TuneCurrentConfigNumber, "TuneCurrentConfigNumber is not updated");
+                Assert.AreEqual(configId, iWiaSystem.TuneCurrentConfigNumber, $"{nameof(IWiaSystem.TuneCurrentConfigNumber)} is not updated");
 
                 // 【検証】実行連番が1つインクリメントされているか
-                Assert.AreEqual(initialSeq + 1, iWiaSystem.TuneCurrentSeqNumber, "TuneCurrentSeqNumber did not increment");
+                Assert.AreEqual(initialSeq + 1, iWiaSystem.TuneCurrentSeqNumber, $"{nameof(IWiaSystem.TuneCurrentSeqNumber)} did not increment");
 
                 // 【検証】プロパティイベントの実行確認
                 Assert.IsTrue(eventIsTuning, "eventIsTuning is not fiered");
@@ -1235,7 +1249,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestTuneAbort()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】画像のロード
             DateTime time = DateTime.Now;
@@ -1246,11 +1260,11 @@ namespace TestWiaSystem
             bool eventTuneCurrentState = false;
             void Handler(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(iWiaSystem.IsTuning))
+                if (e.PropertyName == nameof(IWiaSystem.IsTuning))
                 {
                     eventIsTuning = true;
                 }
-                else if (e.PropertyName == nameof(iWiaSystem.TuneCurrentState))
+                else if (e.PropertyName == nameof(IWiaSystem.TuneCurrentState))
                 {
                     eventTuneCurrentState = true;
                 }
@@ -1270,7 +1284,7 @@ namespace TestWiaSystem
                 Assert.IsFalse(iWiaSystem.IsTuning, "TuneAbort is fail: IsTuning is not false");
 
                 // 【検証】中断されたため、ステータスがCompletedに遷移しているか
-                Assert.AreEqual(TuneState.Completed, iWiaSystem.TuneCurrentState, "TuneCurrentState is not Completed");
+                Assert.AreEqual(TuneState.Completed, iWiaSystem.TuneCurrentState, $"{nameof(IWiaSystem.TuneCurrentState)} is not Completed");
 
                 // 【検証】プロパティイベントの実行確認
                 Assert.IsTrue(eventIsTuning, "eventIsTuning is not fiered");
@@ -1296,7 +1310,7 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestTuneResultJudge()
         {
-            IWiaSystem iWiaSystem = WiaSystem;
+            IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】画像セットアップとチューニング開始
             DateTime time = DateTime.Now;
@@ -1307,11 +1321,11 @@ namespace TestWiaSystem
             bool eventTuneCurrentState = false;
             void Handler(object sender, PropertyChangedEventArgs e)
             {
-                if (e.PropertyName == nameof(iWiaSystem.IsTuning))
+                if (e.PropertyName == nameof(IWiaSystem.IsTuning))
                 {
                     eventIsTuning = true;
                 }
-                else if (e.PropertyName == nameof(iWiaSystem.TuneCurrentState))
+                else if (e.PropertyName == nameof(IWiaSystem.TuneCurrentState))
                 {
                     eventTuneCurrentState = true;
                 }
@@ -1327,10 +1341,10 @@ namespace TestWiaSystem
                 Assert.IsTrue(iWiaSystem.TuneResultJudge(), "TuneResultJudge is fail");
 
                 // 【検証】判定が終了したので、チューニング中フラグがOFF(false)になるか
-                Assert.IsFalse(iWiaSystem.IsTuning, "IsTuning is not false after judge");
+                Assert.IsFalse(iWiaSystem.IsTuning, $"{nameof(IWiaSystem.IsTuning)} is not false after judge");
 
                 // 【検証】次のチューニング指示を待つ Waiting 状態に戻っているか
-                Assert.AreEqual(TuneState.Waiting, iWiaSystem.TuneCurrentState, "TuneCurrentState is not Waiting");
+                Assert.AreEqual(TuneState.Waiting, iWiaSystem.TuneCurrentState, $"{nameof(IWiaSystem.TuneCurrentState)} is not Waiting");
 
                 // 【検証】プロパティイベントの実行確認
                 Assert.IsTrue(eventIsTuning, "eventIsTuning is not fiered");

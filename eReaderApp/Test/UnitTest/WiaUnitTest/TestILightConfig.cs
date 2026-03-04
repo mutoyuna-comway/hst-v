@@ -37,7 +37,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestILightConfigData))]
         public void ILightConfigPropertyTest(string name, object value, bool isPrivate)
         {
-            ILightConfig iLightConfig = WiaSystem.Job.SelectedConfig.AcquireSettings.SelectedLightConfig;
+            ILightConfig iLightConfig = WiaService.Job.SelectedConfig.AcquireSettings.SelectedLightConfig;
             this.PropertyTest(iLightConfig, name, value, isPrivate);
         }
     }

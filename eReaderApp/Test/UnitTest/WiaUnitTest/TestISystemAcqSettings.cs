@@ -35,7 +35,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemAcqSettingsData))]
         public void ISystemAcqSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemAcqSettings iSystemAcqSettings = WiaSystem.AcquisitionSettings;
+            ISystemAcqSettings iSystemAcqSettings = WiaService.AcquisitionSettings;
             this.PropertyTest(iSystemAcqSettings, name, value, isPrivate);
         }
     }

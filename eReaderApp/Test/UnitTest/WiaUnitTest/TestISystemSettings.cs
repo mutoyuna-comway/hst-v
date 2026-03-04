@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                ISystemSettings iSystemSettings = WiaSystem.SystemSettings;
+                ISystemSettings iSystemSettings = WiaService.SystemSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Password", "", false };
                 yield return new object[] { "SystemRootFolderName", "", false };
@@ -49,7 +49,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemSettingsData))]
         public void ISystemSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemSettings iSystemSettings = WiaSystem.SystemSettings;
+            ISystemSettings iSystemSettings = WiaService.SystemSettings;
             this.PropertyTest(iSystemSettings, name, value, isPrivate);
         }
     }

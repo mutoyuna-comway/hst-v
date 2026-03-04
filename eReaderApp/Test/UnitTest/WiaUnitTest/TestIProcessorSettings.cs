@@ -37,7 +37,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIProcessorSettingsData))]
         public void IProcessorSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            IProcessorSettings iProcessorSettings = WiaSystem.SystemSettings.ProcSetting;
+            IProcessorSettings iProcessorSettings = WiaService.SystemSettings.ProcSetting;
             this.PropertyTest(iProcessorSettings, name, value, isPrivate);
         }
     }

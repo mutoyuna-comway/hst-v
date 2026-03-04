@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IWiaDevice iWiaDevice = WiaSystem.Device;
+                IWiaDevice iWiaDevice = WiaService.Device;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "IsCameraFound", true, true };
                 yield return new object[] { "IsValidLicense", true, true };
@@ -49,7 +49,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIWiaDeviceData))]
         public void IWiaDevicePropertyTest(string name, object value, bool isPrivate)
         {
-            IWiaDevice iWiaDevice = WiaSystem.Device;
+            IWiaDevice iWiaDevice = WiaService.Device;
             this.PropertyTest(iWiaDevice, name, value, isPrivate);
         }
     }

@@ -39,7 +39,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIBarcodeParametersData))]
         public void IJobPropertyTest(string name, object value, bool isPrivate)
         {
-            IBarcodeParameters iBarcodeParameters = WiaSystem.Job.SelectedConfig.ReadSettings.Barcode;
+            IBarcodeParameters iBarcodeParameters = WiaService.Job.SelectedConfig.ReadSettings.Barcode;
             this.PropertyTest(iBarcodeParameters, name, value, isPrivate);
         }
     }

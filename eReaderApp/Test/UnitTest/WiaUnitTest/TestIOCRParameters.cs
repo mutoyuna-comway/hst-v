@@ -52,7 +52,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIOCRParametersData))]
         public void IOCRParametersPropertyTest(string name, object value, bool isPrivate)
         {
-            IOCRParameters iOCRParameters = WiaSystem.Job.SelectedConfig.ReadSettings.OCR;
+            IOCRParameters iOCRParameters = WiaService.Job.SelectedConfig.ReadSettings.OCR;
             this.PropertyTest(iOCRParameters, name, value, isPrivate);
         }
     }

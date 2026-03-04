@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IJobReadSettings ijobReadSettings = WiaSystem.Job.SelectedConfig.ReadSettings;
+                IJobReadSettings ijobReadSettings = WiaService.Job.SelectedConfig.ReadSettings;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.T7, false };
                 yield return new object[] { "Checksum", ChecksumType.Semi, false };
@@ -47,7 +47,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIJobReadSettingsData))]
         public void IJobReadSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            IJobReadSettings ijobReadSettings = WiaSystem.Job.SelectedConfig.ReadSettings;
+            IJobReadSettings ijobReadSettings = WiaService.Job.SelectedConfig.ReadSettings;
             this.PropertyTest(ijobReadSettings, name, value, isPrivate);
         }
     }

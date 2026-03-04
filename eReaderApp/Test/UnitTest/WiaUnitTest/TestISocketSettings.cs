@@ -38,7 +38,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISocketSettingsData))]
         public void ISocketSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISocketSettings iSocketSettings = WiaSystem.CommunicationSettings.Socket;
+            ISocketSettings iSocketSettings = WiaService.CommunicationSettings.Socket;
             this.PropertyTest(iSocketSettings, name, value, isPrivate);
         }
     }

@@ -23,7 +23,7 @@ namespace TestWiaSystem
             get
             {
                 // ここでテスト設定値用のインスタンスを生成
-                IReadResult iReadResult = WiaSystem.Job.SelectedConfig.LatestReadResult;
+                IReadResult iReadResult = WiaService.Job.SelectedConfig.LatestReadResult;
                 /* プロパティ名, テスト用の設定値, プライベートプロパティか否か */
                 yield return new object[] { "Mark", MarkType.QR, true };
                 yield return new object[] { "ReadString", "", true };
@@ -50,7 +50,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIReadResultData))]
         public void IReadResultPropertyTest(string name, object value, bool isPrivate)
         {
-            IReadResult iReadResult = WiaSystem.Job.SelectedConfig.LatestReadResult;
+            IReadResult iReadResult = WiaService.Job.SelectedConfig.LatestReadResult;
             this.PropertyTest(iReadResult, name, value, isPrivate);
         }
     }
@@ -87,7 +87,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestIReadOcrResultData))]
         public void IReadOcrResultPropertyTest(string name, object value, bool isPrivate)
         {
-            IReadOcrResult iReadOcrResult = WiaSystem.Job.SelectedConfig.LatestReadResult.OcrResults[0];
+            IReadOcrResult iReadOcrResult = WiaService.Job.SelectedConfig.LatestReadResult.OcrResults[0];
             this.PropertyTest(iReadOcrResult, name, value, isPrivate);
         }
     }

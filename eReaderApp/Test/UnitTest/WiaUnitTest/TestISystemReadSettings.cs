@@ -43,7 +43,7 @@ namespace TestWiaSystem
         [DynamicData(nameof(TestISystemReadSettingsData))]
         public void ISystemReadSettingsPropertyTest(string name, object value, bool isPrivate)
         {
-            ISystemReadSettings iSystemReadSettings = WiaSystem.ReadSettings;
+            ISystemReadSettings iSystemReadSettings = WiaService.ReadSettings;
             this.PropertyTest(iSystemReadSettings, name, value, isPrivate);
         }
     }
