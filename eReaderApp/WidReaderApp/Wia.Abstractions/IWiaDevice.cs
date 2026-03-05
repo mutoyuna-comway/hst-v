@@ -8,6 +8,8 @@ namespace Wia.Abstractions
     /// </summary>
     public interface IWiaDevice
     {
+        IWiaSystem SystemService { get; }
+
         bool IsCameraFound { get; }
         bool IsValidLicense { get; }
         string ModelName { get; }
