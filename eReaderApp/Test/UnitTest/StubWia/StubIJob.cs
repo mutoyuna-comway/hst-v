@@ -135,7 +135,7 @@ namespace StubWia
             return new StubIJobConfig();
 
         }
-        public IJobConfig[] GetSortedEnableConfigArray() { return new IJobConfig[0]; }
+        public IJobConfig[] GetSortedEnableConfigArray() { return  new IJobConfig[GetConfigMaxNum()]; }
         public bool CheckFontIdValidity() { return false; }
         public bool CopyConfig(int srcConfID, int dstConfID) {
             int maxNum = GetConfigMaxNum();

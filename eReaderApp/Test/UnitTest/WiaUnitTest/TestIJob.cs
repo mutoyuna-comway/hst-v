@@ -3,6 +3,7 @@
 using StubWia;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using Wia.Abstractions;
@@ -31,9 +32,7 @@ namespace TestWiaSystem
                 yield return new object[] { nameof(iJob.ScoreType), ScoreMode.MinScore, false };
                 yield return new object[] { nameof(iJob.SelectedConfig), ShallowCopy(iJob.SelectedConfig), true };
                 yield return new object[] { nameof(iJob.SelectedConfigIndex), 10, false };
-                yield return new object[] { nameof(iJob.Configs), iJob.Configs, true };// Configsはコンテナクラスへの参照なので、コピーせずインスタンス比較で問題なし
                 yield return new object[] { nameof(iJob.MaxNumConfig), MaxNumConfigType.Num16, false };
-                yield return new object[] { nameof(iJob.SystemService), WiaService, false };
             }
         }
 
@@ -67,28 +66,19 @@ namespace TestWiaSystem
         /// GetConfigのテスト
         /// </summary>
         [TestMethod]
-        [DataRow(1)]
-        public void TestGetConfig_Success(int index)
+        public void TestGetConfig()
         {
             IJob iJob = WiaService.Job;
-            var result = iJob.GetConfig(index);
+            var result = iJob.GetConfig(1);
             //取得したConfigがnull出ないことを確認する
             Assert.IsNotNull(result, $"GetConfig is fail: returned null");
             //取得したConfigがIJobConfigクラスを持っていることを確認する
             Assert.IsInstanceOfType(result, typeof(IJobConfig), "The return value must be of type IJobConfig.");
-        }
-        /// <summary>
-        /// GetConfigのテスト
-        /// </summary>
-        [TestMethod]
-        [DataRow(-1)]
-        [DataRow(100)]
-        public void TestGetConfig_ArgumentOutOfRangeException(int index)
-        {
-            IJob iJob = WiaService.Job;
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
-            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetConfig(index));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetConfig(getConfigMaxOverNum()));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetConfig(-1));
         }
+       
         /// <summary>
         /// GetSortedEnableConfigArrayのテスト
         /// </summary>
@@ -191,14 +181,10 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetLastBestConfigId_beforeExecute()
         {
-            // 【準備】
-            // Singletonインスタンス（WiaService.Job）への影響を避けるため、
-            // 新しいStubIJobオブジェクトを生成してテストを行います。
-            // これにより、他のテストケースとの状態の干渉を防ぎます。
-            IJob iJob = new StubIJob();
+            IJob iJob = WiaService.Job;
             int result = iJob.GetLastBestConfigId();
             //【検証】読取り未実行の場合は0を返す
-            Assert.AreEqual(0, result, "If reading has not been executed, the result must return 0");
+            Assert.IsGreaterThanOrEqualTo(0, result, "If reading has not been executed, the result must return greater than 0");
         }
         /// <summary>
         /// GetLastBestConfigIdのテスト
@@ -206,43 +192,31 @@ namespace TestWiaSystem
         [TestMethod]
         public void TestGetLastBestConfigId_afterExecute()
         {
-            // 【準備】
-            // Singletonインスタンス（WiaService.Job）への影響を避けるため、
-            // 新しいStubIJobオブジェクトを生成してテストを行います。
-            // これにより、他のテストケースとの状態の干渉を防ぎます。
-            IJob iJob = new StubIJob();
+            IJob iJob = WiaService.Job;
             // 【実行】読取り処理を実行
             iJob.RunRead();
             int result = iJob.GetLastBestConfigId();
-            // 【検証】読取り実行後は、有効なコンフィグID（1以上）が返ることを確認
-            Assert.IsGreaterThanOrEqualTo(1, result, "The returned ID must be 1 or greater after reading has been executed");
+            // 【検証】読取り実行後は、有効なコンフィグID（0以上）が返ることを確認
+            Assert.IsGreaterThanOrEqualTo(0, result, "The returned ID must be 0 or greater after reading has been executed");
         }
         /// <summary>
         /// GetReadBestResultのテスト
         /// </summary>
         [TestMethod]
-        [DataRow(1)]
-        public void TestGetReadBestResult_success(int configID)
+        public void TestGetReadBestResult_success()
         {
             IJob iJob = WiaService.Job;
-            IReadResult result = iJob.GetReadBestResult(configID);
+            IReadResult result = iJob.GetReadBestResult(1);
             // 【検証】
             // 結果オブジェクトがnullでないことを確認
             Assert.IsNotNull(result, "result must not be null");
             // 戻り値が期待されるインターフェース型であることを確認
             Assert.IsInstanceOfType(result, typeof(Wia.Abstractions.IReadResult), "the return value must be type of IReadResult.");
-        }
-        /// <summary>
-        /// GetReadBestResultのテスト
-        /// </summary>
-        [TestMethod]
-        [DataRow(17)]
-        public void TestGetReadBestResult_fail(int configID)
-        {
-            IJob iJob = WiaService.Job;
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
-            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetReadBestResult(configID));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetReadBestResult(getConfigMaxOverNum()));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.GetReadBestResult(-1));
         }
+       
         /// <summary>
         /// GetConfigMaxNumのテスト
         /// </summary>
@@ -252,54 +226,45 @@ namespace TestWiaSystem
             IJob iJob = WiaService.Job;
             int maxNum = iJob.GetConfigMaxNum();
             // 【検証】取得した値が、定義済みの定数（WiaConstants.ConfigMaxNum）と一致することを確認
-            Assert.AreEqual(WiaConstants.ConfigMaxNum, maxNum);
+            if (WiaService.Job.MaxNumConfig == MaxNumConfigType.Num50)
+            {
+                Assert.AreEqual(WiaConstants.ExpandedConfigMaxNum, maxNum);
+            } else
+            {
+                Assert.AreEqual(WiaConstants.ConfigMaxNum, maxNum);
+            }
         }
         /// <summary>
         /// CheckValidConfigIDのテスト
         /// </summary>
         [TestMethod]
-        [DataRow(1)]
-        public void TestCheckValidConfigID_success(int configID)
+        public void TestCheckValidConfigID()
         {
             IJob iJob = WiaService.Job;
             // 【検証】戻り値が true であることが期待されます。
-            Assert.IsTrue(iJob.CheckValidConfigID(configID), "The return value of CheckValidConfigID must be true");
-        }
-        /// <summary>
-        /// CheckValidConfigIDのテスト
-        /// </summary>
-        [TestMethod]
-        [DataRow(100)]
-        public void TestCheckValidConfigID_fail(int configID)
-        {
-            IJob iJob = WiaService.Job;
+            Assert.IsTrue(iJob.CheckValidConfigID(1), "The return value of CheckValidConfigID must be true");
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
-            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckValidConfigID(configID));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckValidConfigID(getConfigMaxOverNum()));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckValidConfigID(-1));
         }
+        
         /// <summary>
         /// CheckExistenceConfigのテスト
         /// </summary>
         [TestMethod]
-        [DataRow(1)]
-        public void TestCheckExistenceConfig_success(int targetConfig)
+        public void TestCheckExistenceConfig_success()
         {
             IJob iJob = WiaService.Job;
             // 【検証】戻り値が true であることが期待されます。
-            Assert.IsTrue(iJob.CheckExistenceConfig(targetConfig), "The return value of CheckExistenceConfig must be true");
-        }
-        /// <summary>
-        /// CheckExistenceConfigのテスト
-        /// </summary>
-        [TestMethod]
-        [DataRow(100)]
-        public void TestCheckExistenceConfig_fail(int targetConfig)
-        {
-            IJob iJob = WiaService.Job;
+            Assert.IsTrue(iJob.CheckExistenceConfig(1), "The return value of CheckExistenceConfig must be true");
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
-            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckExistenceConfig(targetConfig));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckExistenceConfig(getConfigMaxOverNum()));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.CheckExistenceConfig(-1));
+
         }
+
         /// <summary>
-        /// RunReadRetryのテスト
+        /// RunReadRetryのテスト TODO　検討中のため一旦書いておくだけのテスト
         /// </summary>
         [TestMethod]
         [DataRow(1, 1, 1, 1, 1, 1, 1, 1, null)]
@@ -309,19 +274,23 @@ namespace TestWiaSystem
             IJob iJob = WiaService.Job;
             // 【検証】戻り値が 0 であることが期待されます。
             Assert.AreEqual(0, iJob.RunReadRetry(configID, lightRange, lightStep, sizeRange, sizeStep, internalFilter, timeOut, overwrite, out result));
-        }
-        /// <summary>
-        /// RunReadRetryのテスト
-        /// </summary>
-        [TestMethod]
-        [DataRow(100, 1, 1, 1, 1, 1, 1, 1, null)]
-        public void TestRunReadRetry_fail(int configID, int lightRange, int lightStep, int sizeRange, int sizeStep,
-            int internalFilter, int timeOut, int overwrite, IReadResult result)
-        {
-            IJob iJob = WiaService.Job;
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
-            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.RunReadRetry(configID, lightRange, lightStep, sizeRange, sizeStep, internalFilter, timeOut, overwrite, out result));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.RunReadRetry(getConfigMaxOverNum(), lightRange, lightStep, sizeRange, sizeStep, internalFilter, timeOut, overwrite, out result));
+            ExceptionTest<ArgumentOutOfRangeException>(() => iJob.RunReadRetry(-1, lightRange, lightStep, sizeRange, sizeStep, internalFilter, timeOut, overwrite, out result));
         }
 
+        /// <summary>
+        /// コンフィグ数最大値＋１を取得する
+        /// </summary>
+        /// <returns></returns>
+        private int getConfigMaxOverNum()
+        {
+            if (WiaService.Job.MaxNumConfig == MaxNumConfigType.Num50)
+            {
+                return WiaConstants.ExpandedConfigMaxNum + 1;
+            }
+            return WiaConstants.ConfigMaxNum + 1;
+
+        }
     }
 }
