@@ -150,16 +150,13 @@ namespace StubWia
             return true;
         }
         public int RunRead() {
-            if (_readFailedNum == 3)
-            {
-                return -1;
-            }
+            
             var args = new StubIReadCompletedEventArgs();
             // 登録されているリスナーに読取り結果の更新と完了を通知
             ConfigReadResultAvailable?.Invoke(this, args);
             ConfigReadCompleted?.Invoke(this, args);
             _readFailedNum++;
-            return 1;
+            return -1;
         }
 
         public int _readSuccessNum = 0; //とりあえずの保持方法
@@ -171,6 +168,8 @@ namespace StubWia
             if (this.SelectedConfig != null)
             {
                 this.SelectedConfig.ClearTuneResult();
+                _readSuccessNum = 0;
+                _readFailedNum = 0;
             }
         }
         public int GetLastBestConfigId() { 

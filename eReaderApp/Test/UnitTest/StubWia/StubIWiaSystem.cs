@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using Wia.Abstractions;
 
 namespace StubWia
@@ -413,13 +416,22 @@ namespace StubWia
         public IRecogCondition CreateRecogCond() => new StubIRecogCondition();
         public ICameraInfo GetCamInfo() => new StubICameraInfo();
 
+        private System.Timers.Timer LiveViewTimer;
         public void StartLiveView()
         {
             if (IsLiveViewActive ) {
                 ImageAcquisitionFailed.Invoke(this, EventArgs.Empty);
             }
+            this.LiveViewTimer = new System.Timers.Timer(200);
+            this.LiveViewTimer.Elapsed += TimerEvent;
+            this.LiveViewTimer.Start();
             IsLiveViewActive = true; // private set経由で発火
             LiveViewStarted?.Invoke(this, EventArgs.Empty);
+            AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void TimerEvent(object sender, ElapsedEventArgs e)
+        {
             AcquireImageAvailable?.Invoke(this, EventArgs.Empty);
         }
 
@@ -427,6 +439,10 @@ namespace StubWia
         {
             IsLiveViewActive = false; // private set経由で発火
             LiveViewStopped?.Invoke(this, EventArgs.Empty);
+            if (this.LiveViewTimer != null && this.LiveViewTimer.Enabled) {
+                this.LiveViewTimer.Stop();
+                this.LiveViewTimer.Elapsed -= TimerEvent;
+            }
         }
 
         public bool AcquireImage(int configID)
