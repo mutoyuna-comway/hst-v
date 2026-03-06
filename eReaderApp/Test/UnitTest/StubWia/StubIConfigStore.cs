@@ -9,6 +9,16 @@ namespace StubWia
   
     public class StubIConfigStore : IConfigStore
     {
+
+        public StubIConfigStore() { 
+        
+        }
+
+        public StubIConfigStore(IJob parentJob)
+        {
+            this._parentJob = parentJob;
+        }
+
         private IJob _parentJob;
         public IJob ParentJob
         {

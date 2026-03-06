@@ -333,28 +333,31 @@ namespace TestWiaSystem
             DateTime time = DateTime.Now;
             bool eventFired1 = false;
             bool eventFired2 = false;
-            bool propertyEventFired = false;
-            PropertyChangedEventHandler handler = getPropertyChangeHandler(nameof(iWiaSystem.ActiveJobName), () => { propertyEventFired = true; });
-           
+            bool propertyEvenNametFired = false;
+            bool propertyEventJobFired = false;
+            PropertyChangedEventHandler handlerName = getPropertyChangeHandler(nameof(iWiaSystem.ActiveJobName), () => { propertyEvenNametFired = true; });
+            PropertyChangedEventHandler handlerJob = getPropertyChangeHandler(nameof(iWiaSystem.Job), () => { propertyEventJobFired = true; });
+
             string beforeJobName = iWiaSystem.ActiveJobName;
             IJob beforeJob = iWiaSystem.Job;
 
             EventHandler JobChangingHandler = (s, e) => {
                 eventFired1 = true; //ジョブ変更中イベント
-                Assert.AreEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
-                Assert.AreEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
+                Assert.AreSame(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
+                Assert.AreSame(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
             EventHandler JobChangedHandler = (s, e) => {
                 eventFired2 = true; //ジョブ変更完了イベント
                 Assert.AreNotEqual(beforeJobName, iWiaSystem.ActiveJobName, $"{nameof(IWiaSystem.ActiveJobName)} is changed in Chengging event");
-                Assert.AreNotEqual(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
+                Assert.AreNotSame(beforeJob, iWiaSystem.Job, $"{nameof(IWiaSystem.Job)} is changed in Chengging event");
             };
 
             try
             {
                 iWiaSystem.JobChanging += JobChangingHandler;
                 iWiaSystem.JobChanged += JobChangedHandler;
-                iWiaSystem.PropertyChanged += handler;
+                iWiaSystem.PropertyChanged += handlerName;
+                iWiaSystem.PropertyChanged += handlerJob;
                 // 【実行：正常系】ダミーファイルを読み込む
                 Assert.IsTrue(jobChangeMethod(), "jobChangeMethod is fail");
 
@@ -367,14 +370,16 @@ namespace TestWiaSystem
                 // 【検証】イベントが発火したか
                 Assert.IsTrue(eventFired1, "JobChanging event is not fired");
                 Assert.IsTrue(eventFired2, "JobChanged event is not fired");
-                Assert.IsTrue(propertyEventFired, "propertyEventFired is not fired");
+                Assert.IsTrue(propertyEvenNametFired, "propertyEventFired is not fired");
+                Assert.IsTrue(propertyEventJobFired, "propertyEventFired is not fired");
             }
             finally
             {
                 // 【後始末】イベント購読を解除
                 iWiaSystem.JobChanging -= JobChangingHandler;
                 iWiaSystem.JobChanged -= JobChangedHandler;
-                iWiaSystem.PropertyChanged -= handler;
+                iWiaSystem.PropertyChanged -= handlerName;
+                iWiaSystem.PropertyChanged -= handlerJob;
             }
 
             
@@ -670,6 +675,7 @@ namespace TestWiaSystem
             {
                 // 【後始末】
                 System.IO.File.Delete(testPath);
+                iWiaSystem.Job.ClearTuneResult();
             }
 
             // 【検証：異常系】最大数を超えるコンフィグID、またはマイナスのIDを指定した際に ArgumentOutOfRangeException が発生するか
@@ -714,6 +720,7 @@ namespace TestWiaSystem
             finally
             {
                 System.IO.File.Delete(testPath);
+                iWiaSystem.Job.ClearTuneResult();
             }
 
             // 【検証：異常系】範囲外のID指定時の例外チェック
@@ -755,6 +762,7 @@ namespace TestWiaSystem
             finally
             {
                 System.IO.File.Delete(testPath);
+                iWiaSystem.Job.ClearTuneResult();
             }
 
             // 【検証：異常系】範囲外のID指定時の例外チェック
@@ -958,20 +966,35 @@ namespace TestWiaSystem
         }
 
         /// <summary>
-        /// StartLiveViewのテスト
+        /// StartStopLiveViewのテスト
+        /// </summary>
+        /// <remarks>
+        /// ライブビュー（カメラの連続画像取得）開始時と終了時の状態遷移と、関連するイベントの発火を検証します。
+        /// 既に開始済みの状態でもう一度開始した際のエラーハンドリング（ImageAcquisitionFailed）も確認します。
+        /// </remarks>
+        [TestMethod]
+        public async Task TestStartStopLiveView() {
+
+
+            await TestStartLiveView();
+            TestStopLiveView();
+
+        }
+
+        /// <summary>
+        /// StartLiveViewのテスト StartとStopは同時にテストを行う
         /// </summary>
         /// <remarks>
         /// ライブビュー（カメラの連続画像取得）開始時の状態遷移と、関連するイベントの発火を検証します。
         /// 既に開始済みの状態でもう一度開始した際のエラーハンドリング（ImageAcquisitionFailed）も確認します。
         /// </remarks>
-        [TestMethod]
         public async Task TestStartLiveView()
         {
             IWiaSystem iWiaSystem = WiaService;
 
             // 【準備】イベント検知フラグ
             bool startedFired = false;
-            int acquireAvailableFiredCount = 0;
+            bool isAcquireImageWatchDogTimer = false;
             bool acquisitionFailed = false;
 
             DateTime time = DateTime.Now;
@@ -984,8 +1007,23 @@ namespace TestWiaSystem
 
             // イベント購読
             EventHandler LiveViewStartedHandler = (s, e) => startedFired = true;
-            EventHandler AcquireImageAvailableHandler = (s, e) => acquireAvailableFiredCount++;
             EventHandler ImageAcquisitionFailedHandler = (s, e) => acquisitionFailed = true;
+
+            //定期的にAcquireImageAvailableが起動しているかをチェックするためのウォッチドッグタイマー
+            System.Timers.Timer msTimer100 = new System.Timers.Timer(100);
+            int count100ms = 0;
+            //Action timerCountUP=
+            void TimerEvent(object sender, ElapsedEventArgs e)
+            {
+                count100ms++;
+                if (count100ms == 5)
+                {
+                    //500msが経過してその間AcquireImageAvailableが起動していない場合はアラートフラグをON
+                    isAcquireImageWatchDogTimer = true;
+                }
+            }
+            // AcquireImageAvailableが起動した際にウォッチドッグタイマーリセットを行う
+            EventHandler AcquireImageAvailableHandler = (s, e) => count100ms = 0;
             try
             {
                 iWiaSystem.StopLiveView();
@@ -999,10 +1037,14 @@ namespace TestWiaSystem
                 // 【検証】プロパティがライブ中(true)になっていること
                 Assert.IsTrue(iWiaSystem.IsLiveViewActive, "StartLiveView is fail: IsLiveViewActive is not true");
 
+                
+                msTimer100.Elapsed += TimerEvent;
+                msTimer100.Start();
                 // 【検証】開始イベントと、取込完了イベント（1回目の画像取得）が発火したこと
                 Assert.IsTrue(startedFired, "LiveViewStarted event is not fired");
-                await TestUtils.Delaymsec(500);//3回acquireAvailableが実行された状態であるはず、本番ではそれ以上のサンプリングを期待
-                Assert.IsGreaterThan(2, acquireAvailableFiredCount, "AcquireImageAvailable event is not fired at start");
+                await TestUtils.Delaymsec(800);//3回acquireAvailableが実行された状態であるはず、本番ではそれ以上のサンプリングを期待
+                // 【検証】800ms経過後ウォッチドッグタイマーが起動していないこと
+                Assert.IsFalse(isAcquireImageWatchDogTimer, "AcquireImageAvailable event is not fired at start");
 
                 // 【検証】正常開始なので、失敗イベントは発火していないはず
                 Assert.IsFalse(acquisitionFailed, "ImageAcquisitionFailed event is fired after successed");
@@ -1022,18 +1064,19 @@ namespace TestWiaSystem
                 // テスト終了のためライブビューを停止し、非同期処理の完了を少し待つ
                 iWiaSystem.StopLiveView();
                 await TestUtils.Delaymsec(500);
+                msTimer100.Stop();
             }
 
             
         }
 
         /// <summary>
-        /// StopLiveViewのテスト
+        /// StopLiveViewのテスト StartとStopは同時にテストを行う
+        ///
         /// </summary>
         /// <remarks>
         /// 稼働中のライブビューを停止した際に、状態が更新され、停止イベントが発火することを検証します。
         /// </remarks>
-        [TestMethod]
         public void TestStopLiveView()
         {
             IWiaSystem iWiaSystem = WiaService;
@@ -1048,12 +1091,6 @@ namespace TestWiaSystem
             EventHandler LiveViewStoppedHandler = (s, e) => stoppedFired = true;
             try
             {
-                iWiaSystem.StopLiveView(); 
-                // 確実にライブビューを開始させるための準備
-                TestUtils.CreateBlackBmp(testPath);
-                iWiaSystem.LoadBitmapFile(testPath);
-
-                iWiaSystem.StartLiveView(); // まず開始する
 
                 iWiaSystem.LiveViewStopped += LiveViewStoppedHandler;
 
@@ -1211,6 +1248,7 @@ namespace TestWiaSystem
                 // 【後始末】
                 iWiaSystem.PropertyChanged -= Handler;
                 System.IO.File.Delete(testPath);
+                iWiaSystem.TuneAbort();
             }
 
             // 【検証：異常系】範囲外のコンフィグID指定で例外が発生するか

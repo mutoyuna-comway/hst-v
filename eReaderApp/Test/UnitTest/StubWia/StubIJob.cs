@@ -12,7 +12,7 @@ namespace StubWia
         public event EventHandler<IReadCompletedEventArgs> ConfigReadCompleted;
 
         public StubIJob() {
-
+            _configs = new StubIConfigStore(this);
         }
 
         
@@ -59,7 +59,7 @@ namespace StubWia
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedConfigIndex)));
             }
         }
-        private IConfigStore _configs = new StubIConfigStore();
+        private IConfigStore _configs;
         public IConfigStore Configs {
             get { return this._configs; }
             private set

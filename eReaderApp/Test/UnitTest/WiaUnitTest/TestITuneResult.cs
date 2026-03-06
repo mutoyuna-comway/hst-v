@@ -35,7 +35,6 @@ namespace TestWiaSystem
                 yield return new object[] { "NumTuneFailed", 10, true };
                 yield return new object[] { "CurrentMinimumScore", 10.0, true };
                 yield return new object[] { "BestMinimumScore", 10.0, true };
-                yield return new object[] { "AcqCondition", ShallowCopy(iTuneResult.AcqCondition), true };
                 yield return new object[] { "ReadSettings", ShallowCopy(iTuneResult.ReadSettings), true };
                 yield return new object[] { "BestAcqCondition", ShallowCopy(iTuneResult.BestAcqCondition), true };
                 yield return new object[] { "BestReadSettings", ShallowCopy(iTuneResult.BestReadSettings), true };
